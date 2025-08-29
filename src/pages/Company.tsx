@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
   ArrowRight, 
-  MapPin, 
   Users, 
   Award, 
   Target,
@@ -11,48 +10,10 @@ import {
   Globe,
   Briefcase,
   Mail,
-  Linkedin
+  MapPin
 } from "lucide-react";
 
 const Company = () => {
-  const team = [
-    {
-      name: "Sarah Chen",
-      title: "Chief Executive Officer",
-      bio: "Former VP of Compliance at Fortune 500 food service company. 15+ years in regulatory technology.",
-      linkedin: "#"
-    },
-    {
-      name: "Michael Rodriguez", 
-      title: "Chief Technology Officer",
-      bio: "Ex-Amazon senior engineer. Built scalable compliance platforms serving millions of transactions.",
-      linkedin: "#"
-    },
-    {
-      name: "Lisa Thompson",
-      title: "VP of Customer Success", 
-      bio: "Former compliance consultant for pharmaceutical and manufacturing industries. Expert in process optimization.",
-      linkedin: "#"
-    },
-    {
-      name: "David Park",
-      title: "VP of Engineering",
-      bio: "Previously led engineering teams at regulatory software companies. Focused on enterprise security.",
-      linkedin: "#"
-    },
-    {
-      name: "Jennifer Walsh",
-      title: "VP of Sales",
-      bio: "20+ years in B2B software sales, specializing in compliance and supply chain management solutions.",
-      linkedin: "#"
-    },
-    {
-      name: "Robert Kim",
-      title: "VP of Product",
-      bio: "Product leader with expertise in compliance workflows and regulatory technology across multiple industries.",
-      linkedin: "#"
-    }
-  ];
 
   const values = [
     {
@@ -214,42 +175,6 @@ const Company = () => {
         </div>
       </section>
 
-      {/* Leadership Team */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-4">
-              Leadership Team
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Experienced leaders from compliance, technology, and enterprise software backgrounds
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {team.map((member, index) => (
-              <Card key={index} className="enterprise-card hover:shadow-enterprise-lg transition-all duration-300">
-                <CardHeader className="text-center">
-                  <div className="w-20 h-20 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Users className="h-10 w-10 text-white" />
-                  </div>
-                  <CardTitle className="text-xl text-navy-900">{member.name}</CardTitle>
-                  <CardDescription className="text-teal-600 font-medium">
-                    {member.title}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 text-sm mb-4">{member.bio}</p>
-                  <Button variant="outline" size="sm" className="w-full">
-                    <Linkedin className="h-4 w-4 mr-2" />
-                    Connect
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Company Timeline */}
       <section className="py-20 bg-gray-50">
@@ -282,38 +207,6 @@ const Company = () => {
         </div>
       </section>
 
-      {/* Location */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
-            <Card className="enterprise-card">
-              <CardContent className="p-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                  <div>
-                    <h2 className="text-3xl font-display font-bold text-navy-900 mb-4 flex items-center gap-3">
-                      <MapPin className="h-8 w-8 text-teal-600" />
-                      Auburn, Alabama
-                    </h2>
-                    <p className="text-gray-600 mb-6">
-                      TraceR2C LLC is proudly headquartered in Auburn, Alabama, in the heart of 
-                      the Southeast. We're building world-class compliance technology from a city 
-                      known for innovation and engineering excellence.
-                    </p>
-                    <div className="space-y-2 text-gray-700">
-                      <p><strong>Address:</strong> 123 Innovation Drive, Auburn, AL 36830</p>
-                      <p><strong>Phone:</strong> (334) 555-0123</p>
-                      <p><strong>Email:</strong> hello@tracer2c.com</p>
-                    </div>
-                  </div>
-                  <div className="bg-gray-200 rounded-lg h-64 flex items-center justify-center">
-                    <span className="text-gray-500">Map Placeholder</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
 
       {/* Careers */}
       <section className="py-20 bg-gray-50">
