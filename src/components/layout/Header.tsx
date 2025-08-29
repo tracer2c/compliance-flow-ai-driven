@@ -8,39 +8,18 @@ import {
   NavigationMenuList, 
   NavigationMenuTrigger 
 } from "@/components/ui/navigation-menu";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger 
-} from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { 
-  ChevronDown, 
-  Globe, 
   Menu, 
   X, 
   FileText, 
   Target, 
-  BarChart3,
-  Shield,
-  Plug,
-  DollarSign,
-  BookOpen,
-  Building
+  BarChart3
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [selectedRegion, setSelectedRegion] = useState("🇺🇸 North America");
-
-  const regions = [
-    { key: "regionSelector.regions.northamerica", label: "🇺🇸 North America" },
-    { key: "regionSelector.regions.europe", label: "🇪🇺 Europe" },
-    { key: "regionSelector.regions.apac", label: "🌏 Asia Pacific" },
-    { key: "regionSelector.regions.latam", label: "🌎 Latin America" }
-  ];
 
   const products = [
     {
@@ -98,20 +77,20 @@ const Header = () => {
                     Products
                   </NavigationMenuTrigger>
                   <NavigationMenuContent>
-                    <div className="w-[400px] p-6 bg-white/95 backdrop-blur border border-gray-200 rounded-xl shadow-lg">
+                    <div className="w-80 p-4 bg-white border border-gray-200 rounded-lg shadow-lg">
                       {products.map((product) => (
                         <NavigationMenuLink key={product.name} asChild>
                           <Link
                             to={product.href}
-                            className="block space-y-3 rounded-lg p-4 hover:bg-gray-50 transition-colors group"
+                            className="block rounded-lg p-3 hover:bg-gray-50 transition-colors group"
                           >
                             <div className="flex items-center space-x-3">
-                              <div className="h-10 w-10 bg-teal-100 rounded-lg flex items-center justify-center">
-                                <product.icon className="h-5 w-5 text-teal-600" />
+                              <div className="h-8 w-8 bg-teal-100 rounded-lg flex items-center justify-center">
+                                <product.icon className="h-4 w-4 text-teal-600" />
                               </div>
                               <div className="flex-1">
                                 <div className="flex items-center space-x-2">
-                                  <h3 className="font-semibold text-navy-900 group-hover:text-teal-600 transition-colors">
+                                  <h3 className="font-medium text-navy-900 group-hover:text-teal-600 transition-colors">
                                     {product.name}
                                   </h3>
                                   {product.badge && (
@@ -120,7 +99,7 @@ const Header = () => {
                                     </Badge>
                                   )}
                                 </div>
-                                <p className="text-sm text-gray-600 mt-1">
+                                <p className="text-xs text-gray-600 mt-1">
                                   {product.description}
                                 </p>
                               </div>
@@ -148,28 +127,6 @@ const Header = () => {
 
           {/* Right Section */}
           <div className="hidden lg:flex items-center space-x-4">
-            {/* Region Selector */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="sm" className="text-navy-700 hover:text-navy-900">
-                  <Globe className="h-4 w-4 mr-2" />
-                  {selectedRegion}
-                  <ChevronDown className="h-4 w-4 ml-2" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-white/95 backdrop-blur border border-gray-200">
-                {regions.map((region) => (
-                  <DropdownMenuItem
-                    key={region.key}
-                    onClick={() => setSelectedRegion(region.label)}
-                    className="cursor-pointer"
-                  >
-                    {region.label}
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-
             {/* CTA Buttons */}
             <Button 
               variant="outline" 
