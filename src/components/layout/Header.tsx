@@ -26,22 +26,25 @@ const Header = () => {
       name: "ComplianceFlow",
       description: "End-to-end document management platform for buyers and suppliers",
       icon: FileText,
-      href: "/products/complianceflow",
-      badge: "Flagship"
+      href: "https://chain-compliance-hub.lovable.app",
+      badge: "Flagship",
+      external: true
     },
     {
       name: "Target Promotion System",
       description: "Clear insight campaigns for compliance-aware promotions",
       icon: Target,
-      href: "/products/promotions",
-      badge: null
+      href: "https://loyalty-nexus-bloom.lovable.app",
+      badge: null,
+      external: true
     },
     {
       name: "Clear Insight",
       description: "Analytics & governance layer for operational efficiency",
       icon: BarChart3,
       href: "/products/analytics",
-      badge: null
+      badge: null,
+      external: false
     }
   ];
 
@@ -80,31 +83,61 @@ const Header = () => {
                     <div className="w-80 p-4 bg-white border border-gray-200 rounded-lg shadow-lg">
                       {products.map((product) => (
                         <NavigationMenuLink key={product.name} asChild>
-                          <Link
-                            to={product.href}
-                            className="block rounded-lg p-3 hover:bg-gray-50 transition-colors group"
-                          >
-                            <div className="flex items-center space-x-3">
-                              <div className="h-8 w-8 bg-teal-100 rounded-lg flex items-center justify-center">
-                                <product.icon className="h-4 w-4 text-teal-600" />
-                              </div>
-                              <div className="flex-1">
-                                <div className="flex items-center space-x-2">
-                                  <h3 className="font-medium text-navy-900 group-hover:text-teal-600 transition-colors">
-                                    {product.name}
-                                  </h3>
-                                  {product.badge && (
-                                    <Badge variant="secondary" className="text-xs">
-                                      {product.badge}
-                                    </Badge>
-                                  )}
+                          {product.external ? (
+                            <a
+                              href={product.href}
+                              target="_self"
+                              rel="noopener noreferrer"
+                              className="block rounded-lg p-3 hover:bg-gray-50 transition-colors group"
+                            >
+                              <div className="flex items-center space-x-3">
+                                <div className="h-8 w-8 bg-teal-100 rounded-lg flex items-center justify-center">
+                                  <product.icon className="h-4 w-4 text-teal-600" />
                                 </div>
-                                <p className="text-xs text-gray-600 mt-1">
-                                  {product.description}
-                                </p>
+                                <div className="flex-1">
+                                  <div className="flex items-center space-x-2">
+                                    <h3 className="font-medium text-navy-900 group-hover:text-teal-600 transition-colors">
+                                      {product.name}
+                                    </h3>
+                                    {product.badge && (
+                                      <Badge variant="secondary" className="text-xs">
+                                        {product.badge}
+                                      </Badge>
+                                    )}
+                                  </div>
+                                  <p className="text-xs text-gray-600 mt-1">
+                                    {product.description}
+                                  </p>
+                                </div>
                               </div>
-                            </div>
-                          </Link>
+                            </a>
+                          ) : (
+                            <Link
+                              to={product.href}
+                              className="block rounded-lg p-3 hover:bg-gray-50 transition-colors group"
+                            >
+                              <div className="flex items-center space-x-3">
+                                <div className="h-8 w-8 bg-teal-100 rounded-lg flex items-center justify-center">
+                                  <product.icon className="h-4 w-4 text-teal-600" />
+                                </div>
+                                <div className="flex-1">
+                                  <div className="flex items-center space-x-2">
+                                    <h3 className="font-medium text-navy-900 group-hover:text-teal-600 transition-colors">
+                                      {product.name}
+                                    </h3>
+                                    {product.badge && (
+                                      <Badge variant="secondary" className="text-xs">
+                                        {product.badge}
+                                      </Badge>
+                                    )}
+                                  </div>
+                                  <p className="text-xs text-gray-600 mt-1">
+                                    {product.description}
+                                  </p>
+                                </div>
+                              </div>
+                            </Link>
+                          )}
                         </NavigationMenuLink>
                       ))}
                     </div>
@@ -161,20 +194,39 @@ const Header = () => {
             <div className="space-y-2">
               <h3 className="font-semibold text-navy-900 px-4">Products</h3>
               {products.map((product) => (
-                <Link
-                  key={product.name}
-                  to={product.href}
-                  className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50 rounded-lg mx-2"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <product.icon className="h-5 w-5 text-teal-600" />
-                  <span className="text-navy-700">{product.name}</span>
-                  {product.badge && (
-                    <Badge variant="secondary" className="text-xs">
-                      {product.badge}
-                    </Badge>
-                  )}
-                </Link>
+                product.external ? (
+                  <a
+                    key={product.name}
+                    href={product.href}
+                    target="_self"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50 rounded-lg mx-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <product.icon className="h-5 w-5 text-teal-600" />
+                    <span className="text-navy-700">{product.name}</span>
+                    {product.badge && (
+                      <Badge variant="secondary" className="text-xs">
+                        {product.badge}
+                      </Badge>
+                    )}
+                  </a>
+                ) : (
+                  <Link
+                    key={product.name}
+                    to={product.href}
+                    className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50 rounded-lg mx-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <product.icon className="h-5 w-5 text-teal-600" />
+                    <span className="text-navy-700">{product.name}</span>
+                    {product.badge && (
+                      <Badge variant="secondary" className="text-xs">
+                        {product.badge}
+                      </Badge>
+                    )}
+                  </Link>
+                )
               ))}
             </div>
 
