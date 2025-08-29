@@ -1,6 +1,6 @@
 import React, { useRef, useState, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Text, Sphere, Box } from '@react-three/drei';
+import { OrbitControls, Text, Sphere, Box, Line } from '@react-three/drei';
 import * as THREE from 'three';
 import { Badge } from './ui/badge';
 
@@ -59,24 +59,24 @@ function FloatingLogo({ integration, index, onHover, hoveredItem }: {
     const time = state.clock.getElapsedTime();
     const radius = 4;
     
-    // Orbital animation with slight variations per integration
-    const speed = 0.3 + (index * 0.1);
-    const offsetY = Math.sin(time * speed + index) * 0.5;
+    // Much slower orbital animation with slight variations per integration
+    const speed = 0.05 + (index * 0.02);
+    const offsetY = Math.sin(time * speed + index) * 0.3;
     const offsetX = Math.cos(time * speed + index * 2) * radius;
     const offsetZ = Math.sin(time * speed + index * 2) * radius;
     
     meshRef.current.position.set(
-      integration.position[0] + offsetX * 0.3,
+      integration.position[0] + offsetX * 0.2,
       integration.position[1] + offsetY,
-      integration.position[2] + offsetZ * 0.3
+      integration.position[2] + offsetZ * 0.2
     );
     
-    // Gentle rotation
-    meshRef.current.rotation.x = time * 0.5;
-    meshRef.current.rotation.y = time * 0.3;
+    // Very gentle rotation
+    meshRef.current.rotation.x = time * 0.1;
+    meshRef.current.rotation.y = time * 0.05;
     
     // Scale effect on hover
-    const targetScale = isHovered ? 1.3 : 1;
+    const targetScale = isHovered ? 1.4 : 1;
     meshRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
   });
 
@@ -115,27 +115,47 @@ function FloatingLogo({ integration, index, onHover, hoveredItem }: {
   );
 }
 
-// Globe Component
+// Enhanced Globe Component with better visibility
 function Globe() {
   const globeRef = useRef<THREE.Mesh>(null);
+  const innerGlobeRef = useRef<THREE.Mesh>(null);
   
   useFrame(() => {
     if (globeRef.current) {
-      globeRef.current.rotation.y += 0.002;
+      globeRef.current.rotation.y += 0.001;
+    }
+    if (innerGlobeRef.current) {
+      innerGlobeRef.current.rotation.y -= 0.0005;
     }
   });
 
   return (
-    <Sphere ref={globeRef} args={[2, 64, 64]} position={[0, 0, 0]}>
-      <meshStandardMaterial
-        color="#1e40af"
-        metalness={0.1}
-        roughness={0.8}
-        transparent={true}
-        opacity={0.3}
-        wireframe={true}
-      />
-    </Sphere>
+    <group>
+      {/* Outer wireframe globe */}
+      <Sphere ref={globeRef} args={[2.2, 32, 32]} position={[0, 0, 0]}>
+        <meshStandardMaterial
+          color="#60a5fa"
+          metalness={0.8}
+          roughness={0.2}
+          transparent={true}
+          opacity={0.4}
+          wireframe={true}
+        />
+      </Sphere>
+      
+      {/* Inner glowing core */}
+      <Sphere ref={innerGlobeRef} args={[1.8, 32, 32]} position={[0, 0, 0]}>
+        <meshStandardMaterial
+          color="#3b82f6"
+          metalness={0.5}
+          roughness={0.3}
+          transparent={true}
+          opacity={0.15}
+          emissive="#1e40af"
+          emissiveIntensity={0.1}
+        />
+      </Sphere>
+    </group>
   );
 }
 
@@ -155,7 +175,7 @@ function Stars() {
 
   useFrame(() => {
     if (starsRef.current) {
-      starsRef.current.rotation.y += 0.0005;
+      starsRef.current.rotation.y += 0.0003;
     }
   });
 
@@ -174,6 +194,105 @@ function Stars() {
   );
 }
 
+// Central TraceR2C Logo/Node
+function CentralLogo() {
+  const logoRef = useRef<THREE.Group>(null);
+  const glowRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    if (logoRef.current) {
+      logoRef.current.rotation.y += 0.01;
+    }
+    if (glowRef.current) {
+      const pulse = Math.sin(state.clock.getElapsedTime() * 2) * 0.1 + 1;
+      glowRef.current.scale.setScalar(pulse);
+    }
+  });
+
+  return (
+    <group ref={logoRef} position={[0, 0, 0]}>
+      {/* Glowing outer ring */}
+      <mesh ref={glowRef}>
+        <ringGeometry args={[0.8, 1.0, 32]} />
+        <meshBasicMaterial 
+          color="#00ff88" 
+          transparent={true} 
+          opacity={0.3}
+        />
+      </mesh>
+      
+      {/* Central logo cube */}
+      <Box args={[0.6, 0.6, 0.6]}>
+        <meshStandardMaterial
+          color="#00ff88"
+          metalness={0.7}
+          roughness={0.3}
+          emissive="#00ff88"
+          emissiveIntensity={0.2}
+        />
+      </Box>
+      
+      {/* TraceR2C Text */}
+      <Text
+        position={[0, -1.2, 0]}
+        fontSize={0.25}
+        color="#00ff88"
+        anchorX="center"
+        anchorY="middle"
+        font="/fonts/inter.woff"
+        outlineWidth={0.02}
+        outlineColor="#000000"
+      >
+        TraceR2C
+      </Text>
+    </group>
+  );
+}
+
+// Connection Lines from integrations to central logo
+function ConnectionLines({ integrations }: { integrations: any[] }) {
+  const lineRefs = useRef<(THREE.Group | null)[]>([]);
+  
+  useFrame((state) => {
+    const time = state.clock.getElapsedTime();
+    lineRefs.current.forEach((lineGroup, index) => {
+      if (lineGroup) {
+        // Animate the connection line opacity
+        const opacity = (Math.sin(time * 2 + index) + 1) * 0.2 + 0.1;
+        const line = lineGroup.children[0] as THREE.Line;
+        if (line && line.material) {
+          (line.material as THREE.LineBasicMaterial).opacity = opacity;
+        }
+      }
+    });
+  });
+
+  return (
+    <group>
+      {integrations.map((integration, index) => {
+        const startPos = new THREE.Vector3(...integration.position);
+        const endPos = new THREE.Vector3(0, 0, 0);
+        const points = [startPos, endPos];
+        
+        return (
+          <group 
+            key={integration.name} 
+            ref={(el) => { lineRefs.current[index] = el; }}
+          >
+            <Line
+              points={points}
+              color="#00ff88"
+              lineWidth={1}
+              transparent={true}
+              opacity={0.2}
+            />
+          </group>
+        );
+      })}
+    </group>
+  );
+}
+
 // Main Integration Globe Component
 export function IntegrationGlobe() {
   const [hoveredItem, setHoveredItem] = useState<any>(null);
@@ -181,21 +300,28 @@ export function IntegrationGlobe() {
   return (
     <div className="relative">
       {/* 3D Canvas */}
-      <div className="h-[600px] w-full bg-gradient-to-b from-navy-900 to-black rounded-2xl overflow-hidden">
+      <div className="h-[700px] w-full bg-gradient-to-b from-slate-900 via-blue-900 to-black rounded-2xl overflow-hidden">
         <Canvas
-          camera={{ position: [0, 0, 10], fov: 60 }}
+          camera={{ position: [0, 0, 12], fov: 50 }}
           gl={{ antialias: true, alpha: true }}
         >
-          {/* Lighting */}
-          <ambientLight intensity={0.3} />
-          <pointLight position={[10, 10, 10]} intensity={1} color="#ffffff" />
-          <pointLight position={[-10, -10, -10]} intensity={0.5} color="#60a5fa" />
+          {/* Enhanced Lighting */}
+          <ambientLight intensity={0.4} />
+          <pointLight position={[15, 15, 15]} intensity={1.5} color="#ffffff" />
+          <pointLight position={[-10, -10, -10]} intensity={0.8} color="#3b82f6" />
+          <pointLight position={[0, 0, 0]} intensity={0.6} color="#00ff88" />
           
           {/* Background Stars */}
           <Stars />
           
           {/* Central Globe */}
           <Globe />
+          
+          {/* Central TraceR2C Logo */}
+          <CentralLogo />
+          
+          {/* Connection Lines */}
+          <ConnectionLines integrations={integrationData} />
           
           {/* Floating Integration Logos */}
           {integrationData.map((integration, index) => (
@@ -213,44 +339,37 @@ export function IntegrationGlobe() {
             enablePan={false}
             enableZoom={true}
             enableRotate={true}
-            minDistance={6}
-            maxDistance={15}
+            minDistance={8}
+            maxDistance={20}
             autoRotate={true}
-            autoRotateSpeed={0.5}
+            autoRotateSpeed={0.3}
           />
         </Canvas>
       </div>
       
       {/* Information Panel */}
       {hoveredItem && (
-        <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-xl p-4 shadow-lg border max-w-xs">
+        <div className="absolute top-4 left-4 bg-white/95 backdrop-blur-md rounded-xl p-4 shadow-xl border border-white/20 max-w-xs">
           <div className="flex items-center gap-3 mb-2">
             <div 
-              className="w-4 h-4 rounded"
+              className="w-4 h-4 rounded shadow-sm"
               style={{ backgroundColor: hoveredItem.color }}
             />
             <h3 className="font-semibold text-navy-900">{hoveredItem.name}</h3>
           </div>
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="text-xs border-gray-300">
               {hoveredItem.category}
             </Badge>
             <Badge 
               variant="default"
-              className="bg-green-100 text-green-800 text-xs"
+              className="bg-green-100 text-green-800 text-xs border-green-200"
             >
               {hoveredItem.status}
             </Badge>
           </div>
         </div>
       )}
-      
-      {/* Instructions */}
-      <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 shadow-lg">
-        <p className="text-sm text-gray-600">
-          🌍 Drag to rotate • 🔍 Scroll to zoom • 🖱️ Hover logos for info
-        </p>
-      </div>
     </div>
   );
 }

@@ -69,11 +69,11 @@ const Integrations = () => {
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-4">
-              Interactive Integration Ecosystem
+              Enterprise Systems We Integrate With
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Explore our comprehensive integration network in 3D. Each floating cube represents 
-              a key enterprise platform connection, orbiting in our digital ecosystem.
+              Connect seamlessly with your existing CRM, ERP, POS, Storage, E-signature, and Identity systems. 
+              Each floating cube represents a platform in our integration ecosystem, all connected to TraceR2C at the center.
             </p>
           </div>
 
