@@ -14,7 +14,6 @@ import {
   Users, 
   DollarSign,
   Settings,
-  CheckCircle,
   MessageSquare
 } from "lucide-react";
 
@@ -58,12 +57,6 @@ const Contact = () => {
     }
   ];
 
-  const officeInfo = {
-    address: "123 Innovation Drive, Auburn, AL 36830",
-    phone: "(334) 555-0123",
-    email: "hello@tracer2c.com",
-    hours: "Monday - Friday, 8 AM - 6 PM EST"
-  };
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -291,41 +284,6 @@ const Contact = () => {
       </section>
 
 
-      {/* Success Indicators */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
-            <Card className="enterprise-card bg-gradient-to-r from-teal-50 to-green-50 border-teal-200">
-              <CardContent className="p-8 text-center">
-                <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-6">
-                  <CheckCircle className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-2xl font-display font-bold text-navy-900 mb-4">
-                  We're Here to Help
-                </h3>
-                <p className="text-gray-600 mb-6">
-                  Our team typically responds to all inquiries within 24 hours. For urgent matters, 
-                  please call us directly at {officeInfo.phone}.
-                </p>
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm">
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    <span>Free consultation</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    <span>No obligation demo</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <CheckCircle className="h-4 w-4 text-green-500" />
-                    <span>Custom solution design</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
