@@ -112,74 +112,74 @@ const Solutions = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {industries.map((industry, index) => (
-              <Card key={index} className="enterprise-card hover:shadow-enterprise-lg transition-all duration-300">
+              <Card key={index} className="enterprise-card hover:shadow-enterprise-lg transition-all duration-300 group">
                 <CardHeader>
-                  <div className="flex items-center space-x-4 mb-4">
-                    <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center">
-                      <industry.icon className="h-6 w-6 text-white" />
+                  <div className="flex items-center space-x-4 mb-6">
+                    <div className="w-16 h-16 bg-gradient-primary rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                      <industry.icon className="h-8 w-8 text-white" />
                     </div>
                     <div>
-                      <CardTitle className="text-xl text-navy-900 flex items-center gap-2">
-                        <span className="text-2xl">{industry.emoji}</span>
+                      <CardTitle className="text-2xl text-navy-900 flex items-center gap-3">
+                        <span className="text-3xl">{industry.emoji}</span>
                         {industry.name}
                       </CardTitle>
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <CardContent className="space-y-8">
                   <div>
-                    <h4 className="font-semibold text-navy-800 mb-2 flex items-center gap-2">
-                      <Shield className="h-4 w-4 text-teal-600" />
+                    <h4 className="font-semibold text-navy-800 mb-4 flex items-center gap-2">
+                      <Shield className="h-5 w-5 text-teal-600" />
                       Key Regulations
                     </h4>
-                    <ul className="text-sm text-gray-600 space-y-1">
+                    <ul className="space-y-3">
                       {industry.regulations.map((reg, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500 mt-1 flex-shrink-0" />
-                          {reg}
+                        <li key={idx} className="flex items-start gap-3">
+                          <CheckCircle className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
+                          <span className="text-gray-700">{reg}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
                   <div>
-                    <h4 className="font-semibold text-navy-800 mb-2 flex items-center gap-2">
-                      <FileText className="h-4 w-4 text-teal-600" />
+                    <h4 className="font-semibold text-navy-800 mb-4 flex items-center gap-2">
+                      <FileText className="h-5 w-5 text-teal-600" />
                       Common Documents
                     </h4>
-                    <ul className="text-sm text-gray-600 space-y-1">
+                    <ul className="space-y-3">
                       {industry.documents.map((doc, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500 mt-1 flex-shrink-0" />
-                          {doc}
+                        <li key={idx} className="flex items-start gap-3">
+                          <CheckCircle className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
+                          <span className="text-gray-700">{doc}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
                   <div>
-                    <h4 className="font-semibold text-navy-800 mb-2 flex items-center gap-2">
-                      <Zap className="h-4 w-4 text-teal-600" />
+                    <h4 className="font-semibold text-navy-800 mb-4 flex items-center gap-2">
+                      <Zap className="h-5 w-5 text-teal-600" />
                       Automated Workflows
                     </h4>
-                    <ul className="text-sm text-gray-600 space-y-1">
+                    <ul className="space-y-3">
                       {industry.workflows.map((workflow, idx) => (
-                        <li key={idx} className="flex items-start gap-2">
-                          <CheckCircle className="h-3 w-3 text-green-500 mt-1 flex-shrink-0" />
-                          {workflow}
+                        <li key={idx} className="flex items-start gap-3">
+                          <CheckCircle className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
+                          <span className="text-gray-700">{workflow}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
 
-                  <div className="bg-teal-50 rounded-lg p-4">
-                    <h4 className="font-semibold text-navy-800 mb-2 flex items-center gap-2">
-                      <TrendingUp className="h-4 w-4 text-teal-600" />
+                  <div className="bg-gradient-to-r from-teal-50 to-green-50 border border-teal-100 rounded-xl p-6">
+                    <h4 className="font-semibold text-navy-800 mb-3 flex items-center gap-2">
+                      <TrendingUp className="h-5 w-5 text-teal-600" />
                       Typical Results
                     </h4>
-                    <p className="text-sm text-gray-700">{industry.kpis}</p>
+                    <p className="text-gray-700 font-medium">{industry.kpis}</p>
                   </div>
                 </CardContent>
               </Card>
@@ -188,29 +188,6 @@ const Solutions = () => {
         </div>
       </section>
 
-      {/* Customer Showcase */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-4">
-              Trusted by Industry Leaders
-            </h2>
-            <p className="text-xl text-gray-600">
-              Companies across regulated industries rely on TraceR2C for compliance excellence
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 items-center opacity-60">
-            {[...Array(12)].map((_, index) => (
-              <div key={index} className="bg-white rounded-lg p-6 shadow-sm">
-                <div className="w-full h-12 bg-gray-200 rounded flex items-center justify-center">
-                  <span className="text-xs text-gray-500">Customer Logo</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-primary">
