@@ -1,0 +1,399 @@
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { 
+  ArrowRight, 
+  MapPin, 
+  Users, 
+  Award, 
+  Target,
+  Heart,
+  Globe,
+  Briefcase,
+  Mail,
+  Linkedin
+} from "lucide-react";
+
+const Company = () => {
+  const team = [
+    {
+      name: "Sarah Chen",
+      title: "Chief Executive Officer",
+      bio: "Former VP of Compliance at Fortune 500 food service company. 15+ years in regulatory technology.",
+      linkedin: "#"
+    },
+    {
+      name: "Michael Rodriguez", 
+      title: "Chief Technology Officer",
+      bio: "Ex-Amazon senior engineer. Built scalable compliance platforms serving millions of transactions.",
+      linkedin: "#"
+    },
+    {
+      name: "Lisa Thompson",
+      title: "VP of Customer Success", 
+      bio: "Former compliance consultant for pharmaceutical and manufacturing industries. Expert in process optimization.",
+      linkedin: "#"
+    },
+    {
+      name: "David Park",
+      title: "VP of Engineering",
+      bio: "Previously led engineering teams at regulatory software companies. Focused on enterprise security.",
+      linkedin: "#"
+    },
+    {
+      name: "Jennifer Walsh",
+      title: "VP of Sales",
+      bio: "20+ years in B2B software sales, specializing in compliance and supply chain management solutions.",
+      linkedin: "#"
+    },
+    {
+      name: "Robert Kim",
+      title: "VP of Product",
+      bio: "Product leader with expertise in compliance workflows and regulatory technology across multiple industries.",
+      linkedin: "#"
+    }
+  ];
+
+  const values = [
+    {
+      icon: Target,
+      title: "Compliance-First Thinking",
+      description: "Every feature, every decision, every process is designed with compliance at its core."
+    },
+    {
+      icon: Heart,
+      title: "Customer Obsession", 
+      description: "We succeed when our customers achieve their compliance goals efficiently and confidently."
+    },
+    {
+      icon: Globe,
+      title: "Global Perspective",
+      description: "We build for a world where compliance requirements vary by region, industry, and regulation."
+    },
+    {
+      icon: Award,
+      title: "Operational Excellence",
+      description: "We hold ourselves to the same high standards we help our customers achieve."
+    }
+  ];
+
+  const milestones = [
+    { year: "2019", event: "TraceR2C LLC founded in Auburn, AL" },
+    { year: "2020", event: "Launched ComplianceFlow platform" },
+    { year: "2021", event: "Achieved SOC 2 Type II certification" },
+    { year: "2022", event: "Expanded to serve pharmaceutical industry" },
+    { year: "2023", event: "Launched Clear Insight analytics platform" },
+    { year: "2024", event: "500+ enterprise customers milestone" }
+  ];
+
+  const openPositions = [
+    {
+      title: "Senior Software Engineer",
+      department: "Engineering",
+      location: "Auburn, AL / Remote",
+      type: "Full-time"
+    },
+    {
+      title: "Compliance Solutions Architect",
+      department: "Customer Success", 
+      location: "Auburn, AL / Remote",
+      type: "Full-time"
+    },
+    {
+      title: "Product Marketing Manager",
+      department: "Marketing",
+      location: "Remote",
+      type: "Full-time"
+    },
+    {
+      title: "Enterprise Sales Executive",
+      department: "Sales",
+      location: "Remote", 
+      type: "Full-time"
+    }
+  ];
+
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section className="bg-gradient-hero py-20">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto text-center text-white">
+            <Badge className="mb-6 bg-white/10 text-white border-white/20">
+              About TraceR2C LLC
+            </Badge>
+            <h1 className="text-4xl md:text-6xl font-display font-bold mb-6">
+              Making Compliance
+              <span className="block bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text text-transparent">
+                Operational & Measurable
+              </span>
+            </h1>
+            <p className="text-xl text-gray-200 mb-8 max-w-3xl mx-auto">
+              Founded in Auburn, Alabama, TraceR2C LLC transforms how regulated industries 
+              manage compliance through intelligent automation and proactive insights.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Mission & Vision */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-6">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div>
+                <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-6">
+                  Our Mission
+                </h2>
+                <p className="text-xl text-gray-600 mb-6 leading-relaxed">
+                  <strong className="text-navy-900">"Make compliance operational, measurable, and proactive."</strong>
+                </p>
+                <p className="text-gray-600 mb-6">
+                  We believe compliance shouldn't be a burden or an afterthought. It should be 
+                  seamlessly integrated into business operations, providing real-time visibility 
+                  and predictive insights that help organizations stay ahead of regulatory requirements.
+                </p>
+                <p className="text-gray-600">
+                  Our platform transforms compliance from reactive documentation to proactive 
+                  risk management, helping regulated industries operate with confidence and efficiency.
+                </p>
+              </div>
+              <div className="bg-gradient-to-br from-teal-50 to-green-50 rounded-2xl p-8">
+                <h3 className="text-2xl font-display font-bold text-navy-900 mb-6">Why We Exist</h3>
+                <ul className="space-y-4">
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-teal-500 rounded-full mt-2"></div>
+                    <span className="text-gray-700">Regulatory complexity is increasing across all industries</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-teal-500 rounded-full mt-2"></div>
+                    <span className="text-gray-700">Manual compliance processes create risk and inefficiency</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-teal-500 rounded-full mt-2"></div>
+                    <span className="text-gray-700">Organizations need real-time visibility into compliance health</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <div className="w-2 h-2 bg-teal-500 rounded-full mt-2"></div>
+                    <span className="text-gray-700">Technology should make compliance easier, not harder</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Company Values */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-4">
+              Our Values
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              The principles that guide how we build products, serve customers, and work together
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {values.map((value, index) => (
+              <Card key={index} className="enterprise-card hover:shadow-enterprise-lg transition-all duration-300 text-center group">
+                <CardHeader>
+                  <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                    <value.icon className="h-6 w-6 text-white" />
+                  </div>
+                  <CardTitle className="text-lg text-navy-900">{value.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600 text-sm">{value.description}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Leadership Team */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-4">
+              Leadership Team
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Experienced leaders from compliance, technology, and enterprise software backgrounds
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {team.map((member, index) => (
+              <Card key={index} className="enterprise-card hover:shadow-enterprise-lg transition-all duration-300">
+                <CardHeader className="text-center">
+                  <div className="w-20 h-20 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Users className="h-10 w-10 text-white" />
+                  </div>
+                  <CardTitle className="text-xl text-navy-900">{member.name}</CardTitle>
+                  <CardDescription className="text-teal-600 font-medium">
+                    {member.title}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-gray-600 text-sm mb-4">{member.bio}</p>
+                  <Button variant="outline" size="sm" className="w-full">
+                    <Linkedin className="h-4 w-4 mr-2" />
+                    Connect
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Company Timeline */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-4">
+              Our Journey
+            </h2>
+            <p className="text-xl text-gray-600">
+              Key milestones in building the leading compliance automation platform
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="space-y-8">
+              {milestones.map((milestone, index) => (
+                <div key={index} className="flex items-center gap-6">
+                  <div className="flex-shrink-0 w-20 h-20 bg-gradient-primary rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold">{milestone.year}</span>
+                  </div>
+                  <Card className="flex-1 enterprise-card">
+                    <CardContent className="p-4">
+                      <p className="text-gray-700 font-medium">{milestone.event}</p>
+                    </CardContent>
+                  </Card>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Location */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-6">
+          <div className="max-w-4xl mx-auto">
+            <Card className="enterprise-card">
+              <CardContent className="p-8">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                  <div>
+                    <h2 className="text-3xl font-display font-bold text-navy-900 mb-4 flex items-center gap-3">
+                      <MapPin className="h-8 w-8 text-teal-600" />
+                      Auburn, Alabama
+                    </h2>
+                    <p className="text-gray-600 mb-6">
+                      TraceR2C LLC is proudly headquartered in Auburn, Alabama, in the heart of 
+                      the Southeast. We're building world-class compliance technology from a city 
+                      known for innovation and engineering excellence.
+                    </p>
+                    <div className="space-y-2 text-gray-700">
+                      <p><strong>Address:</strong> 123 Innovation Drive, Auburn, AL 36830</p>
+                      <p><strong>Phone:</strong> (334) 555-0123</p>
+                      <p><strong>Email:</strong> hello@tracer2c.com</p>
+                    </div>
+                  </div>
+                  <div className="bg-gray-200 rounded-lg h-64 flex items-center justify-center">
+                    <span className="text-gray-500">Map Placeholder</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Careers */}
+      <section className="py-20 bg-gray-50">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-4">
+              Join Our Team
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Help us build the future of compliance technology. We're looking for passionate 
+              people who want to make regulated industries more efficient and secure.
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto space-y-6">
+            {openPositions.map((position, index) => (
+              <Card key={index} className="enterprise-card hover:shadow-enterprise-lg transition-all duration-300">
+                <CardContent className="p-6">
+                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-navy-900 text-lg mb-2">{position.title}</h3>
+                      <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
+                        <div className="flex items-center gap-2">
+                          <Briefcase className="h-4 w-4" />
+                          {position.department}
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <MapPin className="h-4 w-4" />
+                          {position.location}
+                        </div>
+                        <Badge variant="outline" className="text-xs">
+                          {position.type}
+                        </Badge>
+                      </div>
+                    </div>
+                    <Button>
+                      Apply Now
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <p className="text-gray-600 mb-4">Don't see the right role? We're always interested in hearing from talented people.</p>
+            <Button variant="outline">
+              <Mail className="mr-2 h-4 w-4" />
+              Send Us Your Resume
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-primary">
+        <div className="container mx-auto px-6 text-center">
+          <div className="max-w-3xl mx-auto text-white">
+            <h2 className="text-3xl md:text-4xl font-display font-bold mb-6">
+              Ready to Transform Your Compliance Operations?
+            </h2>
+            <p className="text-xl mb-8 opacity-90">
+              Join hundreds of companies already using TraceR2C to make compliance 
+              operational, measurable, and proactive.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button size="lg" className="bg-white text-navy-900 hover:bg-gray-100 font-semibold px-8 py-4">
+                Start Free Trial
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+              <Button size="lg" variant="outline" className="bg-white/20 border-white/40 text-white hover:bg-white/30 font-semibold px-8 py-4">
+                Schedule Demo
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Company;
