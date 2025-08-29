@@ -1,6 +1,6 @@
 import React, { useRef, useState, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Text, Sphere, Box, Line } from '@react-three/drei';
+import { OrbitControls, Text, Sphere, Box } from '@react-three/drei';
 import * as THREE from 'three';
 import { Badge } from './ui/badge';
 
@@ -49,7 +49,6 @@ function FloatingLogo({ integration, index, onHover, hoveredItem }: {
   hoveredItem: any;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
-  const textRef = useRef<THREE.Mesh>(null);
   
   const isHovered = hoveredItem?.name === integration.name;
   
@@ -57,18 +56,17 @@ function FloatingLogo({ integration, index, onHover, hoveredItem }: {
     if (!meshRef.current) return;
     
     const time = state.clock.getElapsedTime();
-    const radius = 4;
     
     // Much slower orbital animation with slight variations per integration
     const speed = 0.05 + (index * 0.02);
     const offsetY = Math.sin(time * speed + index) * 0.3;
-    const offsetX = Math.cos(time * speed + index * 2) * radius;
-    const offsetZ = Math.sin(time * speed + index * 2) * radius;
+    const offsetX = Math.cos(time * speed + index * 2) * 0.5;
+    const offsetZ = Math.sin(time * speed + index * 2) * 0.5;
     
     meshRef.current.position.set(
-      integration.position[0] + offsetX * 0.2,
+      integration.position[0] + offsetX,
       integration.position[1] + offsetY,
-      integration.position[2] + offsetZ * 0.2
+      integration.position[2] + offsetZ
     );
     
     // Very gentle rotation
@@ -239,56 +237,11 @@ function CentralLogo() {
         color="#00ff88"
         anchorX="center"
         anchorY="middle"
-        font="/fonts/inter.woff"
         outlineWidth={0.02}
         outlineColor="#000000"
       >
         TraceR2C
       </Text>
-    </group>
-  );
-}
-
-// Connection Lines from integrations to central logo
-function ConnectionLines({ integrations }: { integrations: any[] }) {
-  const lineRefs = useRef<(THREE.Group | null)[]>([]);
-  
-  useFrame((state) => {
-    const time = state.clock.getElapsedTime();
-    lineRefs.current.forEach((lineGroup, index) => {
-      if (lineGroup) {
-        // Animate the connection line opacity
-        const opacity = (Math.sin(time * 2 + index) + 1) * 0.2 + 0.1;
-        const line = lineGroup.children[0] as THREE.Line;
-        if (line && line.material) {
-          (line.material as THREE.LineBasicMaterial).opacity = opacity;
-        }
-      }
-    });
-  });
-
-  return (
-    <group>
-      {integrations.map((integration, index) => {
-        const startPos = new THREE.Vector3(...integration.position);
-        const endPos = new THREE.Vector3(0, 0, 0);
-        const points = [startPos, endPos];
-        
-        return (
-          <group 
-            key={integration.name} 
-            ref={(el) => { lineRefs.current[index] = el; }}
-          >
-            <Line
-              points={points}
-              color="#00ff88"
-              lineWidth={1}
-              transparent={true}
-              opacity={0.2}
-            />
-          </group>
-        );
-      })}
     </group>
   );
 }
@@ -319,9 +272,6 @@ export function IntegrationGlobe() {
           
           {/* Central TraceR2C Logo */}
           <CentralLogo />
-          
-          {/* Connection Lines */}
-          <ConnectionLines integrations={integrationData} />
           
           {/* Floating Integration Logos */}
           {integrationData.map((integration, index) => (
