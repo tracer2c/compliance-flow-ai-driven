@@ -246,6 +246,78 @@ function CentralLogo() {
   );
 }
 
+// Connection Lines from integrations to central logo
+function ConnectionLines({ integrations, hoveredItem }: { integrations: any[], hoveredItem: any }) {
+  const linesRef = useRef<THREE.Group>(null);
+  const lineMatrefs = useRef<THREE.LineBasicMaterial[]>([]);
+  
+  // Create line materials
+  useMemo(() => {
+    lineMatrefs.current = integrations.map(() => 
+      new THREE.LineBasicMaterial({
+        color: new THREE.Color('#00ff88'),
+        transparent: true,
+        opacity: 0.15,
+      })
+    );
+  }, [integrations]);
+  
+  useFrame((state) => {
+    if (!linesRef.current) return;
+    
+    const time = state.clock.getElapsedTime();
+    
+    // Update line positions and animations
+    linesRef.current.children.forEach((lineGroup, index) => {
+      const integration = integrations[index];
+      const line = lineGroup.children[0] as THREE.Line;
+      
+      if (line && line.geometry) {
+        // Calculate current floating cube position
+        const speed = 0.05 + (index * 0.02);
+        const offsetY = Math.sin(time * speed + index) * 0.3;
+        const offsetX = Math.cos(time * speed + index * 2) * 0.5;
+        const offsetZ = Math.sin(time * speed + index * 2) * 0.5;
+        
+        const cubePos = new THREE.Vector3(
+          integration.position[0] + offsetX,
+          integration.position[1] + offsetY,
+          integration.position[2] + offsetZ
+        );
+        const centerPos = new THREE.Vector3(0, 0, 0);
+        
+        // Update line geometry
+        const positions = new Float32Array([
+          cubePos.x, cubePos.y, cubePos.z,
+          centerPos.x, centerPos.y, centerPos.z
+        ]);
+        line.geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        
+        // Animate line opacity with gentle pulsing
+        const baseOpacity = hoveredItem?.name === integration.name ? 0.4 : 0.15;
+        const pulse = (Math.sin(time * 1.5 + index) + 1) * 0.1;
+        const material = line.material as THREE.LineBasicMaterial;
+        material.opacity = baseOpacity + pulse;
+      }
+    });
+  });
+
+  return (
+    <group ref={linesRef}>
+      {integrations.map((integration, index) => (
+        <group key={integration.name}>
+          <primitive 
+            object={new THREE.Line(
+              new THREE.BufferGeometry(),
+              lineMatrefs.current[index]
+            )}
+          />
+        </group>
+      ))}
+    </group>
+  );
+}
+
 // Main Integration Globe Component
 export function IntegrationGlobe() {
   const [hoveredItem, setHoveredItem] = useState<any>(null);
@@ -272,6 +344,9 @@ export function IntegrationGlobe() {
           
           {/* Central TraceR2C Logo */}
           <CentralLogo />
+          
+          {/* Connection Lines */}
+          <ConnectionLines integrations={integrationData} hoveredItem={hoveredItem} />
           
           {/* Floating Integration Logos */}
           {integrationData.map((integration, index) => (
