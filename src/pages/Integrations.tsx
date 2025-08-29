@@ -195,23 +195,25 @@ const Integrations = () => {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                       {category.integrations.map((integration, index) => (
                         <div key={index} className="text-center group">
-                          <div className="bg-white rounded-lg p-4 shadow-sm border hover:shadow-md transition-shadow mb-3 group-hover:scale-105 transition-transform">
-                            <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto">
-                              <span className="text-xs text-gray-600 font-medium">
-                                {integration.logo}
-                              </span>
+                          <div className="bg-white rounded-xl p-6 shadow-sm border hover:shadow-lg transition-all duration-300 mb-3 group-hover:scale-105">
+                            <div className="w-16 h-16 bg-gradient-to-br from-gray-50 to-gray-100 rounded-lg flex items-center justify-center mx-auto mb-3 border">
+                              <div className="w-12 h-8 bg-gray-300 rounded flex items-center justify-center">
+                                <span className="text-xs text-gray-600 font-medium truncate px-1">
+                                  {integration.logo}
+                                </span>
+                              </div>
                             </div>
+                            <h4 className="font-semibold text-sm text-navy-900 mb-2">{integration.name}</h4>
+                            <Badge 
+                              variant={integration.status === "Available" ? "default" : "secondary"}
+                              className={integration.status === "Available" ? "bg-green-100 text-green-800 text-xs" : "text-xs"}
+                            >
+                              {integration.status}
+                            </Badge>
                           </div>
-                          <h4 className="font-medium text-sm text-navy-900 mb-1">{integration.name}</h4>
-                          <Badge 
-                            variant={integration.status === "Available" ? "default" : "secondary"}
-                            className={integration.status === "Available" ? "bg-green-100 text-green-800 text-xs" : "text-xs"}
-                          >
-                            {integration.status}
-                          </Badge>
                         </div>
                       ))}
                     </div>
@@ -295,29 +297,6 @@ const Integrations = () => {
         </div>
       </section>
 
-      {/* Integration Wall */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-4">
-              Trusted Integration Partners
-            </h2>
-            <p className="text-xl text-gray-600">
-              Join thousands of companies already connected to the TraceR2C ecosystem
-            </p>
-          </div>
-
-          <div className="grid grid-cols-3 md:grid-cols-6 lg:grid-cols-8 gap-8 items-center opacity-60">
-            {[...Array(24)].map((_, index) => (
-              <div key={index} className="bg-white rounded-lg p-4 shadow-sm border">
-                <div className="w-full h-8 bg-gray-200 rounded flex items-center justify-center">
-                  <span className="text-xs text-gray-500">Logo</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-primary">
