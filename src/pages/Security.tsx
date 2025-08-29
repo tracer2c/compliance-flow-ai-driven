@@ -204,66 +204,6 @@ const Security = () => {
         </div>
       </section>
 
-      {/* Data Residency */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-4">
-                Global Data Residency Controls
-              </h2>
-              <p className="text-xl text-gray-600">
-                Meet local data protection requirements with region-specific data residency
-              </p>
-            </div>
-
-            <div className="bg-white rounded-2xl p-8 shadow-enterprise border">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div>
-                  <h3 className="text-xl font-semibold text-navy-900 mb-4 flex items-center gap-2">
-                    <Globe className="h-5 w-5 text-teal-600" />
-                    Supported Regions
-                  </h3>
-                  <ul className="space-y-2">
-                    {[
-                      "🇺🇸 United States (Virginia, Oregon)",
-                      "🇪🇺 European Union (Ireland, Frankfurt)", 
-                      "🇨🇦 Canada (Central)",
-                      "🇦🇺 Asia Pacific (Sydney, Singapore)",
-                      "🇬🇧 United Kingdom (London)"
-                    ].map((region, index) => (
-                      <li key={index} className="flex items-center gap-2 text-gray-700">
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                        {region}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold text-navy-900 mb-4 flex items-center gap-2">
-                    <Shield className="h-5 w-5 text-teal-600" />
-                    Compliance Features
-                  </h3>
-                  <ul className="space-y-2">
-                    {[
-                      "GDPR data processing agreements",
-                      "Cross-border data transfer controls", 
-                      "Local encryption key management",
-                      "Regional backup policies",
-                      "Jurisdiction-specific audit logs"
-                    ].map((feature, index) => (
-                      <li key={index} className="flex items-center gap-2 text-gray-700">
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Certifications */}
       <section className="py-20 bg-gray-50">
