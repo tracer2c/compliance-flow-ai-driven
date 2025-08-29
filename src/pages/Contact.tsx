@@ -10,7 +10,6 @@ import {
   ArrowRight, 
   Mail, 
   Phone, 
-  MapPin, 
   Clock, 
   Users, 
   DollarSign,
@@ -291,78 +290,6 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* Office Information */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-6">
-                  Visit Our Office
-                </h2>
-                <p className="text-xl text-gray-600 mb-8">
-                  Located in the heart of Auburn, Alabama's innovation district. 
-                  We'd love to meet with you in person to discuss your compliance needs.
-                </p>
-                
-                <div className="space-y-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <MapPin className="h-6 w-6 text-teal-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-navy-900 mb-1">Address</h3>
-                      <p className="text-gray-600">{officeInfo.address}</p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Phone className="h-6 w-6 text-teal-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-navy-900 mb-1">Phone</h3>
-                      <p className="text-gray-600">
-                        <a href={`tel:${officeInfo.phone}`} className="hover:text-teal-600 transition-colors">
-                          {officeInfo.phone}
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Mail className="h-6 w-6 text-teal-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-navy-900 mb-1">Email</h3>
-                      <p className="text-gray-600">
-                        <a href={`mailto:${officeInfo.email}`} className="hover:text-teal-600 transition-colors">
-                          {officeInfo.email}
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                      <Clock className="h-6 w-6 text-teal-600" />
-                    </div>
-                    <div>
-                      <h3 className="font-semibold text-navy-900 mb-1">Office Hours</h3>
-                      <p className="text-gray-600">{officeInfo.hours}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gray-200 rounded-2xl h-96 flex items-center justify-center">
-                <span className="text-gray-500 text-lg">Interactive Map Coming Soon</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Success Indicators */}
       <section className="py-20 bg-gray-50">
