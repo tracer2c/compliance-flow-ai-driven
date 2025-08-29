@@ -84,154 +84,164 @@ const HeroSection = () => {
               ))}
             </div>
 
-            {/* Dynamic AI-Powered Workflow */}
-            <div className="glass-card rounded-2xl p-8 max-w-6xl mx-auto relative overflow-hidden">
-              {/* Background Animation */}
-              <div className="absolute inset-0 bg-gradient-to-br from-teal-50/20 to-blue-50/20 rounded-2xl"></div>
-              
-              {/* Animated Particles */}
-              <div className="absolute inset-0">
-                {[...Array(12)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="absolute w-1 h-1 bg-teal-400/30 rounded-full animate-pulse"
-                    style={{
-                      left: `${Math.random() * 100}%`,
-                      top: `${Math.random() * 100}%`,
-                      animationDelay: `${i * 0.2}s`,
-                      animationDuration: `${2 + Math.random() * 2}s`
-                    }}
-                  ></div>
-                ))}
-              </div>
-
-              <div className="relative z-10">
-                {/* Hub and Spoke Layout */}
-                <div className="relative w-full h-96 mx-auto">
-                  
-                  {/* Central AI Agent */}
-                  <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
-                    <div className="relative group cursor-pointer">
-                      {/* AI Agent Glow Effect */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-teal-400 to-blue-400 rounded-full blur-xl opacity-30 animate-pulse group-hover:opacity-50 transition-opacity duration-300 scale-150"></div>
-                      
-                      {/* AI Agent Core */}
-                      <div className="relative w-20 h-20 bg-gradient-to-br from-teal-500 to-blue-500 rounded-full flex items-center justify-center shadow-2xl animate-pulse group-hover:scale-110 transition-all duration-300">
-                        <Brain className="h-10 w-10 text-white animate-pulse" />
-                        
-                        {/* Neural Network Lines */}
-                        <div className="absolute inset-0 rounded-full border-2 border-teal-300/50 animate-spin" style={{ animationDuration: '8s' }}></div>
-                        <div className="absolute inset-2 rounded-full border border-blue-300/30 animate-spin" style={{ animationDuration: '6s', animationDirection: 'reverse' }}></div>
-                      </div>
-                      
-                      {/* AI Agent Label */}
-                      <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 whitespace-nowrap">
-                        <span className="text-xs font-semibold text-navy-700 bg-white/80 px-2 py-1 rounded-md shadow-sm">
-                          AI Agent
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Component 1: Buyers & Suppliers (Top) */}
-                  <div className="absolute top-4 left-1/2 transform -translate-x-1/2 group">
-                    <div className="relative">
-                      {/* Connection Line */}
-                      <div className="absolute top-full left-1/2 w-0.5 h-24 bg-gradient-to-b from-teal-400 to-transparent transform -translate-x-1/2">
-                        {/* Flow Indicator */}
-                        <div className="absolute top-0 left-1/2 w-2 h-2 bg-teal-400 rounded-full transform -translate-x-1/2 animate-pulse">
-                          <div className="absolute inset-0 bg-teal-400 rounded-full animate-ping opacity-75"></div>
+            {/* Professional AI Workflow Diagram */}
+            <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-12 max-w-7xl mx-auto relative shadow-2xl border border-white/20">
+              <div className="relative w-full h-[600px] mx-auto">
+                
+                {/* Central AI Agent */}
+                <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-30">
+                  <div className="relative group">
+                    {/* Subtle glow */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-2xl blur-xl scale-150"></div>
+                    
+                    {/* Main AI Agent Card */}
+                    <div className="relative bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 rounded-2xl p-6 shadow-xl hover:shadow-2xl transition-all duration-300 group-hover:scale-105">
+                      <div className="flex flex-col items-center space-y-3">
+                        <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                          <Brain className="h-8 w-8 text-white" />
+                        </div>
+                        <div className="text-center">
+                          <h3 className="font-bold text-gray-800 text-lg">AI Agent</h3>
+                          <p className="text-sm text-gray-600 mt-1">Intelligent Orchestration</p>
                         </div>
                       </div>
-                      
-                      <div className="w-16 h-16 bg-gradient-to-br from-teal-100 to-teal-200 rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 animate-fade-in group-hover:scale-105" style={{ animationDelay: '0.1s' }}>
-                        <Users className="h-8 w-8 text-teal-600" />
-                      </div>
-                      <div className="text-center mt-3">
-                        <h4 className="font-semibold text-navy-900 text-sm">Buyers & Suppliers</h4>
-                        <p className="text-xs text-gray-600 mt-1">Multi-tenant collaboration</p>
-                      </div>
                     </div>
-                  </div>
-
-                  {/* Component 2: ComplianceFlow (Right) */}
-                  <div className="absolute top-1/2 right-4 transform -translate-y-1/2 group">
-                    <div className="relative">
-                      {/* Connection Line */}
-                      <div className="absolute top-1/2 right-full w-24 h-0.5 bg-gradient-to-l from-navy-400 to-transparent transform -translate-y-1/2">
-                        {/* Flow Indicator */}
-                        <div className="absolute top-1/2 right-0 w-2 h-2 bg-navy-400 rounded-full transform -translate-y-1/2 animate-pulse">
-                          <div className="absolute inset-0 bg-navy-400 rounded-full animate-ping opacity-75"></div>
-                        </div>
-                      </div>
-                      
-                      <div className="w-16 h-16 bg-gradient-to-br from-navy-100 to-navy-200 rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 animate-fade-in group-hover:scale-105" style={{ animationDelay: '0.2s' }}>
-                        <FileText className="h-8 w-8 text-navy-600" />
-                      </div>
-                      <div className="text-center mt-3">
-                        <h4 className="font-semibold text-navy-900 text-sm">ComplianceFlow</h4>
-                        <p className="text-xs text-gray-600 mt-1">Document management</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Component 3: Analytics (Bottom Right) */}
-                  <div className="absolute bottom-4 right-8 group">
-                    <div className="relative">
-                      {/* Connection Line */}
-                      <div className="absolute bottom-full left-1/2 w-0.5 h-20 bg-gradient-to-t from-green-400 to-transparent transform -translate-x-1/2 rotate-12">
-                        {/* Flow Indicator */}
-                        <div className="absolute bottom-0 left-1/2 w-2 h-2 bg-green-400 rounded-full transform -translate-x-1/2 animate-pulse">
-                          <div className="absolute inset-0 bg-green-400 rounded-full animate-ping opacity-75"></div>
-                        </div>
-                      </div>
-                      
-                      <div className="w-16 h-16 bg-gradient-to-br from-green-100 to-green-200 rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 animate-fade-in group-hover:scale-105" style={{ animationDelay: '0.3s' }}>
-                        <Activity className="h-8 w-8 text-green-600" />
-                      </div>
-                      <div className="text-center mt-3">
-                        <h4 className="font-semibold text-navy-900 text-sm">Clear Insight</h4>
-                        <p className="text-xs text-gray-600 mt-1">AI-powered analytics</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Component 4: Promotion Channels (Bottom Left) */}
-                  <div className="absolute bottom-4 left-8 group">
-                    <div className="relative">
-                      {/* Connection Line */}
-                      <div className="absolute bottom-full left-1/2 w-0.5 h-20 bg-gradient-to-t from-purple-400 to-transparent transform -translate-x-1/2 -rotate-12">
-                        {/* Flow Indicator */}
-                        <div className="absolute bottom-0 left-1/2 w-2 h-2 bg-purple-400 rounded-full transform -translate-x-1/2 animate-pulse">
-                          <div className="absolute inset-0 bg-purple-400 rounded-full animate-ping opacity-75"></div>
-                        </div>
-                      </div>
-                      
-                      <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-xl flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 animate-fade-in group-hover:scale-105" style={{ animationDelay: '0.4s' }}>
-                        <Zap className="h-8 w-8 text-purple-600" />
-                      </div>
-                      <div className="text-center mt-3">
-                        <h4 className="font-semibold text-navy-900 text-sm">Promotion Channels</h4>
-                        <p className="text-xs text-gray-600 mt-1">Governed outreach</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Data Flow Visualization */}
-                  <div className="absolute inset-0 pointer-events-none">
-                    {/* Orbital Rings */}
-                    <div className="absolute top-1/2 left-1/2 w-32 h-32 border border-teal-200/30 rounded-full transform -translate-x-1/2 -translate-y-1/2 animate-spin" style={{ animationDuration: '20s' }}></div>
-                    <div className="absolute top-1/2 left-1/2 w-48 h-48 border border-blue-200/20 rounded-full transform -translate-x-1/2 -translate-y-1/2 animate-spin" style={{ animationDuration: '30s', animationDirection: 'reverse' }}></div>
                   </div>
                 </div>
 
-                {/* AI Capabilities Banner */}
-                <div className="mt-8 text-center">
-                  <div className="inline-flex items-center space-x-2 bg-gradient-to-r from-teal-50 to-blue-50 px-4 py-2 rounded-full border border-teal-200">
-                    <Brain className="h-4 w-4 text-teal-600" />
-                    <span className="text-sm font-medium text-navy-700">AI orchestrates intelligent workflows across all compliance touchpoints</span>
-                    <div className="w-2 h-2 bg-teal-400 rounded-full animate-pulse"></div>
+                {/* Component 1: Buyers & Suppliers (Top Left) */}
+                <div className="absolute top-8 left-16 group">
+                  <div className="relative">
+                    {/* Connection Line to AI Agent */}
+                    <svg className="absolute top-1/2 left-full w-32 h-20 pointer-events-none" style={{ transform: 'translateY(-50%)' }}>
+                      <path
+                        d="M 0 10 Q 80 10 128 40"
+                        stroke="#10b981"
+                        strokeWidth="2"
+                        fill="none"
+                        strokeDasharray="4,4"
+                        className="animate-pulse"
+                      />
+                      {/* Flow indicator */}
+                      <circle cx="64" cy="25" r="3" fill="#10b981" className="animate-pulse" />
+                    </svg>
+                    
+                    <div className="bg-gradient-to-br from-emerald-50 to-green-50 border-2 border-emerald-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105 min-w-[200px]">
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-green-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Users className="h-6 w-6 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-gray-800 text-base">Buyers & Suppliers</h4>
+                          <p className="text-sm text-gray-600 mt-1 leading-relaxed">Multi-tenant collaboration platform</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
+                </div>
+
+                {/* Component 2: ComplianceFlow (Top Right) */}
+                <div className="absolute top-8 right-16 group">
+                  <div className="relative">
+                    {/* Connection Line to AI Agent */}
+                    <svg className="absolute top-1/2 right-full w-32 h-20 pointer-events-none" style={{ transform: 'translateY(-50%)' }}>
+                      <path
+                        d="M 128 10 Q 48 10 0 40"
+                        stroke="#3b82f6"
+                        strokeWidth="2"
+                        fill="none"
+                        strokeDasharray="4,4"
+                        className="animate-pulse"
+                      />
+                      {/* Flow indicator */}
+                      <circle cx="64" cy="25" r="3" fill="#3b82f6" className="animate-pulse" />
+                    </svg>
+                    
+                    <div className="bg-gradient-to-br from-blue-50 to-sky-50 border-2 border-blue-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105 min-w-[200px]">
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-blue-400 to-sky-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <FileText className="h-6 w-6 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-gray-800 text-base">ComplianceFlow</h4>
+                          <p className="text-sm text-gray-600 mt-1 leading-relaxed">Document management & workflow</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Component 3: Clear Insight (Bottom Left) */}
+                <div className="absolute bottom-8 left-16 group">
+                  <div className="relative">
+                    {/* Connection Line to AI Agent */}
+                    <svg className="absolute bottom-1/2 left-full w-32 h-20 pointer-events-none" style={{ transform: 'translateY(50%)' }}>
+                      <path
+                        d="M 0 10 Q 80 10 128 -20"
+                        stroke="#8b5cf6"
+                        strokeWidth="2"
+                        fill="none"
+                        strokeDasharray="4,4"
+                        className="animate-pulse"
+                      />
+                      {/* Flow indicator */}
+                      <circle cx="64" cy="-5" r="3" fill="#8b5cf6" className="animate-pulse" />
+                    </svg>
+                    
+                    <div className="bg-gradient-to-br from-violet-50 to-purple-50 border-2 border-violet-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105 min-w-[200px]">
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-violet-400 to-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Activity className="h-6 w-6 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-gray-800 text-base">Clear Insight</h4>
+                          <p className="text-sm text-gray-600 mt-1 leading-relaxed">AI-powered analytics & insights</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Component 4: Promotion Channels (Bottom Right) */}
+                <div className="absolute bottom-8 right-16 group">
+                  <div className="relative">
+                    {/* Connection Line to AI Agent */}
+                    <svg className="absolute bottom-1/2 right-full w-32 h-20 pointer-events-none" style={{ transform: 'translateY(50%)' }}>
+                      <path
+                        d="M 128 10 Q 48 10 0 -20"
+                        stroke="#f59e0b"
+                        strokeWidth="2"
+                        fill="none"
+                        strokeDasharray="4,4"
+                        className="animate-pulse"
+                      />
+                      {/* Flow indicator */}
+                      <circle cx="64" cy="-5" r="3" fill="#f59e0b" className="animate-pulse" />
+                    </svg>
+                    
+                    <div className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-200 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 group-hover:scale-105 min-w-[200px]">
+                      <div className="flex items-start space-x-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-orange-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                          <Zap className="h-6 w-6 text-white" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-gray-800 text-base">Promotion Channels</h4>
+                          <p className="text-sm text-gray-600 mt-1 leading-relaxed">Governed outreach & campaigns</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Bottom Banner */}
+              <div className="mt-8 pt-6 border-t border-gray-200">
+                <div className="flex items-center justify-center space-x-3">
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg flex items-center justify-center">
+                    <Brain className="h-4 w-4 text-white" />
+                  </div>
+                  <span className="text-gray-700 font-medium text-lg">AI orchestrates intelligent workflows across all compliance touchpoints</span>
+                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
                 </div>
               </div>
             </div>
