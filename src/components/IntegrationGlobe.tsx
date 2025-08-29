@@ -15,6 +15,11 @@ import toastLogo from '../assets/logos/toast.png';
 import awsLogo from '../assets/logos/aws.png';
 import sapLogo from '../assets/logos/sap.png';
 import tracer2cLogo from '../assets/logos/tracer2c.png';
+import hubspotLogo from '../assets/logos/hubspot.png';
+import oracleLogo from '../assets/logos/oracle.png';
+import docusignLogo from '../assets/logos/docusign.png';
+import netsuiteLogo from '../assets/logos/netsuite.png';
+import oktaLogo from '../assets/logos/okta.png';
 
 // Integration data with 3D positions and logo images
 const integrationData = [
@@ -29,13 +34,13 @@ const integrationData = [
   { name: "AWS", category: "Cloud", status: "Available", color: "#FF9900", position: [-3, 1, -2], logo: awsLogo },
   { name: "SAP", category: "ERP", status: "Available", color: "#0FAAFF", position: [1, 3, -2], logo: sapLogo },
   
-  // Additional integrations without custom logos (using colored cubes)
+  // Additional integrations with custom logos  
   { name: "Salesforce", category: "CRM", status: "Available", color: "#1798C1", position: [-1, -3, 2] },
-  { name: "HubSpot", category: "CRM", status: "Available", color: "#FF7A59", position: [3, -1, -1] },
-  { name: "Oracle", category: "ERP", status: "Available", color: "#F80000", position: [-2, 2, -3] },
-  { name: "DocuSign", category: "E-Sign", status: "Available", color: "#FFB946", position: [2, 1, 3] },
-  { name: "Okta", category: "Identity", status: "Available", color: "#007DC1", position: [-3, -1, 1] },
-  { name: "NetSuite", category: "ERP", status: "Available", color: "#F0AB00", position: [1, -2, -3] }
+  { name: "HubSpot", category: "CRM", status: "Available", color: "#FF7A59", position: [3, -1, -1], logo: hubspotLogo },
+  { name: "Oracle", category: "ERP", status: "Available", color: "#F80000", position: [-2, 2, -3], logo: oracleLogo },
+  { name: "DocuSign", category: "E-Sign", status: "Available", color: "#FFB946", position: [2, 1, 3], logo: docusignLogo },
+  { name: "Okta", category: "Identity", status: "Available", color: "#007DC1", position: [-3, -1, 1], logo: oktaLogo },
+  { name: "NetSuite", category: "ERP", status: "Available", color: "#F0AB00", position: [1, -2, -3], logo: netsuiteLogo }
 ];
 
 // Floating Integration Logo Component
