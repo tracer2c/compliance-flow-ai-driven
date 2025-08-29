@@ -1,44 +1,41 @@
 import React, { useRef, useState, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Text, Sphere, Box } from '@react-three/drei';
+import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import { OrbitControls, Text, Sphere } from '@react-three/drei';
 import * as THREE from 'three';
 import { Badge } from './ui/badge';
 
-// Integration data with 3D positions
+// Import logo images
+import googleLogo from '../assets/logos/google.png';
+import microsoftLogo from '../assets/logos/microsoft.png';
+import dropboxLogo from '../assets/logos/dropbox.png';
+import zohoLogo from '../assets/logos/zoho.png';
+import azureLogo from '../assets/logos/azure.png';
+import squareLogo from '../assets/logos/square.png';
+import toastLogo from '../assets/logos/toast.png';
+import awsLogo from '../assets/logos/aws.png';
+import sapLogo from '../assets/logos/sap.png';
+import tracer2cLogo from '../assets/logos/tracer2c.png';
+
+// Integration data with 3D positions and logo images
 const integrationData = [
-  // POS Systems
-  { name: "Square", category: "POS", status: "Available", color: "#000000", position: [3, 2, 1] },
-  { name: "Shopify POS", category: "POS", status: "Available", color: "#96BF47", position: [-2, 3, 2] },
-  { name: "Toast", category: "POS", status: "Available", color: "#FB6107", position: [2, -2, 3] },
-  { name: "Lightspeed", category: "POS", status: "Available", color: "#F68B2C", position: [-3, 1, -2] },
+  // Featured integrations with logos
+  { name: "Google Cloud", category: "Storage", status: "Available", color: "#4285F4", position: [2, 3, -1], logo: googleLogo },
+  { name: "Microsoft Azure", category: "Storage", status: "Available", color: "#0078D4", position: [-2, -1, 3], logo: microsoftLogo },
+  { name: "Dropbox", category: "Storage", status: "Available", color: "#0061FF", position: [3, 1, 2], logo: dropboxLogo },
+  { name: "Zoho", category: "CRM", status: "Available", color: "#C64323", position: [-1, 3, 1], logo: zohoLogo },
+  { name: "Azure", category: "Cloud", status: "Available", color: "#0078D4", position: [-1, -3, -1], logo: azureLogo },
+  { name: "Square", category: "POS", status: "Available", color: "#000000", position: [3, 2, 1], logo: squareLogo },
+  { name: "Toast", category: "POS", status: "Available", color: "#FB6107", position: [2, -2, 3], logo: toastLogo },
+  { name: "AWS", category: "Cloud", status: "Available", color: "#FF9900", position: [-3, 1, -2], logo: awsLogo },
+  { name: "SAP", category: "ERP", status: "Available", color: "#0FAAFF", position: [1, 3, -2], logo: sapLogo },
   
-  // ERP Systems  
-  { name: "SAP", category: "ERP", status: "Available", color: "#0FAAFF", position: [1, 3, -2] },
-  { name: "Oracle", category: "ERP", status: "Available", color: "#F80000", position: [-1, -3, 2] },
-  { name: "Microsoft Dynamics", category: "ERP", status: "Available", color: "#00BCF2", position: [3, -1, -1] },
-  { name: "NetSuite", category: "ERP", status: "Available", color: "#F0AB00", position: [-2, 2, -3] },
-  
-  // CRM Platforms
-  { name: "Salesforce", category: "CRM", status: "Available", color: "#1798C1", position: [2, 1, 3] },
-  { name: "HubSpot", category: "CRM", status: "Available", color: "#FF7A59", position: [-3, -1, 1] },
-  { name: "Pipedrive", category: "CRM", status: "Available", color: "#1A5A96", position: [1, -2, -3] },
-  { name: "Zoho", category: "CRM", status: "Available", color: "#C64323", position: [-1, 3, 1] },
-  
-  // Cloud Storage
-  { name: "AWS S3", category: "Storage", status: "Available", color: "#FF9900", position: [2, 3, -1] },
-  { name: "Google Cloud", category: "Storage", status: "Available", color: "#4285F4", position: [-2, -1, 3] },
-  { name: "Azure", category: "Storage", status: "Available", color: "#0078D4", position: [3, 1, 2] },
-  { name: "Dropbox", category: "Storage", status: "Available", color: "#0061FF", position: [-1, -3, -1] },
-  
-  // E-Signature
-  { name: "DocuSign", category: "E-Sign", status: "Available", color: "#FFB946", position: [1, 2, -2] },
-  { name: "Adobe Sign", category: "E-Sign", status: "Available", color: "#FF0000", position: [-2, 1, 2] },
-  { name: "HelloSign", category: "E-Sign", status: "Available", color: "#F26522", position: [2, -3, 1] },
-  
-  // Identity Providers
-  { name: "Okta", category: "Identity", status: "Available", color: "#007DC1", position: [-1, 2, 3] },
-  { name: "Auth0", category: "Identity", status: "Available", color: "#EB5424", position: [3, -2, -1] },
-  { name: "Active Directory", category: "Identity", status: "Available", color: "#00BCF2", position: [-3, 0, 2] }
+  // Additional integrations without custom logos (using colored cubes)
+  { name: "Salesforce", category: "CRM", status: "Available", color: "#1798C1", position: [-1, -3, 2] },
+  { name: "HubSpot", category: "CRM", status: "Available", color: "#FF7A59", position: [3, -1, -1] },
+  { name: "Oracle", category: "ERP", status: "Available", color: "#F80000", position: [-2, 2, -3] },
+  { name: "DocuSign", category: "E-Sign", status: "Available", color: "#FFB946", position: [2, 1, 3] },
+  { name: "Okta", category: "Identity", status: "Available", color: "#007DC1", position: [-3, -1, 1] },
+  { name: "NetSuite", category: "ERP", status: "Available", color: "#F0AB00", position: [1, -2, -3] }
 ];
 
 // Floating Integration Logo Component
@@ -49,6 +46,8 @@ function FloatingLogo({ integration, index, onHover, hoveredItem }: {
   hoveredItem: any;
 }) {
   const meshRef = useRef<THREE.Mesh>(null);
+  const loadedTexture = integration.logo ? useLoader(THREE.TextureLoader, integration.logo) : null;
+  const texture = Array.isArray(loadedTexture) ? loadedTexture[0] : loadedTexture;
   
   const isHovered = hoveredItem?.name === integration.name;
   
@@ -69,9 +68,14 @@ function FloatingLogo({ integration, index, onHover, hoveredItem }: {
       integration.position[2] + offsetZ
     );
     
-    // Very gentle rotation
-    meshRef.current.rotation.x = time * 0.1;
-    meshRef.current.rotation.y = time * 0.05;
+    // Very gentle rotation for cubes, keep logos facing camera
+    if (!integration.logo) {
+      meshRef.current.rotation.x = time * 0.1;
+      meshRef.current.rotation.y = time * 0.05;
+    } else {
+      // Make logo planes always face the camera
+      meshRef.current.lookAt(0, 0, 12);
+    }
     
     // Scale effect on hover
     const targetScale = isHovered ? 1.4 : 1;
@@ -80,21 +84,41 @@ function FloatingLogo({ integration, index, onHover, hoveredItem }: {
 
   return (
     <group>
-      <Box
-        ref={meshRef}
-        args={[0.4, 0.4, 0.4]}
-        position={integration.position}
-        onPointerOver={() => onHover(integration)}
-        onPointerOut={() => onHover(null)}
-      >
-        <meshStandardMaterial 
-          color={integration.color}
-          metalness={0.3}
-          roughness={0.4}
-          emissive={isHovered ? integration.color : '#000000'}
-          emissiveIntensity={isHovered ? 0.2 : 0}
-        />
-      </Box>
+      {integration.logo ? (
+        // Render logo as textured plane
+        <mesh
+          ref={meshRef}
+          position={integration.position}
+          onPointerOver={() => onHover(integration)}
+          onPointerOut={() => onHover(null)}
+        >
+          <planeGeometry args={[0.8, 0.8]} />
+          <meshStandardMaterial
+            map={texture}
+            transparent={true}
+            alphaTest={0.1}
+            emissive={isHovered ? "#ffffff" : "#000000"}
+            emissiveIntensity={isHovered ? 0.1 : 0}
+          />
+        </mesh>
+      ) : (
+        // Fallback to colored cube for integrations without logos
+        <mesh
+          ref={meshRef}
+          position={integration.position}
+          onPointerOver={() => onHover(integration)}
+          onPointerOut={() => onHover(null)}
+        >
+          <boxGeometry args={[0.4, 0.4, 0.4]} />
+          <meshStandardMaterial 
+            color={integration.color}
+            metalness={0.3}
+            roughness={0.4}
+            emissive={isHovered ? integration.color : '#000000'}
+            emissiveIntensity={isHovered ? 0.2 : 0}
+          />
+        </mesh>
+      )}
       
       {isHovered && (
         <Text
@@ -196,6 +220,9 @@ function Stars() {
 function CentralLogo() {
   const logoRef = useRef<THREE.Group>(null);
   const glowRef = useRef<THREE.Mesh>(null);
+  const logoPlaneRef = useRef<THREE.Mesh>(null);
+  const loadedTexture = useLoader(THREE.TextureLoader, tracer2cLogo);
+  const texture = Array.isArray(loadedTexture) ? loadedTexture[0] : loadedTexture;
   
   useFrame((state) => {
     if (logoRef.current) {
@@ -204,6 +231,10 @@ function CentralLogo() {
     if (glowRef.current) {
       const pulse = Math.sin(state.clock.getElapsedTime() * 2) * 0.1 + 1;
       glowRef.current.scale.setScalar(pulse);
+    }
+    if (logoPlaneRef.current) {
+      // Make central logo always face the camera
+      logoPlaneRef.current.lookAt(0, 0, 12);
     }
   });
 
@@ -219,16 +250,17 @@ function CentralLogo() {
         />
       </mesh>
       
-      {/* Central logo cube */}
-      <Box args={[0.6, 0.6, 0.6]}>
+      {/* Central TraceR2C logo */}
+      <mesh ref={logoPlaneRef}>
+        <planeGeometry args={[1.0, 1.0]} />
         <meshStandardMaterial
-          color="#00ff88"
-          metalness={0.7}
-          roughness={0.3}
+          map={texture}
+          transparent={true}
+          alphaTest={0.1}
           emissive="#00ff88"
-          emissiveIntensity={0.2}
+          emissiveIntensity={0.1}
         />
-      </Box>
+      </mesh>
       
       {/* TraceR2C Text */}
       <Text
