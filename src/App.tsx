@@ -10,6 +10,8 @@ import Security from "./pages/Security";
 import Integrations from "./pages/Integrations";
 import Pricing from "./pages/Pricing";
 import Resources from "./pages/Resources";
+import BlogPost from "./pages/BlogPost";
+import GuideView from "./pages/GuideView";
 import Company from "./pages/Company";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
@@ -30,6 +32,8 @@ const App = () => (
             <Route path="/integrations" element={<Integrations />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/resources" element={<Resources />} />
+            <Route path="/resources/blog/:slug" element={<BlogPost />} />
+            <Route path="/resources/guide/:slug" element={<GuideView />} />
             <Route path="/company" element={<Company />} />
             <Route path="/contact" element={<Contact />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
