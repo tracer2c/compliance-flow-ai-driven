@@ -8,6 +8,13 @@ import {
   NavigationMenuList, 
   NavigationMenuTrigger 
 } from "@/components/ui/navigation-menu";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Badge } from "@/components/ui/badge";
 import { 
   Menu, 
@@ -172,96 +179,112 @@ const Header = () => {
             </Button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="lg:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </Button>
+          {/* Mobile Menu Sheet */}
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="lg:hidden"
+              >
+                <Menu className="h-6 w-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-80">
+              <SheetHeader>
+                <SheetTitle className="text-left text-navy-900">Navigation</SheetTitle>
+              </SheetHeader>
+              
+              <div className="mt-6 space-y-6">
+                {/* Products */}
+                <div className="space-y-3">
+                  <h3 className="font-semibold text-navy-900 text-sm uppercase tracking-wide">Products</h3>
+                  {products.map((product) => (
+                    product.external ? (
+                      <a
+                        key={product.name}
+                        href={product.href}
+                        target="_self"
+                        rel="noopener noreferrer"
+                        className="flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg transition-colors group"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <div className="h-8 w-8 bg-teal-100 rounded-lg flex items-center justify-center">
+                          <product.icon className="h-4 w-4 text-teal-600" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2">
+                            <span className="font-medium text-navy-900 group-hover:text-teal-600 transition-colors">{product.name}</span>
+                            {product.badge && (
+                              <Badge variant="secondary" className="text-xs">
+                                {product.badge}
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-xs text-gray-600 mt-1">{product.description}</p>
+                        </div>
+                      </a>
+                    ) : (
+                      <Link
+                        key={product.name}
+                        to={product.href}
+                        className="flex items-center space-x-3 p-3 hover:bg-gray-50 rounded-lg transition-colors group"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <div className="h-8 w-8 bg-teal-100 rounded-lg flex items-center justify-center">
+                          <product.icon className="h-4 w-4 text-teal-600" />
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center space-x-2">
+                            <span className="font-medium text-navy-900 group-hover:text-teal-600 transition-colors">{product.name}</span>
+                            {product.badge && (
+                              <Badge variant="secondary" className="text-xs">
+                                {product.badge}
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-xs text-gray-600 mt-1">{product.description}</p>
+                        </div>
+                      </Link>
+                    )
+                  ))}
+                </div>
+
+                {/* Main Navigation */}
+                <div className="space-y-3 border-t border-gray-200 pt-6">
+                  <h3 className="font-semibold text-navy-900 text-sm uppercase tracking-wide">Menu</h3>
+                  {mainNavItems.map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.href}
+                      className="block p-3 text-navy-700 hover:bg-gray-50 hover:text-teal-600 rounded-lg font-medium transition-colors"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+
+                {/* Mobile CTAs */}
+                <div className="space-y-3 border-t border-gray-200 pt-6">
+                  <Button 
+                    variant="outline" 
+                    className="w-full border-navy-200 text-navy-700"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Schedule Demo
+                  </Button>
+                  <Button 
+                    className="w-full bg-gradient-accent text-white"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Start Free Trial
+                  </Button>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
-
-        {/* Mobile Menu */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden border-t border-gray-200 py-4 space-y-4">
-            {/* Products */}
-            <div className="space-y-2">
-              <h3 className="font-semibold text-navy-900 px-4">Products</h3>
-              {products.map((product) => (
-                product.external ? (
-                  <a
-                    key={product.name}
-                    href={product.href}
-                    target="_self"
-                    rel="noopener noreferrer"
-                    className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50 rounded-lg mx-2"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <product.icon className="h-5 w-5 text-teal-600" />
-                    <span className="text-navy-700">{product.name}</span>
-                    {product.badge && (
-                      <Badge variant="secondary" className="text-xs">
-                        {product.badge}
-                      </Badge>
-                    )}
-                  </a>
-                ) : (
-                  <Link
-                    key={product.name}
-                    to={product.href}
-                    className="flex items-center space-x-3 px-4 py-2 hover:bg-gray-50 rounded-lg mx-2"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <product.icon className="h-5 w-5 text-teal-600" />
-                    <span className="text-navy-700">{product.name}</span>
-                    {product.badge && (
-                      <Badge variant="secondary" className="text-xs">
-                        {product.badge}
-                      </Badge>
-                    )}
-                  </Link>
-                )
-              ))}
-            </div>
-
-            {/* Main Nav */}
-            <div className="space-y-2 border-t border-gray-200 pt-4">
-              {mainNavItems.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className="block px-4 py-2 text-navy-700 hover:bg-gray-50 rounded-lg mx-2"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-
-            {/* Mobile CTAs */}
-            <div className="space-y-2 border-t border-gray-200 pt-4 px-4">
-              <Button 
-                variant="outline" 
-                className="w-full border-navy-200 text-navy-700"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Schedule Demo
-              </Button>
-              <Button 
-                className="w-full bg-gradient-accent text-white"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Start Free Trial
-              </Button>
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Sticky Mobile CTA */}
