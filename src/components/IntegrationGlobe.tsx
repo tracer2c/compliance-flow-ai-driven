@@ -14,7 +14,7 @@ import squareLogo from '../assets/logos/square.png';
 import toastLogo from '../assets/logos/toast.png';
 import awsLogo from '../assets/logos/aws.png';
 import sapLogo from '../assets/logos/sap.png';
-import tracer2cLogo from '/lovable-uploads/160600b8-9088-4b97-80cf-2274fb2fbfb2.png';
+import tracer2cLogo from '../assets/logos/tracer2c.png';
 import hubspotLogo from '../assets/logos/hubspot.png';
 import oracleLogo from '../assets/logos/oracle.png';
 import docusignLogo from '../assets/logos/docusign.png';

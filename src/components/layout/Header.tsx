@@ -71,11 +71,9 @@ const Header = () => {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
-            <img 
-              src="/lovable-uploads/160600b8-9088-4b97-80cf-2274fb2fbfb2.png" 
-              alt="TraceR2C Logo" 
-              className="h-8 w-8 rounded-lg"
-            />
+            <div className="h-8 w-8 bg-gradient-accent rounded-lg flex items-center justify-center">
+              <span className="text-white font-bold text-sm">T</span>
+            </div>
             <span className="font-display font-bold text-xl text-navy-900">TraceR2C</span>
           </Link>
 
