@@ -1,6 +1,8 @@
+import SEOHead from "@/components/seo/SEOHead";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { organizationSchema, faqSchema } from "@/lib/structuredData";
 import { 
   Shield, 
   Lock, 
@@ -87,8 +89,17 @@ const Security = () => {
     { name: "FedRAMP", status: "In Progress" }
   ];
 
+  const combinedSchema = [organizationSchema, faqSchema];
+
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title="Enterprise Security & Compliance | SOC 2 Certified | TraceR2C"
+        description="Bank-grade security with zero-trust architecture, end-to-end encryption, and SOC 2 Type II compliance. Built for regulated industries and enterprise compliance."
+        keywords="SOC 2 compliance, enterprise security platform, zero trust architecture, end-to-end encryption, compliance security, bank-grade security"
+        canonicalUrl="https://tracer2c.com/security"
+        structuredData={combinedSchema}
+      />
       {/* Hero Section */}
       <section className="bg-gradient-hero py-20">
         <div className="container mx-auto px-6">

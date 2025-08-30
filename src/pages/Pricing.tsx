@@ -1,6 +1,8 @@
+import SEOHead from "@/components/seo/SEOHead";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { organizationSchema, faqSchema } from "@/lib/structuredData";
 import { 
   CheckCircle, 
   ArrowRight, 
@@ -14,6 +16,43 @@ import {
 } from "lucide-react";
 
 const Pricing = () => {
+  const pricingSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "TraceR2C Compliance Platform Pricing",
+    "description": "Enterprise supply chain compliance software with transparent pricing plans for businesses of all sizes.",
+    "provider": organizationSchema,
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "TraceR2C Pricing Plans",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "name": "Starter Plan",
+          "price": "299",
+          "priceCurrency": "USD",
+          "description": "Perfect for small suppliers getting started with compliance"
+        },
+        {
+          "@type": "Offer", 
+          "name": "Professional Plan",
+          "price": "899",
+          "priceCurrency": "USD", 
+          "description": "Ideal for growing businesses with complex compliance needs"
+        },
+        {
+          "@type": "Offer",
+          "name": "Enterprise Plan", 
+          "price": "2499",
+          "priceCurrency": "USD",
+          "description": "Comprehensive solution for large organizations"
+        }
+      ]
+    }
+  };
+
+  const combinedSchema = [organizationSchema, pricingSchema, faqSchema];
+
   const pricingTiers = [
     {
       name: "Starter",
@@ -143,6 +182,13 @@ const Pricing = () => {
 
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title="Enterprise Compliance Software Pricing | Free Trial | TraceR2C"
+        description="Transparent pricing for enterprise supply chain compliance software. Starter at $299/mo, Professional at $899/mo, Enterprise at $2,499/mo. 14-day free trial."
+        keywords="compliance software pricing, enterprise compliance costs, supply chain software pricing, compliance platform pricing, TraceR2C pricing"
+        canonicalUrl="https://tracer2c.com/pricing"
+        structuredData={combinedSchema}
+      />
       {/* Hero Section */}
       <section className="bg-gradient-hero py-20">
         <div className="container mx-auto px-6">

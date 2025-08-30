@@ -1,7 +1,9 @@
+import SEOHead from "@/components/seo/SEOHead";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { IntegrationGlobe } from "@/components/IntegrationGlobe";
+import { organizationSchema } from "@/lib/structuredData";
 import { 
   ArrowRight, 
   CheckCircle, 
@@ -11,6 +13,23 @@ import {
 } from "lucide-react";
 
 const Integrations = () => {
+  const integrationsSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "TraceR2C API & Integrations",
+    "applicationCategory": "BusinessApplication",
+    "description": "Connect TraceR2C with your existing tech stack. RESTful API, real-time webhooks, and pre-built integrations with enterprise systems.",
+    "featureList": [
+      "RESTful API with OpenAPI 3.0",
+      "Real-time Webhooks",
+      "Custom Integration Framework",
+      "Pre-built Enterprise Connectors",
+      "AWS, Azure, Google Cloud Integration",
+      "ERP System Connectivity"
+    ],
+    "author": organizationSchema
+  };
+
   const apiFeatures = [
     {
       icon: Code,
@@ -34,6 +53,13 @@ const Integrations = () => {
 
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title="API & Integrations | Connect Your Tech Stack | TraceR2C"
+        description="Connect TraceR2C with your existing systems. RESTful API, real-time webhooks, pre-built integrations with AWS, Azure, Google Cloud, and enterprise ERPs."
+        keywords="API integrations, supply chain API, compliance software integrations, RESTful API, webhooks, ERP integrations, cloud integrations"
+        canonicalUrl="https://tracer2c.com/integrations"
+        structuredData={integrationsSchema}
+      />
       {/* Hero Section */}
       <section className="bg-gradient-hero py-20">
         <div className="container mx-auto px-6">

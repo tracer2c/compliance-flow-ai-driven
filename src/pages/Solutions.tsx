@@ -1,6 +1,8 @@
+import SEOHead from "@/components/seo/SEOHead";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { organizationSchema } from "@/lib/structuredData";
 import { 
   ArrowRight, 
   CheckCircle, 
@@ -19,6 +21,23 @@ import {
 } from "lucide-react";
 
 const Solutions = () => {
+  const solutionsSchema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "TraceR2C Industry Solutions",
+    "applicationCategory": "BusinessApplication",
+    "description": "Industry-specific compliance solutions for food service, pharmaceuticals, manufacturing, retail, logistics, and construction industries.",
+    "featureList": [
+      "Food Service Compliance (FDA, HACCP)",
+      "Pharmaceutical Compliance (21 CFR Part 11, GMP)",
+      "Manufacturing Quality Management (ISO 9001)",
+      "Retail Product Safety Compliance",
+      "Logistics DOT & Import/Export Compliance",
+      "Construction Safety & Permit Management"
+    ],
+    "author": organizationSchema
+  };
+
   const industries = [
     {
       icon: UtensilsCrossed,
@@ -78,6 +97,13 @@ const Solutions = () => {
 
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title="Industry Compliance Solutions | Food, Pharma, Manufacturing | TraceR2C"
+        description="Industry-specific compliance solutions for food service, pharmaceuticals, manufacturing, retail, logistics & construction. Pre-built templates and automated workflows."
+        keywords="industry compliance solutions, food service compliance, pharmaceutical compliance, manufacturing quality management, retail compliance, logistics compliance, construction safety"
+        canonicalUrl="https://tracer2c.com/solutions"
+        structuredData={solutionsSchema}
+      />
       {/* Hero Section */}
       <section className="bg-gradient-hero py-20">
         <div className="container mx-auto px-6">
