@@ -183,11 +183,12 @@ const Header = () => {
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
-                className="lg:hidden"
+                className="lg:hidden border-navy-200 bg-white/80 backdrop-blur-sm hover:bg-navy-50 hover:border-teal-400 transition-all duration-200 shadow-sm min-w-[80px] h-10"
               >
-                <Menu className="h-6 w-6" />
+                <Menu className="h-5 w-5 text-navy-700 mr-2" />
+                <span className="text-sm font-medium text-navy-700">Menu</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-80">
