@@ -183,10 +183,14 @@ const Header = () => {
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
             <SheetTrigger asChild>
               <Button 
-                className="lg:hidden bg-gradient-accent text-white hover:opacity-90 font-medium shadow-sm min-w-[140px] h-10 justify-between px-4"
+                className="lg:hidden bg-gradient-accent text-white hover:opacity-90 font-medium shadow-sm min-w-[140px] h-10 relative px-4"
               >
-                <span className="text-sm font-medium">Start Free Trial</span>
-                <Menu className="h-4 w-4 ml-2" />
+                <span className="text-sm font-medium flex-1 text-center">Start Free Trial</span>
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex flex-col gap-[2px]">
+                  <div className="w-3 h-[1.5px] bg-white/80 rounded-full"></div>
+                  <div className="w-3 h-[1.5px] bg-white/80 rounded-full"></div>
+                  <div className="w-3 h-[1.5px] bg-white/80 rounded-full"></div>
+                </div>
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-80">
