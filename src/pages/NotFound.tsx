@@ -57,7 +57,7 @@ const NotFound = () => {
       <div className="relative z-10 text-center px-6 max-w-2xl">
         <div className="mb-6">
           <img 
-            src="/src/assets/logos/tracer2c.png" 
+            src="/lovable-uploads/160600b8-9088-4b97-80cf-2274fb2fbfb2.png" 
             alt="TraceR2C Logo" 
             className="h-16 w-auto mx-auto mb-4 opacity-80"
           />
