@@ -70,7 +70,7 @@ const ChatbotWidget = () => {
       {isOpen && (
         <Card 
           ref={chatboxRef}
-          className="fixed bottom-4 right-4 md:bottom-6 md:right-6 w-full max-w-sm md:w-96 h-[400px] md:h-[480px] mx-4 md:mx-0 z-50 shadow-2xl border-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80"
+          className="fixed bottom-4 right-4 md:bottom-6 md:right-6 w-[calc(100vw-2rem)] max-w-sm md:w-96 h-[70vh] max-h-[400px] md:h-[480px] z-50 shadow-2xl border-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80"
         >
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-primary/5 to-teal-500/5">
