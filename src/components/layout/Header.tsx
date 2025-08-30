@@ -181,15 +181,6 @@ const Header = () => {
 
           {/* Mobile Menu Sheet */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="lg:hidden"
-              >
-                <Menu className="h-6 w-6" />
-              </Button>
-            </SheetTrigger>
             <SheetContent side="right" className="w-80">
               <SheetHeader>
                 <SheetTitle className="text-left text-navy-900">Navigation</SheetTitle>
@@ -287,11 +278,19 @@ const Header = () => {
         </div>
       </div>
 
-      {/* Sticky Mobile CTA */}
+      {/* Sticky Mobile CTA with Menu Trigger */}
       <div className="lg:hidden fixed bottom-4 left-4 right-4 z-40">
-        <Button className="w-full bg-gradient-accent text-white shadow-lg">
-          Start Free Trial
-        </Button>
+        <SheetTrigger asChild>
+          <Button className="w-full bg-gradient-accent text-white shadow-lg flex items-center justify-center relative">
+            {/* Hamburger lines on the left */}
+            <div className="absolute left-4 flex flex-col space-y-1">
+              <div className="w-4 h-0.5 bg-black"></div>
+              <div className="w-4 h-0.5 bg-black"></div>
+              <div className="w-4 h-0.5 bg-black"></div>
+            </div>
+            <span className="ml-2">Start Free Trial</span>
+          </Button>
+        </SheetTrigger>
       </div>
     </header>
   );
