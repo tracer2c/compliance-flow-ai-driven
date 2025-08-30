@@ -23,6 +23,7 @@ import {
   Target, 
   BarChart3
 } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link } from "react-router-dom";
 
 const Header = () => {
@@ -195,12 +196,13 @@ const Header = () => {
                 </Button>
               </SheetTrigger>
             </div>
-            <SheetContent side="right" className="w-80">
-              <SheetHeader>
+            <SheetContent side="right" className="w-80 flex flex-col">
+              <SheetHeader className="flex-shrink-0">
                 <SheetTitle className="text-left text-navy-900">Navigation</SheetTitle>
               </SheetHeader>
               
-              <div className="mt-6 space-y-6">
+              <ScrollArea className="flex-1 px-1">
+                <div className="mt-6 space-y-6 pb-6">
                 {/* Products */}
                 <div className="space-y-3">
                   <h3 className="font-semibold text-navy-900 text-sm uppercase tracking-wide">Products</h3>
@@ -286,7 +288,8 @@ const Header = () => {
                     Start Free Trial
                   </Button>
                 </div>
-              </div>
+                </div>
+              </ScrollArea>
             </SheetContent>
           </Sheet>
         </div>
