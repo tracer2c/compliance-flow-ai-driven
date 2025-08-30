@@ -11,12 +11,30 @@ const ChatbotWidget = () => {
   const [input, setInput] = useState('');
   const { messages, isLoading, sendMessage } = useChatbot();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const chatboxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
       scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
     }
   }, [messages]);
+
+  // Handle click outside to close chatbot
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (chatboxRef.current && !chatboxRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,20 +55,23 @@ const ChatbotWidget = () => {
   return (
     <>
       {/* Chat Widget */}
-      <div className="fixed bottom-6 right-6 z-50">
+      <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50">
         {!isOpen && (
           <Button
             onClick={() => setIsOpen(true)}
-            className="h-14 w-14 rounded-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+            className="h-12 w-12 md:h-14 md:w-14 rounded-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
           >
-            <MessageCircle className="h-6 w-6" />
+            <MessageCircle className="h-5 w-5 md:h-6 md:w-6" />
           </Button>
         )}
       </div>
 
       {/* Chat Interface */}
       {isOpen && (
-        <Card className="fixed bottom-6 right-6 w-96 h-[480px] z-50 shadow-2xl border-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+        <Card 
+          ref={chatboxRef}
+          className="fixed bottom-4 right-4 md:bottom-6 md:right-6 w-full max-w-sm md:w-96 h-[400px] md:h-[480px] mx-4 md:mx-0 z-50 shadow-2xl border-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80"
+        >
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-primary/5 to-teal-500/5">
             <div className="flex items-center space-x-3">
