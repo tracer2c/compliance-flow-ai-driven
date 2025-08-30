@@ -50,7 +50,7 @@ const ChatbotWidget = () => {
 
       {/* Chat Interface */}
       {isOpen && (
-        <Card className="fixed bottom-6 right-6 w-96 h-[600px] z-50 shadow-2xl border-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+        <Card className="fixed bottom-6 right-6 w-96 h-[480px] z-50 shadow-2xl border-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b bg-gradient-to-r from-primary/5 to-teal-500/5">
             <div className="flex items-center space-x-3">
@@ -114,7 +114,7 @@ const ChatbotWidget = () => {
           </ScrollArea>
 
           {/* Input */}
-          <form onSubmit={handleSubmit} className="p-4 border-t">
+          <form onSubmit={handleSubmit} className="p-3 border-t">
             <div className="flex space-x-2">
               <input
                 type="text"

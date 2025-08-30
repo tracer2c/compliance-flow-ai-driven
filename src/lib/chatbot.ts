@@ -108,7 +108,7 @@ IMPORTANT: Respond in plain text only. Do NOT use JSON format in your response.`
         {
           type: 'contact',
           label: 'Contact Support',
-          url: '/contact'
+          url: 'https://www.tracer2c.com/contact'
         }
       ]
     };
@@ -147,12 +147,12 @@ function generateMockResponse(message: string, context: string): ChatResponse {
         {
           type: 'contact',
           label: 'Schedule Demo',
-          url: '/contact'
+          url: 'https://www.tracer2c.com/contact'
         },
         {
           type: 'link',
           label: 'View Full Pricing',
-          url: '/pricing'
+          url: 'https://www.tracer2c.com/pricing'
         }
       ]
     };
@@ -180,12 +180,12 @@ function generateMockResponse(message: string, context: string): ChatResponse {
         {
           type: 'link',
           label: 'Security Details',
-          url: '/security'
+          url: 'https://www.tracer2c.com/security'
         },
         {
           type: 'contact',
           label: 'Security Demo',
-          url: '/contact'
+          url: 'https://www.tracer2c.com/contact'
         }
       ]
     };
@@ -212,12 +212,12 @@ function generateMockResponse(message: string, context: string): ChatResponse {
         {
           type: 'link',
           label: 'View All Integrations',
-          url: '/integrations'
+          url: 'https://www.tracer2c.com/integrations'
         },
         {
           type: 'contact',
           label: 'Integration Demo',
-          url: '/contact'
+          url: 'https://www.tracer2c.com/contact'
         }
       ]
     };
@@ -231,17 +231,17 @@ function generateMockResponse(message: string, context: string): ChatResponse {
         {
           type: 'contact',
           label: 'Schedule Demo',
-          url: '/contact'
+          url: 'https://www.tracer2c.com/contact'
         },
         {
           type: 'link',
           label: 'Start Free Trial',
-          url: '/pricing'
+          url: 'https://www.tracer2c.com/pricing'
         },
         {
           type: 'link',
           label: 'Contact Sales',
-          url: '/contact'
+          url: 'https://www.tracer2c.com/contact'
         }
       ]
     };
@@ -268,12 +268,12 @@ function generateMockResponse(message: string, context: string): ChatResponse {
         {
           type: 'link',
           label: 'Learn More',
-          url: '/solutions'
+          url: 'https://www.tracer2c.com/solutions'
         },
         {
           type: 'contact',
           label: 'See Demo',
-          url: '/contact'
+          url: 'https://www.tracer2c.com/contact'
         }
       ]
     };
@@ -286,17 +286,17 @@ function generateMockResponse(message: string, context: string): ChatResponse {
       {
         type: 'contact',
         label: 'Schedule Demo',
-        url: '/contact'
+        url: 'https://www.tracer2c.com/contact'
       },
       {
         type: 'link',
         label: 'View Solutions',
-        url: '/solutions'
+        url: 'https://www.tracer2c.com/solutions'
       },
       {
         type: 'link',
         label: 'See Pricing',
-        url: '/pricing'
+        url: 'https://www.tracer2c.com/pricing'
       }
     ]
   };
