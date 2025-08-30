@@ -274,24 +274,24 @@ const Header = () => {
                 </div>
               </div>
             </SheetContent>
+            {/* Sticky Mobile CTA with Menu Trigger (inside Sheet for context) */}
+            <div className="lg:hidden fixed bottom-4 left-4 right-4 z-40">
+              <SheetTrigger asChild>
+                <Button className="w-full bg-gradient-accent text-white shadow-lg flex items-center justify-center relative">
+                  {/* Hamburger lines on the left */}
+                  <div className="absolute left-4 flex flex-col space-y-1">
+                    <div className="w-4 h-0.5 bg-black"></div>
+                    <div className="w-4 h-0.5 bg-black"></div>
+                    <div className="w-4 h-0.5 bg-black"></div>
+                  </div>
+                  <span className="ml-2">Start Free Trial</span>
+                </Button>
+              </SheetTrigger>
+            </div>
           </Sheet>
         </div>
       </div>
 
-      {/* Sticky Mobile CTA with Menu Trigger */}
-      <div className="lg:hidden fixed bottom-4 left-4 right-4 z-40">
-        <SheetTrigger asChild>
-          <Button className="w-full bg-gradient-accent text-white shadow-lg flex items-center justify-center relative">
-            {/* Hamburger lines on the left */}
-            <div className="absolute left-4 flex flex-col space-y-1">
-              <div className="w-4 h-0.5 bg-black"></div>
-              <div className="w-4 h-0.5 bg-black"></div>
-              <div className="w-4 h-0.5 bg-black"></div>
-            </div>
-            <span className="ml-2">Start Free Trial</span>
-          </Button>
-        </SheetTrigger>
-      </div>
     </header>
   );
 };
