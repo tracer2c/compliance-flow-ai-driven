@@ -201,7 +201,7 @@ const Header = () => {
                 <SheetTitle className="text-left text-navy-900">Navigation</SheetTitle>
               </SheetHeader>
               
-              <ScrollArea className="flex-1 px-1">
+              <ScrollArea className="flex-1 px-1 [&>div>div[style]]:!pr-0">
                 <div className="mt-6 space-y-6 pb-6">
                 {/* Products */}
                 <div className="space-y-3">
