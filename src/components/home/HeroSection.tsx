@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { 
@@ -64,14 +65,16 @@ const HeroSection = () => {
                 Start Free Trial
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="bg-white/20 border-white/40 text-white hover:bg-white/30 hover:text-white font-semibold px-8 py-4 text-lg backdrop-blur-sm"
-              >
-                <Play className="mr-2 h-5 w-5" />
-                See How It Works
-              </Button>
+              <Link to="/know-more">
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="bg-white/20 border-white/40 text-white hover:bg-white/30 hover:text-white font-semibold px-8 py-4 text-lg backdrop-blur-sm"
+                >
+                  <Play className="mr-2 h-5 w-5" />
+                  See How It Works
+                </Button>
+              </Link>
             </div>
 
             {/* Trust Badges */}

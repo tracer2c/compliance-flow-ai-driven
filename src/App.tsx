@@ -15,6 +15,7 @@ import BlogPost from "./pages/BlogPost";
 import GuideView from "./pages/GuideView";
 import Company from "./pages/Company";
 import Contact from "./pages/Contact";
+import KnowMore from "./pages/KnowMore";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -38,6 +39,7 @@ const App = () => (
             <Route path="/resources/guide/:slug" element={<GuideView />} />
             <Route path="/company" element={<Company />} />
             <Route path="/contact" element={<Contact />} />
+            <Route path="/know-more" element={<KnowMore />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
