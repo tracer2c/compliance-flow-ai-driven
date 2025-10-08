@@ -50,11 +50,9 @@ const SlideFrame = ({ gradient, children }) => (
       <div className="mx-auto h-full max-w-7xl">
         <div className="h-full rounded-3xl border border-white/10 bg-white/5 backdrop-blur-md overflow-hidden">
           {/* 16:9 stage that never exceeds container; inner scrolling for long content */}
-          <div className="relative h-full w-full p-4 sm:p-6 lg:p-10">
-            <div className="h-full w-full mx-auto max-w-6xl">
-              <div className="h-full aspect-video max-h-full mx-auto">
-                <div className="h-full w-full overflow-y-auto overscroll-contain pr-1">{children}</div>
-              </div>
+          <div className="relative h-full w-full p-4 sm:p-6 lg:p-10 flex items-center justify-center">
+            <div className="h-full w-full max-w-6xl">
+              <div className="h-full w-full overflow-y-auto overscroll-contain pr-1">{children}</div>
             </div>
           </div>
         </div>
@@ -65,13 +63,13 @@ const SlideFrame = ({ gradient, children }) => (
 
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
-  show: (i = 0) => ({ opacity: 1, y: 0, transition: { delay: 0.08 * i, duration: 0.5, ease: "easeOut" } }),
+  show: { opacity: 1, y: 0 },
 };
 
 const slideSwitch = {
   initial: (dir) => ({ opacity: 0, x: dir === "forward" ? 40 : -40, scale: 0.98 }),
-  animate: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
-  exit: (dir) => ({ opacity: 0, x: dir === "forward" ? -40 : 40, scale: 0.98, transition: { duration: 0.35 } }),
+  animate: { opacity: 1, x: 0, scale: 1 },
+  exit: (dir) => ({ opacity: 0, x: dir === "forward" ? -40 : 40, scale: 0.98 }),
 };
 
 const bullets = (items, color) => (
@@ -79,10 +77,10 @@ const bullets = (items, color) => (
     {items.map((t, i) => (
       <motion.li
         key={i}
-        custom={i}
         variants={fadeUp}
         initial="hidden"
         animate="show"
+        transition={{ delay: 0.08 * i, duration: 0.5 }}
         className={`${TYPO.body} flex items-start gap-2`}
       >
         <span className={`mt-1 inline-block h-2 w-2 rounded-full bg-gradient-to-r ${color}`} />
@@ -164,6 +162,7 @@ export default function ComplianceFlowPresentation() {
           initial="initial"
           animate="animate"
           exit="exit"
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           className="h-full w-full"
         >
           {/* Per-slide content */}
@@ -225,18 +224,30 @@ function IntroSlide() {
   return (
     <div className="h-full w-full flex items-center justify-center px-4">
       <div className="text-center space-y-6">
-        <motion.h1 className={`${TYPO.h1} text-balance`} variants={fadeUp} initial="hidden" animate="show">
+        <motion.h1 
+          className={`${TYPO.h1} text-balance`} 
+          variants={fadeUp} 
+          initial="hidden" 
+          animate="show"
+          transition={{ duration: 0.5 }}
+        >
           traceR2C
         </motion.h1>
-        <motion.p className={`${TYPO.lead} text-balance`} custom={1} variants={fadeUp} initial="hidden" animate="show">
+        <motion.p 
+          className={`${TYPO.lead} text-balance`} 
+          variants={fadeUp} 
+          initial="hidden" 
+          animate="show"
+          transition={{ delay: 0.08, duration: 0.5 }}
+        >
           Compliance Flow — The next‑generation AI‑powered compliance management platform
         </motion.p>
         <motion.div
           className="mt-4 flex flex-wrap items-center justify-center gap-4"
-          custom={2}
           variants={fadeUp}
           initial="hidden"
           animate="show"
+          transition={{ delay: 0.16, duration: 0.5 }}
         >
           {[
             { icon: Shield, text: "Secure & Compliant", color: "from-emerald-400 to-teal-500" },
@@ -289,6 +300,7 @@ function OverviewSlide() {
           variants={fadeUp}
           initial="hidden"
           animate="show"
+          transition={{ duration: 0.5 }}
         >
           What is{" "}
           <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
@@ -300,10 +312,10 @@ function OverviewSlide() {
           {cards.map((c, i) => (
             <motion.div
               key={c.title}
-              custom={i}
               variants={fadeUp}
               initial="hidden"
               animate="show"
+              transition={{ delay: 0.08 * (i + 1), duration: 0.5 }}
               whileHover={{ y: -6 }}
               className="rounded-2xl border border-white/10 bg-white/5 p-5 sm:p-6"
             >
@@ -364,7 +376,13 @@ function FeaturesSlide({ side }) {
   return (
     <div className="h-full w-full flex items-center justify-center p-2 sm:p-4">
       <div className="w-full">
-        <motion.div className="text-center mb-6 sm:mb-8" variants={fadeUp} initial="hidden" animate="show">
+        <motion.div 
+          className="text-center mb-6 sm:mb-8" 
+          variants={fadeUp} 
+          initial="hidden" 
+          animate="show"
+          transition={{ duration: 0.5 }}
+        >
           <h2 className={`${TYPO.h2} text-balance`}>
             {heading} <span className={`bg-gradient-to-r ${color} bg-clip-text text-transparent`}>Features</span>
           </h2>
@@ -378,10 +396,10 @@ function FeaturesSlide({ side }) {
           {features.map((f, i) => (
             <motion.div
               key={f.title}
-              custom={i}
               variants={fadeUp}
               initial="hidden"
               animate="show"
+              transition={{ delay: 0.08 * (i + 1), duration: 0.5 }}
               whileHover={{ y: -4 }}
               className="rounded-2xl border border-white/10 bg-white/5 p-5"
             >
@@ -439,6 +457,7 @@ function FlowSlide() {
           variants={fadeUp}
           initial="hidden"
           animate="show"
+          transition={{ duration: 0.5 }}
         >
           <span className="bg-gradient-to-r from-emerald-400 to-orange-400 bg-clip-text text-transparent">
             Buyer ↔ Supplier
@@ -449,10 +468,10 @@ function FlowSlide() {
           {steps.map((s, i) => (
             <motion.div
               key={s.n}
-              custom={i}
               variants={fadeUp}
               initial="hidden"
               animate="show"
+              transition={{ delay: 0.08 * (i + 1), duration: 0.5 }}
               className="grid grid-cols-1 md:grid-cols-3 gap-3"
             >
               <div className="rounded-2xl border border-emerald-400/30 bg-emerald-500/10 p-4">
@@ -506,7 +525,13 @@ function AIOverviewSlide() {
   return (
     <div className="h-full w-full flex items-center justify-center p-2 sm:p-4">
       <div className="w-full">
-        <motion.div className="mb-6 sm:mb-8 text-center" variants={fadeUp} initial="hidden" animate="show">
+        <motion.div 
+          className="mb-6 sm:mb-8 text-center" 
+          variants={fadeUp} 
+          initial="hidden" 
+          animate="show"
+          transition={{ duration: 0.5 }}
+        >
           <div className="mb-2 inline-flex items-center gap-2">
             <Sparkles className="h-6 w-6 text-purple-300" />
             <h2 className={TYPO.h2}>
@@ -525,6 +550,7 @@ function AIOverviewSlide() {
             variants={fadeUp}
             initial="hidden"
             animate="show"
+            transition={{ delay: 0.08, duration: 0.5 }}
             className="rounded-2xl border border-white/10 bg-white/5 p-5 sm:p-6"
           >
             <h3 className={TYPO.h3}>How it works</h3>
@@ -532,10 +558,10 @@ function AIOverviewSlide() {
               {how.map((it, i) => (
                 <motion.div
                   key={it.step}
-                  custom={i}
                   variants={fadeUp}
                   initial="hidden"
                   animate="show"
+                  transition={{ delay: 0.08 * (i + 2), duration: 0.5 }}
                   className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3"
                 >
                   <div className={`rounded-xl bg-gradient-to-br ${it.color} p-2 text-xl`}>{it.icon}</div>
@@ -552,6 +578,7 @@ function AIOverviewSlide() {
             variants={fadeUp}
             initial="hidden"
             animate="show"
+            transition={{ delay: 0.16, duration: 0.5 }}
             className="rounded-2xl border border-purple-400/30 bg-gradient-to-br from-purple-500/15 to-pink-500/15 p-5 sm:p-6"
           >
             <h3 className={TYPO.h3}>Key capabilities</h3>
@@ -559,10 +586,10 @@ function AIOverviewSlide() {
               {caps.map((c, i) => (
                 <motion.div
                   key={c.title}
-                  custom={i}
                   variants={fadeUp}
                   initial="hidden"
                   animate="show"
+                  transition={{ delay: 0.08 * (i + 3), duration: 0.5 }}
                   className="rounded-xl border border-white/10 bg-white/5 p-3"
                 >
                   <div className="mb-1 flex items-center gap-2">
@@ -614,6 +641,7 @@ function AIAgentsSlide() {
       variants={fadeUp}
       initial="hidden"
       animate="show"
+      transition={{ duration: 0.5 }}
       className={`rounded-2xl border p-5 ${color.border} ${color.bg}`}
     >
       <div className="mb-4 flex items-center gap-3">
@@ -629,7 +657,13 @@ function AIAgentsSlide() {
   return (
     <div className="h-full w-full flex items-center justify-center p-2 sm:p-4">
       <div className="w-full">
-        <motion.h2 className={`${TYPO.h2} text-center mb-6 sm:mb-8`} variants={fadeUp} initial="hidden" animate="show">
+        <motion.h2 
+          className={`${TYPO.h2} text-center mb-6 sm:mb-8`} 
+          variants={fadeUp} 
+          initial="hidden" 
+          animate="show"
+          transition={{ duration: 0.5 }}
+        >
           🤖 AI{" "}
           <span className="bg-gradient-to-r from-pink-400 to-rose-500 bg-clip-text text-transparent">
             Agent Workflows
@@ -675,6 +709,7 @@ function AIAgentsSlide() {
           variants={fadeUp}
           initial="hidden"
           animate="show"
+          transition={{ delay: 0.24, duration: 0.5 }}
           className="rounded-2xl border border-white/10 bg-white/5 p-5"
         >
           <h3 className={`${TYPO.h3} text-center mb-4`}>Decision Logic</h3>
@@ -736,7 +771,13 @@ function DataFlowsSlide() {
   return (
     <div className="h-full w-full flex items-center justify-center p-2 sm:p-4">
       <div className="w-full">
-        <motion.h2 className={`${TYPO.h2} text-center mb-6 sm:mb-8`} variants={fadeUp} initial="hidden" animate="show">
+        <motion.h2 
+          className={`${TYPO.h2} text-center mb-6 sm:mb-8`} 
+          variants={fadeUp} 
+          initial="hidden" 
+          animate="show"
+          transition={{ duration: 0.5 }}
+        >
           Key{" "}
           <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Data Flows</span>
         </motion.h2>
@@ -744,10 +785,10 @@ function DataFlowsSlide() {
           {flows.map((f, i) => (
             <motion.div
               key={f.title}
-              custom={i}
               variants={fadeUp}
               initial="hidden"
               animate="show"
+              transition={{ delay: 0.08 * (i + 1), duration: 0.5 }}
               className="rounded-2xl border border-white/10 bg-white/5 p-5"
             >
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -786,7 +827,13 @@ function FinaleSlide() {
   return (
     <div className="h-full w-full flex items-center justify-center px-4">
       <div className="text-center">
-        <motion.h1 className={`${TYPO.h1} text-balance`} variants={fadeUp} initial="hidden" animate="show">
+        <motion.h1 
+          className={`${TYPO.h1} text-balance`} 
+          variants={fadeUp} 
+          initial="hidden" 
+          animate="show"
+          transition={{ duration: 0.5 }}
+        >
           Transform your{" "}
           <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent">
             compliance journey
@@ -796,10 +843,10 @@ function FinaleSlide() {
           {stats.map((s, i) => (
             <motion.div
               key={s.label}
-              custom={i}
               variants={fadeUp}
               initial="hidden"
               animate="show"
+              transition={{ delay: 0.08 * (i + 1), duration: 0.5 }}
               whileHover={{ scale: 1.03 }}
               className="rounded-2xl border border-white/10 bg-white/5 p-5"
             >
@@ -817,7 +864,7 @@ function FinaleSlide() {
           variants={fadeUp}
           initial="hidden"
           animate="show"
-          custom={3}
+          transition={{ delay: 0.24, duration: 0.5 }}
         >
           <button className="rounded-2xl border border-white/10 bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-white shadow-lg transition hover:shadow-purple-500/40 hover:brightness-110">
             Get started today
