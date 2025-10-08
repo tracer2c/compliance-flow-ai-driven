@@ -42,9 +42,7 @@ const TYPO = {
 const SlideFrame = ({ gradient, children }) => (
   <div className="relative w-full h-dvh bg-slate-950">
     {/* Soft ambient background tied to slide theme */}
-    <div
-      className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-15 pointer-events-none`}
-    />
+    <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-15 pointer-events-none`} />
     <div className="absolute inset-0 bg-[radial-gradient(80%_60%_at_50%_40%,rgba(255,255,255,0.08),transparent)]" />
 
     {/* Stage: enforced container w/ 16:9 area and safe padding */}
@@ -55,9 +53,7 @@ const SlideFrame = ({ gradient, children }) => (
           <div className="relative h-full w-full p-4 sm:p-6 lg:p-10">
             <div className="h-full w-full mx-auto max-w-6xl">
               <div className="h-full aspect-video max-h-full mx-auto">
-                <div className="h-full w-full overflow-y-auto overscroll-contain pr-1">
-                  {children}
-                </div>
+                <div className="h-full w-full overflow-y-auto overscroll-contain pr-1">{children}</div>
               </div>
             </div>
           </div>
@@ -69,19 +65,26 @@ const SlideFrame = ({ gradient, children }) => (
 
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
-  show: (i = 0) => ({ opacity: 1, y: 0, transition: { delay: 0.08 * i, duration: 0.5 } }),
+  show: (i = 0) => ({ opacity: 1, y: 0, transition: { delay: 0.08 * i, duration: 0.5, ease: "easeOut" } }),
 };
 
 const slideSwitch = {
   initial: (dir) => ({ opacity: 0, x: dir === "forward" ? 40 : -40, scale: 0.98 }),
-  animate: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.45 } },
+  animate: { opacity: 1, x: 0, scale: 1, transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1] } },
   exit: (dir) => ({ opacity: 0, x: dir === "forward" ? -40 : 40, scale: 0.98, transition: { duration: 0.35 } }),
 };
 
 const bullets = (items, color) => (
   <ul className="mt-3 space-y-2">
     {items.map((t, i) => (
-      <motion.li key={i} custom={i} variants={fadeUp} initial="hidden" animate="show" className={`${TYPO.body} flex items-start gap-2`}>
+      <motion.li
+        key={i}
+        custom={i}
+        variants={fadeUp}
+        initial="hidden"
+        animate="show"
+        className={`${TYPO.body} flex items-start gap-2`}
+      >
         <span className={`mt-1 inline-block h-2 w-2 rounded-full bg-gradient-to-r ${color}`} />
         <span className="text-balance">{t}</span>
       </motion.li>
@@ -90,15 +93,43 @@ const bullets = (items, color) => (
 );
 
 const slides = [
-  { id: "intro", title: "traceR2C", subtitle: "Compliance Flow", type: "intro", gradient: "from-blue-600 via-purple-600 to-pink-600" },
+  {
+    id: "intro",
+    title: "traceR2C",
+    subtitle: "Compliance Flow",
+    type: "intro",
+    gradient: "from-blue-600 via-purple-600 to-pink-600",
+  },
   { id: "overview", title: "What is Compliance Flow?", type: "overview", gradient: "from-cyan-500 to-blue-600" },
-  { id: "buyer-features", title: "Buyer Features", type: "features", side: "buyer", gradient: "from-emerald-500 to-teal-600" },
-  { id: "supplier-features", title: "Supplier Features", type: "features", side: "supplier", gradient: "from-orange-500 to-red-600" },
-  { id: "buyer-supplier-flow", title: "Buyer ↔ Supplier Flow", type: "flow", gradient: "from-violet-600 to-purple-700" },
+  {
+    id: "buyer-features",
+    title: "Buyer Features",
+    type: "features",
+    side: "buyer",
+    gradient: "from-emerald-500 to-teal-600",
+  },
+  {
+    id: "supplier-features",
+    title: "Supplier Features",
+    type: "features",
+    side: "supplier",
+    gradient: "from-orange-500 to-red-600",
+  },
+  {
+    id: "buyer-supplier-flow",
+    title: "Buyer ↔ Supplier Flow",
+    type: "flow",
+    gradient: "from-violet-600 to-purple-700",
+  },
   { id: "ai-compass", title: "Compliance Compass AI", type: "ai-overview", gradient: "from-indigo-600 to-blue-700" },
   { id: "ai-agents", title: "AI Agent Workflows", type: "ai-agents", gradient: "from-pink-600 to-rose-700" },
   { id: "data-flows", title: "Key Data Flows", type: "data-flows", gradient: "from-teal-600 to-cyan-700" },
-  { id: "finale", title: "Transform Your Compliance", type: "finale", gradient: "from-purple-600 via-pink-600 to-red-600" },
+  {
+    id: "finale",
+    title: "Transform Your Compliance",
+    type: "finale",
+    gradient: "from-purple-600 via-pink-600 to-red-600",
+  },
 ];
 
 export default function ComplianceFlowPresentation() {
@@ -200,7 +231,13 @@ function IntroSlide() {
         <motion.p className={`${TYPO.lead} text-balance`} custom={1} variants={fadeUp} initial="hidden" animate="show">
           Compliance Flow — The next‑generation AI‑powered compliance management platform
         </motion.p>
-        <motion.div className="mt-4 flex flex-wrap items-center justify-center gap-4" custom={2} variants={fadeUp} initial="hidden" animate="show">
+        <motion.div
+          className="mt-4 flex flex-wrap items-center justify-center gap-4"
+          custom={2}
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+        >
           {[
             { icon: Shield, text: "Secure & Compliant", color: "from-emerald-400 to-teal-500" },
             { icon: Bot, text: "AI‑Powered Automation", color: "from-purple-400 to-pink-500" },
@@ -225,15 +262,39 @@ function IntroSlide() {
 
 function OverviewSlide() {
   const cards = [
-    { icon: Network, title: "Connect", desc: "Unify buyers and suppliers on an intelligent platform.", color: "from-blue-500 to-cyan-500" },
-    { icon: FileText, title: "Manage", desc: "Centralized documents with smart workflows and automation.", color: "from-purple-500 to-pink-500" },
-    { icon: Bot, title: "Automate", desc: "Always‑on AI agents to keep you compliant.", color: "from-emerald-500 to-teal-500" },
+    {
+      icon: Network,
+      title: "Connect",
+      desc: "Unify buyers and suppliers on an intelligent platform.",
+      color: "from-blue-500 to-cyan-500",
+    },
+    {
+      icon: FileText,
+      title: "Manage",
+      desc: "Centralized documents with smart workflows and automation.",
+      color: "from-purple-500 to-pink-500",
+    },
+    {
+      icon: Bot,
+      title: "Automate",
+      desc: "Always‑on AI agents to keep you compliant.",
+      color: "from-emerald-500 to-teal-500",
+    },
   ];
   return (
     <div className="h-full w-full flex items-center justify-center p-2 sm:p-4">
       <div className="w-full">
-        <motion.h2 className={`${TYPO.h2} text-center text-balance mb-6 sm:mb-10`} variants={fadeUp} initial="hidden" animate="show">
-          What is <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Compliance Flow</span>?
+        <motion.h2
+          className={`${TYPO.h2} text-center text-balance mb-6 sm:mb-10`}
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+        >
+          What is{" "}
+          <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
+            Compliance Flow
+          </span>
+          ?
         </motion.h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
           {cards.map((c, i) => (
@@ -261,19 +322,39 @@ function OverviewSlide() {
 
 function FeaturesSlide({ side }) {
   const buyer = [
-    { icon: Users, title: "Supplier Management", items: ["Supplier Discovery", "Quick Onboarding", "Bulk Invitations"] },
+    {
+      icon: Users,
+      title: "Supplier Management",
+      items: ["Supplier Discovery", "Quick Onboarding", "Bulk Invitations"],
+    },
     { icon: FileText, title: "Document Control", items: ["Custom Templates", "Document Requests", "Pre‑population"] },
-    { icon: BarChart3, title: "Analytics & Insights", items: ["Compliance Dashboard", "Risk Management", "Performance Tracking"] },
-    { icon: Building2, title: "Multi‑Branch Support", items: ["Branch Management", "Separate Libraries", "Branch Selector"] },
+    {
+      icon: BarChart3,
+      title: "Analytics & Insights",
+      items: ["Compliance Dashboard", "Risk Management", "Performance Tracking"],
+    },
+    {
+      icon: Building2,
+      title: "Multi‑Branch Support",
+      items: ["Branch Management", "Separate Libraries", "Branch Selector"],
+    },
     { icon: Bot, title: "AI‑Powered Tools", items: ["Compliance Compass", "Buyer Agent", "Auto‑Approval"] },
     { icon: Zap, title: "Smart Workflows", items: ["Approval Chains", "Task Assignments", "Automation Rules"] },
   ];
   const supplier = [
-    { icon: Network, title: "Buyer Connections", items: ["Quick Connect via ID", "Multi‑Buyer Support", "Branch Selection"] },
+    {
+      icon: Network,
+      title: "Buyer Connections",
+      items: ["Quick Connect via ID", "Multi‑Buyer Support", "Branch Selection"],
+    },
     { icon: FileText, title: "Document Hub", items: ["Easy Upload", "Document Library", "Template Responses"] },
     { icon: Building2, title: "Item & Facility", items: ["Item Management", "Facility Tracking", "Compliance View"] },
     { icon: Users, title: "Contact Management", items: ["Role Assignment", "Smart Notifications", "Team Setup"] },
-    { icon: TrendingUp, title: "Performance Metrics", items: ["Compliance Status", "Response Analytics", "Insights Dashboard"] },
+    {
+      icon: TrendingUp,
+      title: "Performance Metrics",
+      items: ["Compliance Status", "Response Analytics", "Insights Dashboard"],
+    },
     { icon: Bot, title: "AI Assistant", items: ["Compliance Help", "Supplier Agent", "Auto‑Matching"] },
   ];
   const features = side === "buyer" ? buyer : supplier;
@@ -288,7 +369,9 @@ function FeaturesSlide({ side }) {
             {heading} <span className={`bg-gradient-to-r ${color} bg-clip-text text-transparent`}>Features</span>
           </h2>
           <p className={`${TYPO.lead} mt-2`}>
-            {side === "buyer" ? "Comprehensive tools for managing your suppliers." : "Everything you need to stay compliant."}
+            {side === "buyer"
+              ? "Comprehensive tools for managing your suppliers."
+              : "Everything you need to stay compliant."}
           </p>
         </motion.div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
@@ -317,24 +400,66 @@ function FeaturesSlide({ side }) {
 
 function FlowSlide() {
   const steps = [
-    { n: 1, title: "Discovery & Connection", buyer: "Find and connect with suppliers.", supplier: "Accept connection request." },
-    { n: 2, title: "Onboarding Setup", buyer: "Select branches and required documents.", supplier: "Choose branches and upload documents." },
-    { n: 3, title: "Document Requests", buyer: "Request specific compliance documents.", supplier: "Submit requested documents." },
-    { n: 4, title: "Review & Approval", buyer: "Review manually or AI auto‑approval.", supplier: "Receive approval or feedback." },
-    { n: 5, title: "Ongoing Compliance", buyer: "Monitor performance and manage risks.", supplier: "Maintain compliance status." },
+    {
+      n: 1,
+      title: "Discovery & Connection",
+      buyer: "Find and connect with suppliers.",
+      supplier: "Accept connection request.",
+    },
+    {
+      n: 2,
+      title: "Onboarding Setup",
+      buyer: "Select branches and required documents.",
+      supplier: "Choose branches and upload documents.",
+    },
+    {
+      n: 3,
+      title: "Document Requests",
+      buyer: "Request specific compliance documents.",
+      supplier: "Submit requested documents.",
+    },
+    {
+      n: 4,
+      title: "Review & Approval",
+      buyer: "Review manually or AI auto‑approval.",
+      supplier: "Receive approval or feedback.",
+    },
+    {
+      n: 5,
+      title: "Ongoing Compliance",
+      buyer: "Monitor performance and manage risks.",
+      supplier: "Maintain compliance status.",
+    },
   ];
   return (
     <div className="h-full w-full flex items-center justify-center p-2 sm:p-4">
       <div className="w-full">
-        <motion.h2 className={`${TYPO.h2} text-center mb-6 sm:mb-8 text-balance`} variants={fadeUp} initial="hidden" animate="show">
-          <span className="bg-gradient-to-r from-emerald-400 to-orange-400 bg-clip-text text-transparent">Buyer ↔ Supplier</span> Flow
+        <motion.h2
+          className={`${TYPO.h2} text-center mb-6 sm:mb-8 text-balance`}
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+        >
+          <span className="bg-gradient-to-r from-emerald-400 to-orange-400 bg-clip-text text-transparent">
+            Buyer ↔ Supplier
+          </span>{" "}
+          Flow
         </motion.h2>
         <div className="space-y-3 sm:space-y-4">
           {steps.map((s, i) => (
-            <motion.div key={s.n} custom={i} variants={fadeUp} initial="hidden" animate="show" className="grid grid-cols-1 md:grid-cols-3 gap-3">
+            <motion.div
+              key={s.n}
+              custom={i}
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              className="grid grid-cols-1 md:grid-cols-3 gap-3"
+            >
               <div className="rounded-2xl border border-emerald-400/30 bg-emerald-500/10 p-4">
                 <div className="mb-1 flex items-center gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 text-white text-sm font-bold shadow" >{s.n}</div>
+                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 text-white text-sm font-bold shadow">
+                    {s.n}
+                  </div>
                   <span className="text-emerald-300 text-[11px] font-semibold tracking-widest">BUYER</span>
                 </div>
                 <p className={TYPO.body}>{s.buyer}</p>
@@ -348,7 +473,9 @@ function FlowSlide() {
               </div>
               <div className="rounded-2xl border border-orange-400/30 bg-orange-500/10 p-4">
                 <div className="mb-1 flex items-center gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-red-500 text-white text-sm font-bold shadow" >{s.n}</div>
+                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-red-500 text-white text-sm font-bold shadow">
+                    {s.n}
+                  </div>
                   <span className="text-orange-300 text-[11px] font-semibold tracking-widest">SUPPLIER</span>
                 </div>
                 <p className={TYPO.body}>{s.supplier}</p>
@@ -382,30 +509,62 @@ function AIOverviewSlide() {
         <motion.div className="mb-6 sm:mb-8 text-center" variants={fadeUp} initial="hidden" animate="show">
           <div className="mb-2 inline-flex items-center gap-2">
             <Sparkles className="h-6 w-6 text-purple-300" />
-            <h2 className={TYPO.h2}><span className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">Compliance Compass</span> AI</h2>
+            <h2 className={TYPO.h2}>
+              <span className="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">
+                Compliance Compass
+              </span>{" "}
+              AI
+            </h2>
             <Sparkles className="h-6 w-6 text-purple-300" />
           </div>
           <p className={TYPO.lead}>Your intelligent 24/7 compliance assistant.</p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-          <motion.div variants={fadeUp} initial="hidden" animate="show" className="rounded-2xl border border-white/10 bg-white/5 p-5 sm:p-6">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="rounded-2xl border border-white/10 bg-white/5 p-5 sm:p-6"
+          >
             <h3 className={TYPO.h3}>How it works</h3>
             <div className="mt-3 space-y-2">
               {how.map((it, i) => (
-                <motion.div key={it.step} custom={i} variants={fadeUp} initial="hidden" animate="show" className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3">
+                <motion.div
+                  key={it.step}
+                  custom={i}
+                  variants={fadeUp}
+                  initial="hidden"
+                  animate="show"
+                  className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-3"
+                >
                   <div className={`rounded-xl bg-gradient-to-br ${it.color} p-2 text-xl`}>{it.icon}</div>
-                  <div className={`${TYPO.body} text-pretty`}><span className="font-semibold text-white mr-1">Step {it.step}</span>{it.text}</div>
+                  <div className={`${TYPO.body} text-pretty`}>
+                    <span className="font-semibold text-white mr-1">Step {it.step}</span>
+                    {it.text}
+                  </div>
                 </motion.div>
               ))}
             </div>
           </motion.div>
 
-          <motion.div variants={fadeUp} initial="hidden" animate="show" className="rounded-2xl border border-purple-400/30 bg-gradient-to-br from-purple-500/15 to-pink-500/15 p-5 sm:p-6">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            animate="show"
+            className="rounded-2xl border border-purple-400/30 bg-gradient-to-br from-purple-500/15 to-pink-500/15 p-5 sm:p-6"
+          >
             <h3 className={TYPO.h3}>Key capabilities</h3>
             <div className="mt-3 grid grid-cols-1 gap-3">
               {caps.map((c, i) => (
-                <motion.div key={c.title} custom={i} variants={fadeUp} initial="hidden" animate="show" className="rounded-xl border border-white/10 bg-white/5 p-3">
+                <motion.div
+                  key={c.title}
+                  custom={i}
+                  variants={fadeUp}
+                  initial="hidden"
+                  animate="show"
+                  className="rounded-xl border border-white/10 bg-white/5 p-3"
+                >
                   <div className="mb-1 flex items-center gap-2">
                     <span className="text-lg">{c.icon}</span>
                     <h4 className={`${TYPO.h4} !text-lg`}>{c.title}</h4>
@@ -451,7 +610,12 @@ function AIAgentsSlide() {
   ];
 
   const Card = ({ title, icon: Icon, color, items }) => (
-    <motion.div variants={fadeUp} initial="hidden" animate="show" className={`rounded-2xl border p-5 ${color.border} ${color.bg}`}>
+    <motion.div
+      variants={fadeUp}
+      initial="hidden"
+      animate="show"
+      className={`rounded-2xl border p-5 ${color.border} ${color.bg}`}
+    >
       <div className="mb-4 flex items-center gap-3">
         <div className={`rounded-xl p-3 ${color.iconBg}`}>
           <Icon className="h-7 w-7 text-white" />
@@ -466,7 +630,10 @@ function AIAgentsSlide() {
     <div className="h-full w-full flex items-center justify-center p-2 sm:p-4">
       <div className="w-full">
         <motion.h2 className={`${TYPO.h2} text-center mb-6 sm:mb-8`} variants={fadeUp} initial="hidden" animate="show">
-          🤖 AI <span className="bg-gradient-to-r from-pink-400 to-rose-500 bg-clip-text text-transparent">Agent Workflows</span>
+          🤖 AI{" "}
+          <span className="bg-gradient-to-r from-pink-400 to-rose-500 bg-clip-text text-transparent">
+            Agent Workflows
+          </span>
         </motion.h2>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-4">
           <Card
@@ -504,7 +671,12 @@ function AIAgentsSlide() {
           />
         </div>
 
-        <motion.div variants={fadeUp} initial="hidden" animate="show" className="rounded-2xl border border-white/10 bg-white/5 p-5">
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          className="rounded-2xl border border-white/10 bg-white/5 p-5"
+        >
           <h3 className={`${TYPO.h3} text-center mb-4`}>Decision Logic</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="rounded-2xl border border-emerald-400/40 bg-emerald-500/15 p-5">
@@ -538,7 +710,14 @@ function DataFlowsSlide() {
       title: "Knowledge Base (RAG)",
       color: "from-blue-400 to-cyan-500",
       icon: "🧠",
-      steps: ["Document Upload", "Content Extract", "OpenAI Embedding", "Vector Store", "Semantic Search", "GPT Answer"],
+      steps: [
+        "Document Upload",
+        "Content Extract",
+        "OpenAI Embedding",
+        "Vector Store",
+        "Semantic Search",
+        "GPT Answer",
+      ],
     },
     {
       title: "Notification System",
@@ -558,7 +737,8 @@ function DataFlowsSlide() {
     <div className="h-full w-full flex items-center justify-center p-2 sm:p-4">
       <div className="w-full">
         <motion.h2 className={`${TYPO.h2} text-center mb-6 sm:mb-8`} variants={fadeUp} initial="hidden" animate="show">
-          Key <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Data Flows</span>
+          Key{" "}
+          <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Data Flows</span>
         </motion.h2>
         <div className="space-y-4">
           {flows.map((f, i) => (
@@ -577,7 +757,11 @@ function DataFlowsSlide() {
                   <div className="flex flex-wrap items-center gap-2">
                     {f.steps.map((s, j) => (
                       <React.Fragment key={s}>
-                        <div className={`whitespace-nowrap rounded-2xl border border-white/10 px-3 py-1.5 font-medium text-white bg-gradient-to-r ${f.color} bg-opacity-20`}>{s}</div>
+                        <div
+                          className={`whitespace-nowrap rounded-2xl border border-white/10 px-3 py-1.5 font-medium text-white bg-gradient-to-r ${f.color} bg-opacity-20`}
+                        >
+                          {s}
+                        </div>
                         {j < f.steps.length - 1 && <ArrowRight className="h-4 w-4 text-slate-400" />}
                       </React.Fragment>
                     ))}
@@ -603,8 +787,10 @@ function FinaleSlide() {
     <div className="h-full w-full flex items-center justify-center px-4">
       <div className="text-center">
         <motion.h1 className={`${TYPO.h1} text-balance`} variants={fadeUp} initial="hidden" animate="show">
-          Transform your {" "}
-          <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent">compliance journey</span>
+          Transform your{" "}
+          <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent">
+            compliance journey
+          </span>
         </motion.h1>
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
           {stats.map((s, i) => (
@@ -626,9 +812,19 @@ function FinaleSlide() {
           ))}
         </div>
 
-        <motion.div className="mt-6 flex flex-wrap items-center justify-center gap-3" variants={fadeUp} initial="hidden" animate="show" custom={3}>
-          <button className="rounded-2xl border border-white/10 bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-white shadow-lg transition hover:shadow-purple-500/40 hover:brightness-110">Get started today</button>
-          <button className="rounded-2xl border border-white/20 bg-white/10 px-6 py-3 font-bold text-white transition hover:bg-white/20">Schedule demo</button>
+        <motion.div
+          className="mt-6 flex flex-wrap items-center justify-center gap-3"
+          variants={fadeUp}
+          initial="hidden"
+          animate="show"
+          custom={3}
+        >
+          <button className="rounded-2xl border border-white/10 bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-white shadow-lg transition hover:shadow-purple-500/40 hover:brightness-110">
+            Get started today
+          </button>
+          <button className="rounded-2xl border border-white/20 bg-white/10 px-6 py-3 font-bold text-white transition hover:bg-white/20">
+            Schedule demo
+          </button>
         </motion.div>
 
         <div className="mt-5 text-center">
