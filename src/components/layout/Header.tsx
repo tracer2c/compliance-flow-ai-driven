@@ -157,13 +157,6 @@ const Header = () => {
 
           {/* Right Section */}
           <div className="hidden lg:flex items-center space-x-4">
-            {/* CTA Buttons */}
-            <Button 
-              variant="outline" 
-              className="border-navy-200 text-navy-700 hover:bg-navy-50"
-            >
-              Schedule Demo
-            </Button>
             <a href="https://compliance.tracer2c.com" target="_self">
               <Button className="bg-gradient-accent text-white hover:opacity-90 font-medium">
                 Start Free Trial
@@ -259,13 +252,6 @@ const Header = () => {
 
                 {/* Mobile CTAs */}
                 <div className="space-y-3 border-t border-gray-200 pt-6">
-                  <Button 
-                    variant="outline" 
-                    className="w-full border-navy-200 text-navy-700"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    Schedule Demo
-                  </Button>
                   <a href="https://compliance.tracer2c.com" target="_self" className="w-full">
                     <Button 
                       className="w-full bg-gradient-accent text-white"

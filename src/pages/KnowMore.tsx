@@ -869,9 +869,6 @@ function FinaleSlide() {
           <button className="rounded-2xl border border-white/10 bg-gradient-to-r from-purple-600 to-pink-600 px-6 py-3 font-bold text-white shadow-lg transition hover:shadow-purple-500/40 hover:brightness-110">
             Get started today
           </button>
-          <button className="rounded-2xl border border-white/20 bg-white/10 px-6 py-3 font-bold text-white transition hover:bg-white/20">
-            Schedule demo
-          </button>
         </motion.div>
 
         <div className="mt-5 text-center">

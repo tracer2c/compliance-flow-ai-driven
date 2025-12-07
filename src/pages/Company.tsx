@@ -278,9 +278,6 @@ const Company = () => {
                 Start Free Trial
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-              <Button size="lg" variant="outline" className="bg-white/20 border-white/40 text-white hover:bg-white/30 font-semibold px-8 py-4">
-                Schedule Demo
-              </Button>
             </div>
           </div>
         </div>
