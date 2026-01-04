@@ -1,52 +1,59 @@
 "use client";
 
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { motion, useScroll, useSpring, useTransform, useMotionValue, animate } from "framer-motion";
+import {
+  AnimatePresence,
+  MotionValue,
+  animate,
+  motion,
+  useInView,
+  useMotionValue,
+  useScroll,
+  useSpring,
+  useTransform,
+  useVelocity,
+} from "framer-motion";
 import {
   ArrowRight,
-  ShieldCheck,
-  Lock,
-  ClipboardCheck,
-  LineChart,
-  Globe,
-  Sparkles,
-  BellRing,
-  Users,
   BadgeCheck,
-  Workflow,
-  FileCheck2,
-  Timer,
-  Server,
-  KeyRound,
+  BellRing,
   ChevronDown,
+  ClipboardCheck,
+  FileCheck2,
+  Globe,
+  KeyRound,
+  LineChart,
+  Lock,
+  ShieldCheck,
+  Sparkles,
+  Timer,
+  Users,
+  Workflow,
 } from "lucide-react";
 
 /**
- * TraceR2C — Ultra-premium enterprise landing page
+ * TraceR2C — Premium Enterprise Landing
  * Next.js + Tailwind + Framer Motion + lucide-react
  *
- * Dependencies:
- *   npm i framer-motion lucide-react
+ * npm i framer-motion lucide-react
  */
 
 const BRAND = {
-  accent: "#2DD4BF", // teal/cyan (enterprise-modern)
-  accent2: "#60A5FA", // soft azure
-  base: "#070A12", // near-black navy
-  panel: "#0B1220", // deep panel navy
+  accent: "#2DD4BF", // enterprise teal
+  accent2: "#60A5FA", // azure
+  base: "#070A12",
+  panel: "#0B1220",
 };
 
+type PillMode = "SSO" | "RBAC" | "AUDIT" | "ENCRYPT";
+
 export default function Page() {
-  // Smooth anchor scrolling
   useEffect(() => {
     document.documentElement.style.scrollBehavior = "smooth";
     return () => {
       document.documentElement.style.scrollBehavior = "";
     };
   }, []);
-
-  const { scrollYProgress, scrollY } = useScroll();
-  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.2 });
 
   const sections = useMemo(
     () => [
@@ -62,53 +69,73 @@ export default function Page() {
   );
   const active = useActiveSection(sections.map((s) => s.id));
 
-  // Parallax layers driven by scroll
-  const bgY1 = useTransform(scrollY, [0, 1200], [0, 120]);
-  const bgY2 = useTransform(scrollY, [0, 1200], [0, -80]);
-  const bgY3 = useTransform(scrollY, [0, 1800], [0, 160]);
+  const { scrollY, scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 28, mass: 0.2 });
 
-  // Cursor glow
+  // Background scene: color shifts across scroll
+  const hueShift = useTransform(scrollYProgress, [0, 0.32, 0.62, 1], [0, 0.45, 0.8, 1]);
+  const bgTint = useTransform(hueShift, (t) => {
+    // blend: teal → azure → deep navy → teal
+    if (t < 0.45) return `radial-gradient(900px 600px at 30% 20%, rgba(45,212,191,0.20), transparent 55%)`;
+    if (t < 0.8) return `radial-gradient(900px 600px at 65% 18%, rgba(96,165,250,0.18), transparent 55%)`;
+    return `radial-gradient(900px 600px at 40% 20%, rgba(45,212,191,0.18), transparent 55%)`;
+  });
+
+  // Parallax layers
+  const bgYSlow = useTransform(scrollY, [0, 2400], [0, 120]);
+  const bgYMed = useTransform(scrollY, [0, 2400], [0, -160]);
+  const bgYFast = useTransform(scrollY, [0, 2400], [0, 220]);
+
+  // Cursor glow only “strong” near hero area; soften globally
   const { x, y } = useMousePosition();
   const glowX = useTransform(x, (v) => `${v}px`);
   const glowY = useTransform(y, (v) => `${v}px`);
+  const glowOpacity = useTransform(scrollYProgress, [0, 0.18, 0.35, 1], [0.26, 0.22, 0.12, 0.08]);
+
+  // Scroll velocity based float (luxury)
+  const vel = useVelocity(scrollY);
+  const velSpring = useSpring(vel, { stiffness: 140, damping: 32 });
+  const float = useTransform(velSpring, [-1600, 1600], [10, -10]);
+
+  // Hero mode controls right product preview
+  const [pillMode, setPillMode] = useState<PillMode>("SSO");
 
   return (
     <div
       className="min-h-screen text-white selection:bg-white/15 selection:text-white"
-      style={{
-        background: BRAND.base,
-      }}
+      style={{ background: BRAND.base }}
     >
-      {/* Top progress bar */}
+      {/* Progress bar */}
       <motion.div
-        className="fixed left-0 top-0 z-[80] h-[2px] w-full origin-left"
+        className="fixed left-0 top-0 z-[90] h-[2px] w-full origin-left"
         style={{
           scaleX: progress,
           background: `linear-gradient(90deg, ${BRAND.accent}, ${BRAND.accent2})`,
         }}
       />
 
-      {/* Full-page animated atmosphere */}
-      <Atmosphere bgY1={bgY1} bgY2={bgY2} bgY3={bgY3} />
+      {/* Full-page cinematic atmosphere */}
+      <Atmosphere bgTint={bgTint} bgYSlow={bgYSlow} bgYMed={bgYMed} bgYFast={bgYFast} />
 
       {/* Cursor glow */}
       <motion.div
         aria-hidden
         className="pointer-events-none fixed inset-0 z-[1]"
         style={{
-          background: "radial-gradient(600px 600px at var(--x) var(--y), rgba(45,212,191,0.16), transparent 55%)",
+          opacity: glowOpacity,
+          background: "radial-gradient(620px 620px at var(--x) var(--y), rgba(45,212,191,0.22), transparent 55%)",
           ["--x" as any]: glowX,
           ["--y" as any]: glowY,
         }}
       />
 
       {/* Nav */}
-      <header className="fixed inset-x-0 top-0 z-[70]">
+      <header className="fixed inset-x-0 top-0 z-[80]">
         <div className="mx-auto max-w-7xl px-4">
           <motion.div
-            initial={{ opacity: 0, y: -8 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.65, ease: [0.2, 0.9, 0.2, 1] }}
             className="mt-4 rounded-2xl border border-white/10 bg-black/30 backdrop-blur-xl"
           >
             <div className="flex items-center justify-between px-4 py-3 md:px-6">
@@ -117,7 +144,7 @@ export default function Page() {
                   <div
                     className="h-9 w-9 rounded-xl ring-1 ring-white/10"
                     style={{
-                      background: `linear-gradient(135deg, rgba(45,212,191,0.25), rgba(96,165,250,0.12))`,
+                      background: "linear-gradient(135deg, rgba(45,212,191,0.26), rgba(96,165,250,0.14))",
                     }}
                   />
                   <div className="absolute inset-0 grid place-items-center">
@@ -135,10 +162,10 @@ export default function Page() {
                   <a
                     key={s.id}
                     href={`#${s.id}`}
-                    className={[
+                    className={cn(
                       "rounded-xl px-3 py-2 text-sm transition",
                       active === s.id ? "bg-white/10 text-white" : "text-white/70 hover:bg-white/5 hover:text-white",
-                    ].join(" ")}
+                    )}
                   >
                     {s.label}
                   </a>
@@ -161,63 +188,78 @@ export default function Page() {
         </div>
       </header>
 
-      {/* Hero */}
+      {/* HERO */}
       <main id="top" className="relative z-[2] pt-28">
         <div className="mx-auto max-w-7xl px-4">
           <div className="grid items-center gap-10 py-10 md:grid-cols-2 md:py-16">
             <div className="relative">
               <Reveal>
-                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/80">
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/85">
                   <ShieldCheck className="h-4 w-4" />
                   Enterprise-grade compliance management for global supply chains
                 </div>
               </Reveal>
 
-              <Reveal delay={0.05}>
-                <h1 className="mt-5 text-4xl font-semibold tracking-tight md:text-6xl">
-                  Make compliance{" "}
-                  <span
-                    className="bg-clip-text text-transparent"
-                    style={{
-                      backgroundImage: `linear-gradient(90deg, ${BRAND.accent}, ${BRAND.accent2}, rgba(255,255,255,0.85))`,
-                    }}
-                  >
-                    operational, measurable,
-                  </span>{" "}
-                  and proactive.
-                </h1>
-              </Reveal>
+              {/* Headline: mask reveal (premium) */}
+              <motion.div
+                className="mt-5"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6 }}
+              >
+                <MaskHeadline />
+              </motion.div>
 
               <Reveal delay={0.1}>
-                <p className="mt-4 max-w-xl text-base leading-relaxed text-white/70 md:text-lg">
+                <p className="mt-4 max-w-xl text-base leading-relaxed text-white/72 md:text-lg">
                   TraceR2C transforms compliance from reactive documentation to proactive risk management—giving
                   regulated industries real-time visibility, predictive insights, and audit-ready controls across every
                   supplier, document, and workflow.
                 </p>
               </Reveal>
 
-              <Reveal delay={0.15}>
+              <Reveal delay={0.14}>
                 <div className="mt-6 flex flex-wrap items-center gap-3">
                   <MagneticButton href="#demo" variant="primary">
                     Request a demo <ArrowRight className="h-4 w-4" />
                   </MagneticButton>
-
                   <MagneticButton href="#platform" variant="secondary">
                     See how it works <Workflow className="h-4 w-4" />
                   </MagneticButton>
                 </div>
               </Reveal>
 
-              <Reveal delay={0.2}>
+              {/* Hero pills: interactive → drives product preview */}
+              <Reveal delay={0.18}>
                 <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-                  <BadgeMini icon={<KeyRound className="h-4 w-4" />} label="SSO / SAML" />
-                  <BadgeMini icon={<Lock className="h-4 w-4" />} label="RBAC" />
-                  <BadgeMini icon={<ClipboardCheck className="h-4 w-4" />} label="Audit Logs" />
-                  <BadgeMini icon={<Server className="h-4 w-4" />} label="Encryption" />
+                  <HeroPill
+                    icon={<KeyRound className="h-4 w-4" />}
+                    label="SSO / SAML"
+                    active={pillMode === "SSO"}
+                    onHover={() => setPillMode("SSO")}
+                  />
+                  <HeroPill
+                    icon={<Lock className="h-4 w-4" />}
+                    label="RBAC"
+                    active={pillMode === "RBAC"}
+                    onHover={() => setPillMode("RBAC")}
+                  />
+                  <HeroPill
+                    icon={<ClipboardCheck className="h-4 w-4" />}
+                    label="Audit Logs"
+                    active={pillMode === "AUDIT"}
+                    onHover={() => setPillMode("AUDIT")}
+                  />
+                  <HeroPill
+                    icon={<ShieldCheck className="h-4 w-4" />}
+                    label="Encryption"
+                    active={pillMode === "ENCRYPT"}
+                    onHover={() => setPillMode("ENCRYPT")}
+                  />
                 </div>
               </Reveal>
 
-              <Reveal delay={0.25}>
+              <Reveal delay={0.22}>
                 <a
                   href="#why"
                   className="mt-10 inline-flex items-center gap-2 text-xs text-white/60 hover:text-white/80"
@@ -233,10 +275,12 @@ export default function Page() {
               </Reveal>
             </div>
 
-            {/* Product showcase */}
-            <Reveal delay={0.1}>
-              <ParallaxFrame />
-            </Reveal>
+            {/* Product showcase: “powers on” + reactive to hero pills */}
+            <motion.div style={{ y: float }}>
+              <Reveal delay={0.06}>
+                <ProductShowcase mode={pillMode} />
+              </Reveal>
+            </motion.div>
           </div>
         </div>
 
@@ -263,7 +307,7 @@ export default function Page() {
               </Reveal>
 
               <Reveal delay={0.12}>
-                <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-5">
+                <SolidPanel>
                   <div className="text-sm font-semibold">Our Mission</div>
                   <div className="mt-2 text-white/70">
                     <span className="font-semibold text-white">
@@ -274,41 +318,13 @@ export default function Page() {
                     Move from reactive documentation to proactive risk management—powered by real-time visibility and
                     predictive insights.
                   </div>
-                </div>
+                </SolidPanel>
               </Reveal>
             </div>
 
             <div className="md:col-span-7">
-              <div className="grid gap-4 sm:grid-cols-2">
-                <TiltCard>
-                  <FeatureTile
-                    icon={<Globe className="h-5 w-5" />}
-                    title="Regulatory complexity is rising"
-                    desc="Requirements vary by region, industry, and regulation—teams need clarity, not chaos."
-                  />
-                </TiltCard>
-                <TiltCard>
-                  <FeatureTile
-                    icon={<Timer className="h-5 w-5" />}
-                    title="Manual work creates risk"
-                    desc="Chasing suppliers, spreadsheets, and inbox threads is slow—and dangerously fragile."
-                  />
-                </TiltCard>
-                <TiltCard>
-                  <FeatureTile
-                    icon={<LineChart className="h-5 w-5" />}
-                    title="Real-time compliance health"
-                    desc="Know what’s missing, what’s expiring, and what’s trending risky—before it becomes an incident."
-                  />
-                </TiltCard>
-                <TiltCard>
-                  <FeatureTile
-                    icon={<FileCheck2 className="h-5 w-5" />}
-                    title="Technology should reduce burden"
-                    desc="Automate collection, validation, and accountability with audit-ready workflows."
-                  />
-                </TiltCard>
-              </div>
+              {/* Pain → Solution vertical narrative + line */}
+              <StoryRail />
             </div>
           </div>
         </div>
@@ -316,7 +332,7 @@ export default function Page() {
         <SectionDivider />
       </section>
 
-      {/* PLATFORM (sticky story + animated timeline) */}
+      {/* PLATFORM (Pinned Journey + Morphing Stage + Trace Line) */}
       <section id="platform" className="relative z-[2]">
         <div className="mx-auto max-w-7xl px-4 py-14 md:py-20">
           <Reveal>
@@ -329,7 +345,7 @@ export default function Page() {
                   One system to collect, verify, and control compliance.
                 </h2>
                 <p className="mt-3 max-w-2xl text-white/70">
-                  Every tile is part of a single operational flow—designed to feel like operations, not paperwork.
+                  Instead of static tiles, this section is a guided journey—pinned, animated, and product-driven.
                 </p>
               </div>
 
@@ -341,64 +357,19 @@ export default function Page() {
             </div>
           </Reveal>
 
-          <div className="mt-10 grid gap-4 md:grid-cols-12">
-            {/* Sticky story panel */}
-            <div className="md:col-span-5">
-              <StickyStory />
-            </div>
-
-            {/* Steps */}
-            <div className="md:col-span-7 space-y-4">
-              <Reveal>
-                <StepCard
-                  step="01"
-                  title="Collect"
-                  desc="Request documents, automate reminders, and centralize supplier intake with accountability."
-                  bullets={["Smart request templates", "Supplier portal + uploads", "Auto follow-ups + deadlines"]}
-                  icon={<FileCheck2 className="h-5 w-5" />}
-                />
-              </Reveal>
-
-              <Reveal delay={0.05}>
-                <StepCard
-                  step="02"
-                  title="Verify"
-                  desc="Review, validate, and approve with structured workflows, permissions, and immutable logs."
-                  bullets={["Approval workflows", "Expiry tracking", "Audit-ready trails"]}
-                  icon={<ClipboardCheck className="h-5 w-5" />}
-                  featured
-                />
-              </Reveal>
-
-              <Reveal delay={0.1}>
-                <StepCard
-                  step="03"
-                  title="Control"
-                  desc="Turn compliance into risk posture—alerts, health scoring, and reporting for leadership and audits."
-                  bullets={["Risk signals", "Compliance Health score", "Exportable reporting"]}
-                  icon={<LineChart className="h-5 w-5" />}
-                />
-              </Reveal>
-
-              <Reveal delay={0.12}>
-                <TimelineStrip />
-              </Reveal>
-            </div>
-          </div>
+          <PlatformJourney />
         </div>
 
         <SectionDivider />
       </section>
 
-      {/* OUTCOMES (count-up metrics) */}
+      {/* OUTCOMES */}
       <section id="outcomes" className="relative z-[2]">
         <div className="mx-auto max-w-7xl px-4 py-14 md:py-20">
           <div className="grid gap-10 md:grid-cols-12 md:items-end">
             <div className="md:col-span-6">
               <Reveal>
-                <h2 className="text-2xl font-semibold tracking-tight md:text-4xl">
-                  Outcomes that leadership understands.
-                </h2>
+                <h2 className="text-2xl font-semibold tracking-tight md:text-4xl">Outcomes leadership understands.</h2>
               </Reveal>
               <Reveal delay={0.05}>
                 <p className="mt-3 text-white/70">
@@ -447,7 +418,7 @@ export default function Page() {
         <SectionDivider />
       </section>
 
-      {/* HEALTH (interactive + motion-rich) */}
+      {/* HEALTH */}
       <section id="health" className="relative z-[2]">
         <div className="mx-auto max-w-7xl px-4 py-14 md:py-20">
           <div className="grid gap-10 md:grid-cols-12 md:items-center">
@@ -467,7 +438,7 @@ export default function Page() {
 
               <Reveal delay={0.1}>
                 <p className="mt-3 text-white/70">
-                  Compliance isn’t binary. It’s living operational health—driven by completeness, expiry risk,
+                  Not binary. Not vibes. A living operational posture driven by completeness, expiry risk,
                   responsiveness, and governance quality.
                 </p>
               </Reveal>
@@ -490,7 +461,7 @@ export default function Page() {
 
             <div className="md:col-span-7">
               <Reveal delay={0.05}>
-                <ComplianceHealthDemo />
+                <ComplianceHealthPremium />
               </Reveal>
             </div>
           </div>
@@ -499,7 +470,7 @@ export default function Page() {
         <SectionDivider />
       </section>
 
-      {/* TRUST + CTA */}
+      {/* TRUST */}
       <section id="trust" className="relative z-[2]">
         <div className="mx-auto max-w-7xl px-4 py-14 md:py-20">
           <div className="grid gap-10 md:grid-cols-12 md:items-start">
@@ -514,7 +485,7 @@ export default function Page() {
               </Reveal>
 
               <Reveal delay={0.1}>
-                <div className="mt-8 rounded-2xl border border-white/10 bg-white/5 p-5">
+                <SolidPanel>
                   <div className="text-sm font-semibold">Our Values</div>
                   <div className="mt-4 grid gap-3">
                     <ValueTile
@@ -528,51 +499,45 @@ export default function Page() {
                       desc="We hold ourselves to the standards we enable for you."
                     />
                   </div>
-                </div>
+                </SolidPanel>
               </Reveal>
             </div>
 
             <div className="md:col-span-7">
-              <div className="grid gap-4 md:grid-cols-2">
+              <Reveal>
+                <ProcurementProofRow />
+              </Reveal>
+
+              <div className="mt-4 grid gap-4 md:grid-cols-12">
                 <Reveal>
-                  <TrustCard
-                    icon={<Lock className="h-5 w-5" />}
-                    title="Security & Access"
-                    items={["SSO/SAML & MFA", "Role-based permissions", "Encryption in transit & at rest"]}
-                  />
+                  <div className="md:col-span-7">
+                    <ExpandableTrustCard />
+                  </div>
                 </Reveal>
                 <Reveal delay={0.05}>
-                  <TrustCard
-                    icon={<ClipboardCheck className="h-5 w-5" />}
-                    title="Audit & Governance"
-                    items={["Immutable audit trails", "Approval workflows", "Evidence centralized by supplier"]}
-                  />
-                </Reveal>
-                <Reveal delay={0.08}>
-                  <TrustCard
-                    icon={<BellRing className="h-5 w-5" />}
-                    title="Operational Reliability"
-                    items={["Structured workflows", "Expiry forecasting", "Notifications across teams + suppliers"]}
-                  />
-                </Reveal>
-                <Reveal delay={0.11}>
-                  <TrustCard
-                    icon={<Globe className="h-5 w-5" />}
-                    title="Built for Global Complexity"
-                    items={["Regional requirements", "Multi-industry templates", "Scales from 50 to 5,000+ suppliers"]}
-                  />
+                  <div className="md:col-span-5 space-y-4">
+                    <TrustMini
+                      title="Operational Reliability"
+                      icon={<BellRing className="h-5 w-5" />}
+                      items={["Structured workflows", "Expiry forecasting", "Notifications across teams + suppliers"]}
+                    />
+                    <TrustMini
+                      title="Built for Global Complexity"
+                      icon={<Globe className="h-5 w-5" />}
+                      items={[
+                        "Regional requirements",
+                        "Multi-industry templates",
+                        "Scales from 50 to 5,000+ suppliers",
+                      ]}
+                    />
+                  </div>
                 </Reveal>
               </div>
 
-              {/* CTA strip */}
               <div id="demo" className="mt-6">
                 <Reveal>
                   <CTASection />
                 </Reveal>
-              </div>
-
-              <div className="mt-4 text-xs text-white/50">
-                Tip: wire “Request a demo” to Calendly/HubSpot or your internal lead form.
               </div>
             </div>
           </div>
@@ -603,170 +568,199 @@ export default function Page() {
   );
 }
 
-/* ----------------------------- Atmosphere -------------------------------- */
+/* --------------------------------- HERO --------------------------------- */
 
-function Atmosphere({ bgY1, bgY2, bgY3 }: { bgY1: any; bgY2: any; bgY3: any }) {
+function MaskHeadline() {
+  // Mask-reveal headline (feels expensive)
   return (
-    <div className="pointer-events-none fixed inset-0 z-[0] overflow-hidden">
-      {/* Animated aurora gradient wash */}
-      <motion.div
-        className="absolute -inset-[35%] opacity-60 blur-3xl"
-        style={{
-          background: `radial-gradient(closest-side, rgba(45,212,191,0.22), transparent 70%),
-             radial-gradient(closest-side, rgba(96,165,250,0.16), transparent 70%),
-             radial-gradient(closest-side, rgba(255,255,255,0.08), transparent 70%)`,
-        }}
-        animate={{ rotate: [0, 8, -6, 0], scale: [1, 1.03, 0.98, 1] }}
-        transition={{ repeat: Infinity, duration: 18, ease: "easeInOut" }}
-      />
-
-      {/* Parallax orbs */}
-      <motion.div
-        style={{ y: bgY1 }}
-        className="absolute left-[-120px] top-[120px] h-[520px] w-[520px] rounded-full blur-3xl"
-        aria-hidden
+    <div className="relative">
+      <motion.h1
+        className="text-4xl font-semibold tracking-tight md:text-6xl"
+        initial={{ clipPath: "inset(0 100% 0 0)" }}
+        animate={{ clipPath: "inset(0 0% 0 0)" }}
+        transition={{ duration: 0.9, ease: [0.2, 0.9, 0.2, 1] }}
       >
-        <div className="h-full w-full rounded-full" style={{ background: "rgba(45,212,191,0.12)" }} />
-      </motion.div>
+        Make compliance{" "}
+        <span
+          className="bg-clip-text text-transparent"
+          style={{
+            backgroundImage: `linear-gradient(90deg, ${BRAND.accent}, ${BRAND.accent2}, rgba(255,255,255,0.9))`,
+          }}
+        >
+          operational,
+        </span>{" "}
+        measurable, and proactive.
+      </motion.h1>
 
+      {/* Subtle scanline pass once */}
       <motion.div
-        style={{ y: bgY2 }}
-        className="absolute right-[-160px] top-[160px] h-[620px] w-[620px] rounded-full blur-3xl"
         aria-hidden
-      >
-        <div className="h-full w-full rounded-full" style={{ background: "rgba(96,165,250,0.10)" }} />
-      </motion.div>
-
-      <motion.div
-        style={{ y: bgY3 }}
-        className="absolute left-1/2 top-[720px] h-[560px] w-[560px] -translate-x-1/2 rounded-full blur-3xl"
-        aria-hidden
-      >
-        <div className="h-full w-full rounded-full" style={{ background: "rgba(255,255,255,0.06)" }} />
-      </motion.div>
-
-      {/* Subtle animated grid */}
-      <motion.div
-        className="absolute inset-0 opacity-[0.16]"
+        className="pointer-events-none absolute left-0 top-0 h-full w-full opacity-0"
         style={{
-          backgroundImage:
-            "linear-gradient(to right, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px)",
-          backgroundSize: "52px 52px",
+          background: "linear-gradient(180deg, transparent, rgba(255,255,255,0.09), transparent)",
         }}
-        animate={{ opacity: [0.12, 0.18, 0.12] }}
-        transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-      />
-
-      {/* Noise */}
-      <div
-        className="absolute inset-0 opacity-[0.06]"
-        style={{
-          backgroundImage:
-            "url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22><filter id=%22n%22 x=%220%22 y=%220%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%223%22 stitchTiles=%22stitch%22/></filter><rect width=%22160%22 height=%22160%22 filter=%22url(%23n)%22 opacity=%220.35%22/></svg>')",
-        }}
+        animate={{ opacity: [0, 0.65, 0], y: ["-30%", "50%", "120%"] }}
+        transition={{ duration: 1.1, ease: "easeInOut", delay: 0.2 }}
       />
     </div>
   );
 }
 
-/* ----------------------------- Hero frame -------------------------------- */
-
-function ParallaxFrame() {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-
-  const rotateX = useTransform(my, [-40, 40], [8, -8]);
-  const rotateY = useTransform(mx, [-40, 40], [-10, 10]);
-
-  function onMove(e: React.MouseEvent) {
-    const r = ref.current?.getBoundingClientRect();
-    if (!r) return;
-    const x = e.clientX - (r.left + r.width / 2);
-    const y = e.clientY - (r.top + r.height / 2);
-    mx.set(x / 10);
-    my.set(y / 10);
-  }
-  function onLeave() {
-    animate(mx, 0, { duration: 0.4, ease: "easeOut" });
-    animate(my, 0, { duration: 0.4, ease: "easeOut" });
-  }
-
+function HeroPill({
+  icon,
+  label,
+  active,
+  onHover,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  active: boolean;
+  onHover: () => void;
+}) {
   return (
     <motion.div
-      ref={ref}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      className="relative"
-      style={{ perspective: 1000 }}
+      onMouseEnter={onHover}
+      className={cn(
+        "relative inline-flex items-center gap-2 rounded-2xl border px-3 py-2 text-xs transition",
+        active ? "border-white/20 bg-white/10 text-white" : "border-white/10 bg-white/5 text-white/75 hover:bg-white/8",
+      )}
+      whileHover={{ y: -2 }}
+      transition={{ type: "spring", stiffness: 300, damping: 22 }}
     >
-      <div
+      {active && (
+        <motion.div
+          aria-hidden
+          className="absolute inset-0 rounded-2xl"
+          style={{
+            background: `linear-gradient(135deg, rgba(45,212,191,0.18), rgba(96,165,250,0.10), transparent)`,
+          }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        />
+      )}
+      <span className="relative opacity-90">{icon}</span>
+      <span className="relative">{label}</span>
+    </motion.div>
+  );
+}
+
+function ProductShowcase({ mode }: { mode: PillMode }) {
+  // Product “powers on” + mode highlights driven by hero pills
+  return (
+    <motion.div
+      className="relative"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.65 }}
+    >
+      {/* Glow */}
+      <motion.div
         className="absolute -inset-6 rounded-[28px] blur-2xl"
         style={{
           background: `linear-gradient(135deg, rgba(45,212,191,0.20), rgba(96,165,250,0.12), transparent)`,
         }}
+        animate={{ opacity: [0.55, 0.9, 0.55] }}
+        transition={{ repeat: Infinity, duration: 5.5, ease: "easeInOut" }}
       />
 
-      <motion.div
-        className="relative rounded-[28px] border border-white/10 bg-black/35 p-3 shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_30px_110px_rgba(0,0,0,0.55)] backdrop-blur-xl"
-        style={{ rotateX, rotateY }}
-      >
-        {/* Animated gradient edge */}
-        <div
-          className="pointer-events-none absolute -inset-px rounded-[28px] opacity-70"
-          style={{
-            background: `conic-gradient(from 180deg, rgba(45,212,191,0.55), rgba(96,165,250,0.40), rgba(255,255,255,0.08), rgba(45,212,191,0.55))`,
-            maskImage: "linear-gradient(#000, #000)",
-            WebkitMaskImage: "linear-gradient(#000, #000)",
-            filter: "blur(14px)",
-          }}
-        />
-
-        <div className="relative">
-          <div className="flex items-center justify-between px-2 py-2">
-            <div className="flex items-center gap-2">
-              <div className="h-2.5 w-2.5 rounded-full bg-white/20" />
-              <div className="h-2.5 w-2.5 rounded-full bg-white/15" />
-              <div className="h-2.5 w-2.5 rounded-full bg-white/10" />
-            </div>
-            <div className="text-xs text-white/60">TraceR2C / Compliance Health</div>
-            <motion.div
-              className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-xs text-white/70"
-              animate={{ opacity: [0.6, 1, 0.6] }}
-              transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
-            >
-              Live
-            </motion.div>
+      {/* Frame */}
+      <div className="relative rounded-[28px] border border-white/10 bg-black/35 p-3 shadow-[0_0_0_1px_rgba(255,255,255,0.05),0_30px_120px_rgba(0,0,0,0.55)] backdrop-blur-xl">
+        <div className="flex items-center justify-between px-2 py-2">
+          <div className="flex items-center gap-2">
+            <div className="h-2.5 w-2.5 rounded-full bg-white/20" />
+            <div className="h-2.5 w-2.5 rounded-full bg-white/15" />
+            <div className="h-2.5 w-2.5 rounded-full bg-white/10" />
           </div>
-
-          <div className="grid gap-3 p-2 md:grid-cols-2">
-            <MiniCard title="Compliance Health" subtitle="Real-time posture across suppliers">
-              <HealthMeter value={88} />
-              <div className="mt-3 grid grid-cols-3 gap-2">
-                <Pill label="Docs" value="93%" />
-                <Pill label="Expiry Risk" value="Low" />
-                <Pill label="Open Requests" value="12" />
-              </div>
-            </MiniCard>
-
-            <MiniCard title="Risk Signals" subtitle="Predictive alerts before issues">
-              <div className="space-y-2">
-                <SignalRow label="Supplier: Havenview Mill" meta="Document expiry in 14 days" tone="amber" />
-                <SignalRow label="Supplier: Debel Foods" meta="Missing COA for batch #8891" tone="red" />
-                <SignalRow label="Supplier: CHPS" meta="Certificate verified • Audit ready" tone="green" />
-              </div>
-            </MiniCard>
-
-            <MiniCard title="Requests" subtitle="Automated follow-ups + accountability" span2>
-              <div className="grid gap-2 md:grid-cols-3">
-                <RequestTile title="COA" sub="Due in 2d" status="Pending" />
-                <RequestTile title="HACCP" sub="Due in 7d" status="In Review" />
-                <RequestTile title="ISO Cert" sub="Verified" status="Approved" />
-              </div>
-            </MiniCard>
-          </div>
+          <div className="text-xs text-white/60">TraceR2C / Live Preview</div>
+          <motion.div
+            className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-xs text-white/70"
+            animate={{ opacity: [0.6, 1, 0.6] }}
+            transition={{ repeat: Infinity, duration: 1.8 }}
+          >
+            Live
+          </motion.div>
         </div>
-      </motion.div>
+
+        {/* Content swaps based on mode */}
+        <div className="p-2">
+          <AnimatePresence mode="popLayout">
+            <motion.div
+              key={mode}
+              initial={{ opacity: 0, y: 10, scale: 0.985 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.99 }}
+              transition={{ duration: 0.35, ease: [0.2, 0.9, 0.2, 1] }}
+              className="grid gap-3 md:grid-cols-2"
+            >
+              <EdgeCard
+                title="Compliance Health"
+                subtitle="Real-time posture across suppliers"
+                highlight={mode === "AUDIT" || mode === "RBAC"}
+              >
+                <RingGauge value={88} size={92} />
+                <div className="mt-3 grid grid-cols-3 gap-2">
+                  <MiniPill label="Docs" value="93%" active={mode === "AUDIT"} />
+                  <MiniPill label="RBAC" value={mode === "RBAC" ? "Active" : "Ready"} active={mode === "RBAC"} />
+                  <MiniPill label="SSO" value={mode === "SSO" ? "Connected" : "Ready"} active={mode === "SSO"} />
+                </div>
+              </EdgeCard>
+
+              <EdgeCard title="Signals" subtitle="Predictive alerts before gaps" highlight={mode === "ENCRYPT"}>
+                <SignalLine
+                  label="Supplier: Havenview Mill"
+                  meta="Document expiry in 14 days"
+                  active={mode === "AUDIT"}
+                />
+                <SignalLine label="Supplier: Debel Foods" meta="Missing COA for batch #8891" active={mode === "RBAC"} />
+                <SignalLine label="Supplier: CHPS" meta="Certificate verified • Audit ready" active={mode === "SSO"} />
+                <div className="mt-3 rounded-xl border border-white/10 bg-black/25 p-3 text-xs text-white/70">
+                  {mode === "ENCRYPT" ? (
+                    <span className="inline-flex items-center gap-2">
+                      <ShieldCheck className="h-4 w-4" /> Encrypted evidence and secure transport enforced.
+                    </span>
+                  ) : mode === "AUDIT" ? (
+                    <span className="inline-flex items-center gap-2">
+                      <ClipboardCheck className="h-4 w-4" /> Audit trails link approvals to evidence automatically.
+                    </span>
+                  ) : mode === "RBAC" ? (
+                    <span className="inline-flex items-center gap-2">
+                      <Lock className="h-4 w-4" /> Permissions prevent unapproved access and edits.
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-2">
+                      <KeyRound className="h-4 w-4" /> SSO streamlines enterprise onboarding.
+                    </span>
+                  )}
+                </div>
+              </EdgeCard>
+
+              <EdgeCard
+                title="Requests"
+                subtitle="Automated follow-ups + accountability"
+                span2
+                highlight={mode === "SSO"}
+              >
+                <div className="grid gap-2 md:grid-cols-3">
+                  <RequestTile title="COA" sub="Due in 2d" status="Pending" />
+                  <RequestTile title="HACCP" sub="Due in 7d" status="In Review" />
+                  <RequestTile title="ISO Cert" sub="Verified" status="Approved" />
+                </div>
+              </EdgeCard>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* Power-on scan pulse */}
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-[28px] opacity-0"
+          style={{
+            background: "linear-gradient(180deg, transparent, rgba(255,255,255,0.08), transparent)",
+          }}
+          animate={{ opacity: [0, 0.6, 0], y: ["-40%", "40%", "130%"] }}
+          transition={{ duration: 1.15, ease: "easeInOut", delay: 0.18 }}
+        />
+      </div>
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-white/60">
         <div className="inline-flex items-center gap-2">
@@ -782,101 +776,379 @@ function ParallaxFrame() {
   );
 }
 
-/* ----------------------------- Sticky Story ------------------------------ */
+/* ------------------------------- WHY RAIL -------------------------------- */
 
-function StickyStory() {
+function StoryRail() {
   const items = [
-    { k: "Collect", d: "Automated requests + supplier uploads + deadlines." },
-    { k: "Verify", d: "Structured approvals, validation, audit trails." },
-    { k: "Control", d: "Health scoring, forecasting, alerts, reporting." },
+    {
+      icon: <Globe className="h-5 w-5" />,
+      title: "Regulatory complexity is rising",
+      desc: "Requirements vary by region, industry, and regulation—teams need clarity, not chaos.",
+    },
+    {
+      icon: <Timer className="h-5 w-5" />,
+      title: "Manual work creates risk",
+      desc: "Chasing suppliers, spreadsheets, and inbox threads is slow—and dangerously fragile.",
+    },
+    {
+      icon: <LineChart className="h-5 w-5" />,
+      title: "Real-time compliance health",
+      desc: "Know what’s missing, what’s expiring, and what’s trending risky—before it becomes an incident.",
+    },
+    {
+      icon: <FileCheck2 className="h-5 w-5" />,
+      title: "Technology should reduce burden",
+      desc: "Automate collection, validation, and accountability with audit-ready workflows.",
+    },
   ];
 
   return (
-    <div className="md:sticky md:top-28">
-      <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-        <div className="text-sm font-semibold">The story (in one flow)</div>
-        <div className="mt-2 text-sm text-white/65">
-          Instead of scattered emails and spreadsheets, TraceR2C makes compliance a measurable system that runs daily.
-        </div>
+    <div className="relative">
+      <div className="absolute left-5 top-3 bottom-3 w-px bg-gradient-to-b from-white/0 via-white/14 to-white/0" />
+      <div className="space-y-4 pl-12">
+        {items.map((it, idx) => (
+          <Reveal key={it.title} delay={idx * 0.05}>
+            <EdgeLitCard>
+              <div className="flex items-start gap-3">
+                <div className="grid h-10 w-10 place-items-center rounded-2xl border border-white/10 bg-black/25">
+                  {it.icon}
+                </div>
+                <div>
+                  <div className="text-sm font-semibold">{it.title}</div>
+                  <div className="mt-1 text-sm text-white/70">{it.desc}</div>
+                </div>
+              </div>
+            </EdgeLitCard>
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  );
+}
 
-        <div className="mt-6 space-y-3">
-          {items.map((it, idx) => (
-            <motion.div
-              key={it.k}
-              initial={{ opacity: 0, y: 8 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5, delay: idx * 0.08 }}
-              className="rounded-2xl border border-white/10 bg-black/20 p-4"
-            >
+/* ---------------------------- PLATFORM JOURNEY ---------------------------- */
+
+function PlatformJourney() {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 0.75", "end 0.20"], // tune for pin feel
+  });
+  const p = useSpring(scrollYProgress, { stiffness: 120, damping: 28 });
+
+  // Step selection by progress
+  const step = useTransform(p, (v) => {
+    if (v < 0.34) return 0;
+    if (v < 0.67) return 1;
+    return 2;
+  });
+
+  const [active, setActive] = useState(0);
+  useEffect(() => {
+    const unsub = step.on("change", (v) => setActive(Math.round(v)));
+    return () => unsub();
+  }, [step]);
+
+  // Trace line draw
+  const trace = useTransform(p, [0, 1], [0.05, 1]);
+
+  return (
+    <div ref={ref} className="mt-10 grid gap-4 md:grid-cols-12">
+      {/* Left pinned story */}
+      <div className="md:col-span-5">
+        <div className="md:sticky md:top-28">
+          <SolidPanel>
+            <div className="text-sm font-semibold">The story (in one flow)</div>
+            <div className="mt-2 text-sm text-white/70">
+              Instead of scattered emails and spreadsheets, TraceR2C makes compliance a measurable system that runs
+              daily.
+            </div>
+
+            <div className="mt-6 space-y-3">
+              {[
+                { k: "Collect", d: "Automated requests + supplier uploads + deadlines." },
+                { k: "Verify", d: "Structured approvals, validation, audit trails." },
+                { k: "Control", d: "Health scoring, forecasting, alerts, reporting." },
+              ].map((it, idx) => (
+                <motion.button
+                  key={it.k}
+                  onClick={() => setActive(idx)}
+                  className={cn(
+                    "w-full rounded-2xl border p-4 text-left transition",
+                    active === idx ? "border-white/20 bg-white/10" : "border-white/10 bg-black/20 hover:bg-white/6",
+                  )}
+                  whileHover={{ y: -2 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <div className="text-sm font-semibold">{it.k}</div>
+                      <div className="mt-1 text-xs text-white/60">{it.d}</div>
+                    </div>
+                    <div className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[11px] text-white/70">
+                      Step {String(idx + 1).padStart(2, "0")}
+                    </div>
+                  </div>
+                  <div className="mt-3 h-1.5 w-full rounded-full bg-white/10">
+                    <motion.div
+                      className="h-1.5 rounded-full"
+                      style={{ background: `linear-gradient(90deg, ${BRAND.accent}, ${BRAND.accent2})` }}
+                      initial={{ width: "10%" }}
+                      animate={{ width: active === idx ? "84%" : "22%" }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                    />
+                  </div>
+                </motion.button>
+              ))}
+            </div>
+
+            <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4 text-xs text-white/70">
+              <span className="font-semibold text-white">Enterprise feel:</span> pinned narrative, morphing product
+              stage, measurable posture.
+            </div>
+          </SolidPanel>
+        </div>
+      </div>
+
+      {/* Right: pinned stage + trace line */}
+      <div className="md:col-span-7">
+        <div className="relative md:sticky md:top-28">
+          <EdgeLitCard className="relative overflow-hidden">
+            {/* Trace line motif */}
+            <motion.div className="pointer-events-none absolute inset-0 opacity-70">
+              <TraceLine progress={trace} />
+            </motion.div>
+
+            <div className="relative">
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <div className="text-sm font-semibold">{it.k}</div>
-                  <div className="mt-1 text-xs text-white/60">{it.d}</div>
+                  <div className="text-xs text-white/60">Pinned Journey</div>
+                  <div className="mt-1 text-lg font-semibold">Watch the platform morph with your workflow.</div>
+                  <div className="mt-2 text-sm text-white/70">
+                    As you scroll, the product stage transitions from Requests → Approvals → Health scoring.
+                  </div>
                 </div>
-                <div className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[11px] text-white/70">
-                  Step {String(idx + 1).padStart(2, "0")}
+                <div className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-xs text-white/70">
+                  Live stage
                 </div>
               </div>
-              <div className="mt-3 h-1.5 w-full rounded-full bg-white/10">
-                <motion.div
-                  className="h-1.5 rounded-full"
-                  style={{ background: `linear-gradient(90deg, ${BRAND.accent}, ${BRAND.accent2})` }}
-                  initial={{ width: "12%" }}
-                  whileInView={{ width: idx === 0 ? "38%" : idx === 1 ? "68%" : "92%" }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.9, ease: [0.2, 0.9, 0.2, 1] }}
-                />
+
+              <div className="mt-6">
+                <MorphingStage active={active} />
               </div>
-            </motion.div>
-          ))}
-        </div>
+            </div>
+          </EdgeLitCard>
 
-        <div className="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4 text-xs text-white/70">
-          <span className="font-semibold text-white">Enterprise feel:</span> consistent patterns, predictable UI, and
-          measurable posture at every step.
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ----------------------------- CTA Section ------------------------------ */
-
-function CTASection() {
-  return (
-    <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-6">
-      <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-        <div>
-          <div className="text-lg font-semibold">Ready to operationalize compliance?</div>
-          <div className="mt-1 text-sm text-white/70">
-            We’ll walk through TraceR2C with your workflows, suppliers, and compliance needs.
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            <StepChip
+              active={active === 0}
+              title="Collect"
+              desc="Templates • portal • reminders"
+              icon={<FileCheck2 className="h-4 w-4" />}
+            />
+            <StepChip
+              active={active === 1}
+              title="Verify"
+              desc="Approvals • trails • expiry"
+              icon={<ClipboardCheck className="h-4 w-4" />}
+            />
+            <StepChip
+              active={active === 2}
+              title="Control"
+              desc="Health • alerts • reporting"
+              icon={<LineChart className="h-4 w-4" />}
+            />
           </div>
         </div>
-        <div className="flex flex-wrap gap-3">
-          <MagneticButton href="#" variant="secondary">
-            Contact sales
-          </MagneticButton>
-          <MagneticButton href="#" variant="primary">
-            Request a demo <ArrowRight className="h-4 w-4" />
-          </MagneticButton>
-        </div>
       </div>
     </div>
   );
 }
 
-/* ----------------------------- WOW: Health Demo -------------------------- */
+function MorphingStage({ active }: { active: number }) {
+  const stage = [
+    { key: "collect", title: "Collect", subtitle: "Request documents with accountable follow-ups" },
+    { key: "verify", title: "Verify", subtitle: "Approvals, validation, audit trails, expiry control" },
+    { key: "control", title: "Control", subtitle: "Health scoring, forecasting, alerts, reporting" },
+  ][active];
 
-function ComplianceHealthDemo() {
+  return (
+    <div className="relative">
+      {/* Stage glow */}
+      <motion.div
+        className="absolute -inset-4 rounded-[24px] blur-2xl"
+        style={{
+          background: `linear-gradient(135deg, rgba(45,212,191,0.16), rgba(96,165,250,0.09), transparent)`,
+        }}
+        animate={{ opacity: [0.45, 0.85, 0.45] }}
+        transition={{ repeat: Infinity, duration: 5.8, ease: "easeInOut" }}
+      />
+
+      <div className="relative rounded-[24px] border border-white/10 bg-black/30 p-4 backdrop-blur-xl">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <div className="text-sm font-semibold">{stage.title}</div>
+            <div className="mt-1 text-xs text-white/60">{stage.subtitle}</div>
+          </div>
+          <motion.div
+            className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[11px] text-white/70"
+            key={stage.key}
+            initial={{ opacity: 0.4 }}
+            animate={{ opacity: 1 }}
+          >
+            Stage {String(active + 1).padStart(2, "0")}
+          </motion.div>
+        </div>
+
+        <div className="mt-4">
+          <AnimatePresence mode="popLayout">
+            {active === 0 && (
+              <motion.div
+                key="stage-collect"
+                initial={{ opacity: 0, y: 10, scale: 0.99 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.99 }}
+                transition={{ duration: 0.35, ease: [0.2, 0.9, 0.2, 1] }}
+                className="grid gap-3 md:grid-cols-3"
+              >
+                <StageCard title="Templates" desc="Standardize what you ask for." />
+                <StageCard title="Supplier Portal" desc="Uploads + deadlines." highlight />
+                <StageCard title="Auto Reminders" desc="No chasing required." />
+              </motion.div>
+            )}
+
+            {active === 1 && (
+              <motion.div
+                key="stage-verify"
+                initial={{ opacity: 0, y: 10, scale: 0.99 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.99 }}
+                transition={{ duration: 0.35, ease: [0.2, 0.9, 0.2, 1] }}
+                className="grid gap-3 md:grid-cols-3"
+              >
+                <StageCard title="Approvals" desc="Roles + permissions." highlight />
+                <StageCard title="Audit Trail" desc="Immutable evidence links." />
+                <StageCard title="Expiry Tracking" desc="Forecast gaps early." />
+              </motion.div>
+            )}
+
+            {active === 2 && (
+              <motion.div
+                key="stage-control"
+                initial={{ opacity: 0, y: 10, scale: 0.99 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -8, scale: 0.99 }}
+                transition={{ duration: 0.35, ease: [0.2, 0.9, 0.2, 1] }}
+                className="grid gap-3 md:grid-cols-3"
+              >
+                <StageCard title="Health Score" desc="Posture you can track." highlight />
+                <StageCard title="Risk Signals" desc="Predictive alerts." />
+                <StageCard title="Reporting" desc="Exportable leadership view." />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* scan pulse each stage */}
+        <motion.div
+          key={`scan-${stage.key}`}
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-[24px] opacity-0"
+          style={{
+            background: "linear-gradient(180deg, transparent, rgba(255,255,255,0.07), transparent)",
+          }}
+          animate={{ opacity: [0, 0.55, 0], y: ["-30%", "40%", "120%"] }}
+          transition={{ duration: 1.05, ease: "easeInOut" }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function StageCard({ title, desc, highlight }: { title: string; desc: string; highlight?: boolean }) {
+  return (
+    <motion.div
+      whileHover={{ y: -3 }}
+      transition={{ type: "spring", stiffness: 280, damping: 22 }}
+      className={cn("rounded-2xl border bg-white/5 p-4", highlight ? "border-white/20" : "border-white/10")}
+    >
+      {highlight && (
+        <div
+          className="mb-3 h-px w-full"
+          style={{
+            background: `linear-gradient(90deg, ${BRAND.accent}, ${BRAND.accent2})`,
+          }}
+        />
+      )}
+      <div className="text-sm font-semibold">{title}</div>
+      <div className="mt-2 text-xs text-white/65">{desc}</div>
+    </motion.div>
+  );
+}
+
+function StepChip({
+  active,
+  title,
+  desc,
+  icon,
+}: {
+  active: boolean;
+  title: string;
+  desc: string;
+  icon: React.ReactNode;
+}) {
+  return (
+    <motion.div
+      whileHover={{ y: -2 }}
+      transition={{ type: "spring", stiffness: 300, damping: 22 }}
+      className={cn(
+        "rounded-2xl border p-4 transition",
+        active ? "border-white/20 bg-white/10" : "border-white/10 bg-white/5 hover:bg-white/8",
+      )}
+    >
+      <div className="flex items-center gap-2 text-sm font-semibold">
+        <span className="opacity-90">{icon}</span>
+        {title}
+      </div>
+      <div className="mt-2 text-xs text-white/65">{desc}</div>
+    </motion.div>
+  );
+}
+
+function TraceLine({ progress }: { progress: MotionValue<number> }) {
+  return (
+    <svg className="h-full w-full" viewBox="0 0 1000 600" preserveAspectRatio="none">
+      <motion.path
+        d="M80 110 C 220 60, 340 60, 460 150 S 700 320, 880 240"
+        fill="none"
+        stroke="rgba(45,212,191,0.35)"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+        style={{ pathLength: progress }}
+      />
+      <motion.path
+        d="M80 110 C 220 60, 340 60, 460 150 S 700 320, 880 240"
+        fill="none"
+        stroke="rgba(96,165,250,0.22)"
+        strokeWidth="6"
+        strokeLinecap="round"
+        style={{ pathLength: progress, filter: "blur(6px)" }}
+      />
+    </svg>
+  );
+}
+
+/* ------------------------- COMPLIANCE HEALTH (Premium) -------------------- */
+
+function ComplianceHealthPremium() {
   const [industry, setIndustry] = useState<"Food" | "Pharma" | "Manufacturing">("Food");
   const [region, setRegion] = useState<"US" | "EU" | "Global">("US");
   const [scale, setScale] = useState<"50" | "500" | "5000">("500");
 
   const score = useMemo(() => {
     const base = industry === "Pharma" ? 78 : industry === "Manufacturing" ? 82 : 86;
-    const reg = region === "EU" ? -6 : region === "Global" ? -9 : 0;
-    const sc = scale === "50" ? +6 : scale === "5000" ? -7 : 0;
+    const reg = region === "EU" ? -6 : region === "Global" ? -10 : 0;
+    const sc = scale === "50" ? +6 : scale === "5000" ? -8 : 0;
     return clamp(base + reg + sc, 0, 100);
   }, [industry, region, scale]);
 
@@ -888,8 +1160,8 @@ function ComplianceHealthDemo() {
   }, [score]);
 
   const openRequests = useMemo(() => {
-    const base = scale === "50" ? 6 : scale === "500" ? 18 : 42;
-    const bump = region === "Global" ? 10 : region === "EU" ? 6 : 0;
+    const base = scale === "50" ? 6 : scale === "500" ? 18 : 46;
+    const bump = region === "Global" ? 12 : region === "EU" ? 7 : 0;
     return base + bump + (industry === "Pharma" ? 8 : 0);
   }, [industry, region, scale]);
 
@@ -898,13 +1170,32 @@ function ComplianceHealthDemo() {
     return clamp(Math.round(x * 0.95), 0, 100);
   }, [score, industry]);
 
+  // Live signal feed
+  const signals = useMemo(() => {
+    const base = [
+      { title: "Supplier questionnaire pending", meta: "Due soon • auto reminder scheduled" },
+      {
+        title: "Expiry forecast updated",
+        meta: expiryRisk.tone === "green" ? "Low risk • stable posture" : "Moderate risk • watchlist enabled",
+      },
+      { title: "Audit trail consistency", meta: "Approvals + evidence linked per supplier" },
+    ];
+    if (industry === "Pharma")
+      base.unshift({ title: "GMP validation required", meta: "High priority • evidence needed" });
+    if (region === "Global")
+      base.unshift({ title: "Regional evidence variance detected", meta: "Policy alignment recommended" });
+    return base.slice(0, 4);
+  }, [industry, region, expiryRisk.tone]);
+
   return (
     <div className="relative">
-      <div
+      <motion.div
         className="absolute -inset-6 rounded-[28px] blur-2xl"
         style={{
           background: `linear-gradient(135deg, rgba(45,212,191,0.18), rgba(96,165,250,0.10), transparent)`,
         }}
+        animate={{ opacity: [0.55, 0.9, 0.55] }}
+        transition={{ repeat: Infinity, duration: 6.2, ease: "easeInOut" }}
       />
 
       <div className="relative rounded-[28px] border border-white/10 bg-black/35 p-5 backdrop-blur-xl">
@@ -912,7 +1203,7 @@ function ComplianceHealthDemo() {
           <div>
             <div className="text-sm font-semibold">Interactive Demo</div>
             <div className="mt-1 text-xs text-white/60">
-              Toggle context and watch compliance posture respond (like the real platform).
+              Toggle context and watch posture respond—micro animations included.
             </div>
           </div>
 
@@ -941,24 +1232,24 @@ function ComplianceHealthDemo() {
         <div className="mt-6 grid gap-4 md:grid-cols-12">
           <div className="md:col-span-7">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-              <div className="flex items-center justify-between">
+              <div className="flex items-start justify-between gap-3">
                 <div>
                   <div className="text-sm font-semibold">Compliance Health</div>
                   <div className="text-xs text-white/60">A measurable posture across your supply chain</div>
                 </div>
-                <div className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
-                  Score: <span className="font-semibold text-white">{score}</span>/100
+                <div className="flex items-center gap-3">
+                  <RingGauge value={score} size={74} />
+                  <div className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">
+                    Score: <span className="font-semibold text-white">{score}</span>/100
+                  </div>
                 </div>
               </div>
 
-              <div className="mt-4">
-                <HealthMeter value={score} />
-              </div>
-
+              {/* Micro sparklines */}
               <div className="mt-4 grid grid-cols-3 gap-2">
-                <Pill label="Expiry Risk" value={expiryRisk.label} tone={expiryRisk.tone} />
-                <Pill label="Open Requests" value={`${openRequests}`} />
-                <Pill label="Responsiveness" value={`${responsiveness}%`} />
+                <MicroStat label="Expiry Risk" value={expiryRisk.label} tone={expiryRisk.tone} />
+                <MicroStat label="Open Requests" value={`${openRequests}`} />
+                <MicroStat label="Responsiveness" value={`${responsiveness}%`} />
               </div>
 
               <div className="mt-4 rounded-xl border border-white/10 bg-black/20 p-3 text-xs text-white/70">
@@ -966,7 +1257,7 @@ function ComplianceHealthDemo() {
                 {region === "Global"
                   ? "Global complexity increases variance and risk signals."
                   : region === "EU"
-                    ? "EU requirements add stricter evidence and expiry control."
+                    ? "EU requirements add stricter evidence and expiry controls."
                     : "US posture is stable with consistent workflow controls."}
               </div>
             </div>
@@ -975,24 +1266,26 @@ function ComplianceHealthDemo() {
           <div className="md:col-span-5">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
               <div className="text-sm font-semibold">Live Signals</div>
-              <div className="mt-1 text-xs text-white/60">Proactive alerts, before gaps become incidents</div>
+              <div className="mt-1 text-xs text-white/60">Updates animate in like a real system</div>
 
               <div className="mt-4 space-y-2">
-                <SignalRow
-                  label={industry === "Pharma" ? "Validation required: GMP evidence" : "Supplier questionnaire pending"}
-                  meta={expiryRisk.tone === "red" ? "High priority • due in 48h" : "Due soon • auto reminder scheduled"}
-                  tone={expiryRisk.tone === "red" ? "red" : "amber"}
-                />
-                <SignalRow
-                  label="Expiry forecast updated"
-                  meta={expiryRisk.tone === "green" ? "Low risk • stable posture" : "Moderate risk • watchlist enabled"}
-                  tone={expiryRisk.tone === "green" ? "green" : "amber"}
-                />
-                <SignalRow
-                  label="Audit trail consistency"
-                  meta="Approvals + evidence linked per supplier"
-                  tone="green"
-                />
+                <AnimatePresence mode="popLayout">
+                  {signals.map((s) => (
+                    <motion.div
+                      key={s.title}
+                      initial={{ opacity: 0, y: 10, scale: 0.99 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -8, scale: 0.99 }}
+                      transition={{ duration: 0.32, ease: [0.2, 0.9, 0.2, 1] }}
+                    >
+                      <SignalRow
+                        label={s.title}
+                        meta={s.meta}
+                        tone={expiryRisk.tone === "red" ? "red" : expiryRisk.tone === "amber" ? "amber" : "green"}
+                      />
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
               </div>
 
               <div className="mt-4 rounded-2xl border border-white/10 bg-black/20 p-3">
@@ -1006,311 +1299,115 @@ function ComplianceHealthDemo() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  );
-}
 
-/* ------------------------------ Core UI ---------------------------------- */
-
-function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 14 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, delay, ease: [0.2, 0.9, 0.2, 1] }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-function TiltCard({ children }: { children: React.ReactNode }) {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const rotateX = useTransform(my, [-30, 30], [7, -7]);
-  const rotateY = useTransform(mx, [-30, 30], [-9, 9]);
-
-  function onMove(e: React.MouseEvent) {
-    const r = ref.current?.getBoundingClientRect();
-    if (!r) return;
-    const x = e.clientX - (r.left + r.width / 2);
-    const y = e.clientY - (r.top + r.height / 2);
-    mx.set(x / 12);
-    my.set(y / 12);
-  }
-  function onLeave() {
-    animate(mx, 0, { duration: 0.35, ease: "easeOut" });
-    animate(my, 0, { duration: 0.35, ease: "easeOut" });
-  }
-
-  return (
-    <motion.div ref={ref} onMouseMove={onMove} onMouseLeave={onLeave} style={{ perspective: 900 }}>
-      <motion.div style={{ rotateX, rotateY }} className="will-change-transform">
-        {children}
-      </motion.div>
-    </motion.div>
-  );
-}
-
-function MagneticButton({
-  href,
-  variant,
-  children,
-}: {
-  href: string;
-  variant: "primary" | "secondary";
-  children: React.ReactNode;
-}) {
-  const ref = useRef<HTMLAnchorElement | null>(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  function onMove(e: React.MouseEvent) {
-    const r = ref.current?.getBoundingClientRect();
-    if (!r) return;
-    const dx = e.clientX - (r.left + r.width / 2);
-    const dy = e.clientY - (r.top + r.height / 2);
-    x.set(dx * 0.08);
-    y.set(dy * 0.08);
-  }
-  function onLeave() {
-    animate(x, 0, { duration: 0.35, ease: "easeOut" });
-    animate(y, 0, { duration: 0.35, ease: "easeOut" });
-  }
-
-  const base =
-    "group inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold transition will-change-transform";
-  const styles =
-    variant === "primary" ? "text-black" : "border border-white/15 bg-white/5 text-white/90 hover:bg-white/10";
-
-  return (
-    <motion.a
-      ref={ref}
-      href={href}
-      onMouseMove={onMove}
-      onMouseLeave={onLeave}
-      style={{
-        x,
-        y,
-        background: variant === "primary" ? `linear-gradient(90deg, ${BRAND.accent}, ${BRAND.accent2})` : undefined,
-      }}
-      className={[base, styles].join(" ")}
-    >
-      <span className="translate-y-[0.5px]">{children}</span>
-      {variant === "primary" && (
-        <span
-          className="absolute inset-0 -z-10 rounded-2xl opacity-0 blur-xl transition group-hover:opacity-70"
-          style={{ background: `linear-gradient(90deg, ${BRAND.accent}, ${BRAND.accent2})` }}
-        />
-      )}
-    </motion.a>
-  );
-}
-
-function SectionDivider() {
-  return (
-    <div className="mx-auto max-w-7xl px-4">
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-    </div>
-  );
-}
-
-function BadgeMini({ icon, label }: { icon: React.ReactNode; label: string }) {
-  return (
-    <div className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs text-white/75 transition hover:bg-white/8">
-      <span className="opacity-90">{icon}</span>
-      <span>{label}</span>
-    </div>
-  );
-}
-
-function FeatureTile({ icon, title, desc }: { icon: React.ReactNode; title: string; desc: string }) {
-  return (
-    <motion.div
-      whileHover={{ y: -4 }}
-      transition={{ type: "spring", stiffness: 300, damping: 22 }}
-      className="group relative rounded-3xl border border-white/10 bg-white/5 p-5"
-    >
-      <div
-        className="absolute inset-0 rounded-3xl opacity-0 transition group-hover:opacity-100"
-        style={{
-          background: `linear-gradient(135deg, rgba(45,212,191,0.14), rgba(96,165,250,0.08), transparent)`,
-        }}
-      />
-      <div className="relative">
-        <div className="flex items-center gap-3">
-          <div className="grid h-10 w-10 place-items-center rounded-2xl border border-white/10 bg-black/20">{icon}</div>
-          <div className="text-sm font-semibold">{title}</div>
-        </div>
-        <div className="mt-3 text-sm leading-relaxed text-white/70">{desc}</div>
-      </div>
-    </motion.div>
-  );
-}
-
-function StepCard({
-  step,
-  title,
-  desc,
-  bullets,
-  icon,
-  featured,
-}: {
-  step: string;
-  title: string;
-  desc: string;
-  bullets: string[];
-  icon: React.ReactNode;
-  featured?: boolean;
-}) {
-  return (
-    <motion.div
-      whileHover={{ y: -6 }}
-      transition={{ type: "spring", stiffness: 260, damping: 22 }}
-      className={[
-        "relative overflow-hidden rounded-3xl border bg-white/5 p-6",
-        featured ? "border-white/20" : "border-white/10",
-      ].join(" ")}
-    >
-      <div className="pointer-events-none absolute inset-0 opacity-0 transition group-hover:opacity-100" />
-      {featured && (
+        {/* scan pulse on changes */}
         <motion.div
-          className="absolute -inset-px rounded-3xl opacity-70 blur-xl"
-          style={{
-            background: `linear-gradient(135deg, rgba(45,212,191,0.22), rgba(96,165,250,0.10), transparent)`,
-          }}
-          animate={{ opacity: [0.45, 0.75, 0.45] }}
-          transition={{ repeat: Infinity, duration: 3.8, ease: "easeInOut" }}
+          key={`${industry}-${region}-${scale}`}
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-[28px] opacity-0"
+          style={{ background: "linear-gradient(180deg, transparent, rgba(255,255,255,0.07), transparent)" }}
+          animate={{ opacity: [0, 0.55, 0], y: ["-25%", "45%", "130%"] }}
+          transition={{ duration: 1.0, ease: "easeInOut" }}
         />
-      )}
+      </div>
+    </div>
+  );
+}
 
-      <div className="relative">
-        <div className="flex items-center justify-between">
-          <div className="text-xs text-white/60">Step {step}</div>
-          <div className="grid h-10 w-10 place-items-center rounded-2xl border border-white/10 bg-black/20">{icon}</div>
-        </div>
+/* ------------------------------- TRUST ----------------------------------- */
 
-        <div className="mt-4 text-lg font-semibold">{title}</div>
-        <div className="mt-2 text-sm text-white/70">{desc}</div>
-
-        <div className="mt-5 space-y-2">
-          {bullets.map((b) => (
-            <div key={b} className="flex items-center gap-2 text-sm text-white/75">
-              <span className="h-1.5 w-1.5 rounded-full bg-white/60" />
-              <span>{b}</span>
-            </div>
-          ))}
-        </div>
-
-        {featured && (
-          <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs text-white/80">
-            <ShieldCheck className="h-4 w-4" />
-            Recommended enterprise workflow
+function ProcurementProofRow() {
+  const items = ["SSO/SAML Ready", "Audit Trails", "Role-based Access", "Expiry Forecasting", "Evidence Linking"];
+  return (
+    <div className="rounded-3xl border border-white/10 bg-white/5 p-4">
+      <div className="text-xs text-white/60">Enterprise proof points</div>
+      <div className="mt-3 flex flex-wrap gap-2">
+        {items.map((it) => (
+          <div key={it} className="rounded-full border border-white/10 bg-black/20 px-3 py-1 text-xs text-white/75">
+            {it}
           </div>
-        )}
-      </div>
-    </motion.div>
-  );
-}
-
-function TimelineStrip() {
-  return (
-    <div className="relative rounded-3xl border border-white/10 bg-black/25 p-5 overflow-hidden">
-      <motion.div
-        className="absolute -inset-[40%] opacity-40 blur-3xl"
-        style={{ background: `radial-gradient(circle, rgba(45,212,191,0.18), transparent 60%)` }}
-        animate={{ x: ["-10%", "10%", "-10%"], y: ["0%", "8%", "0%"] }}
-        transition={{ repeat: Infinity, duration: 10, ease: "easeInOut" }}
-      />
-      <div className="relative">
-        <div className="flex items-center justify-between text-xs text-white/60">
-          <span>Request</span>
-          <span>Collect</span>
-          <span>Verify</span>
-          <span>Control</span>
-        </div>
-        <div className="mt-3 h-2 w-full rounded-full bg-white/10 overflow-hidden">
-          <motion.div
-            className="h-2 rounded-full"
-            style={{ background: `linear-gradient(90deg, ${BRAND.accent}, ${BRAND.accent2})` }}
-            initial={{ width: "0%" }}
-            whileInView={{ width: "92%" }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2, ease: [0.2, 0.9, 0.2, 1] }}
-          />
-        </div>
-
-        <div className="mt-4 grid gap-3 md:grid-cols-4">
-          <StripCard title="Templates" desc="Standardize what you ask for." icon={<FileCheck2 className="h-4 w-4" />} />
-          <StripCard title="Supplier Portal" desc="Uploads + deadlines." icon={<Users className="h-4 w-4" />} />
-          <StripCard
-            title="Approvals"
-            desc="Permissions + audit trails."
-            icon={<ClipboardCheck className="h-4 w-4" />}
-          />
-          <StripCard title="Health + Alerts" desc="Posture and forecasting." icon={<LineChart className="h-4 w-4" />} />
-        </div>
+        ))}
       </div>
     </div>
   );
 }
 
-function StripCard({ title, desc, icon }: { title: string; desc: string; icon: React.ReactNode }) {
-  return (
-    <motion.div
-      whileHover={{ y: -3 }}
-      transition={{ type: "spring", stiffness: 300, damping: 22 }}
-      className="rounded-2xl border border-white/10 bg-white/5 p-4"
-    >
-      <div className="flex items-center gap-2 text-sm font-semibold">
-        <span className="opacity-90">{icon}</span>
-        {title}
-      </div>
-      <div className="mt-2 text-xs text-white/65">{desc}</div>
-    </motion.div>
-  );
-}
-
-function MetricTileAnimated({
-  value,
-  suffix,
-  label,
-  desc,
-}: {
-  value: number;
-  suffix: string;
-  label: string;
-  desc: string;
-}) {
-  const { ref, inView } = useInViewOnce();
-  const [n, setN] = useState(0);
-
-  useEffect(() => {
-    if (!inView) return;
-    const controls = animate(0, value, {
-      duration: 1.1,
-      ease: [0.2, 0.9, 0.2, 1],
-      onUpdate: (v) => setN(Math.round(v)),
-    });
-    return () => controls.stop();
-  }, [inView, value]);
+function ExpandableTrustCard() {
+  const [open, setOpen] = useState<"SSO" | "RBAC" | "AUDIT" | "EVIDENCE" | null>("SSO");
+  const rows = [
+    {
+      k: "SSO",
+      title: "SSO / SAML + MFA",
+      desc: "Enterprise authentication patterns that reduce onboarding friction and enforce access policy.",
+    },
+    {
+      k: "RBAC",
+      title: "Role-based permissions",
+      desc: "Granular role controls that protect supplier data and enforce governance.",
+    },
+    {
+      k: "AUDIT",
+      title: "Immutable audit trails",
+      desc: "Approvals, changes, and evidence linked with traceability for audits.",
+    },
+    {
+      k: "EVIDENCE",
+      title: "Evidence centralized by supplier",
+      desc: "One source of truth across documents, requests, approvals, and expiry status.",
+    },
+  ] as const;
 
   return (
-    <div ref={ref} className="rounded-3xl border border-white/10 bg-white/5 p-6">
-      <div className="text-3xl font-semibold tracking-tight">
-        {value === 0 ? "0" : n}
-        {suffix}
+    <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
+      <div className="flex items-center gap-3">
+        <div className="grid h-10 w-10 place-items-center rounded-2xl border border-white/10 bg-black/20">
+          <Lock className="h-5 w-5" />
+        </div>
+        <div>
+          <div className="text-sm font-semibold">Security & Governance</div>
+          <div className="text-xs text-white/60">Expandable, procurement-friendly details</div>
+        </div>
       </div>
-      <div className="mt-2 text-sm font-semibold">{label}</div>
-      <div className="mt-2 text-sm text-white/65">{desc}</div>
+
+      <div className="mt-4 space-y-2">
+        {rows.map((r) => (
+          <button
+            key={r.k}
+            onClick={() => setOpen(open === r.k ? null : (r.k as any))}
+            className={cn(
+              "w-full rounded-2xl border p-4 text-left transition",
+              open === r.k ? "border-white/20 bg-white/10" : "border-white/10 bg-black/20 hover:bg-white/6",
+            )}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <div className="text-sm font-semibold">{r.title}</div>
+                <AnimatePresence>
+                  {open === r.k && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -6 }}
+                      transition={{ duration: 0.22 }}
+                      className="mt-2 text-sm text-white/70"
+                    >
+                      {r.desc}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+              <div className="rounded-full border border-white/10 bg-white/5 px-2 py-1 text-[11px] text-white/70">
+                {open === r.k ? "Hide" : "View"}
+              </div>
+            </div>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
 
-function TrustCard({ icon, title, items }: { icon: React.ReactNode; title: string; items: string[] }) {
+function TrustMini({ title, icon, items }: { title: string; icon: React.ReactNode; items: string[] }) {
   return (
     <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
       <div className="flex items-center gap-3">
@@ -1329,63 +1426,153 @@ function TrustCard({ icon, title, items }: { icon: React.ReactNode; title: strin
   );
 }
 
-function ValueTile({ title, desc }: { title: string; desc: string }) {
+/* ------------------------------- CTA ------------------------------------- */
+
+function CTASection() {
   return (
-    <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-      <div className="text-sm font-semibold">{title}</div>
-      <div className="mt-2 text-xs text-white/65">{desc}</div>
+    <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/10 to-white/5 p-6">
+      <motion.div
+        className="pointer-events-none absolute -inset-[40%] opacity-55 blur-3xl"
+        style={{ background: `radial-gradient(circle, rgba(45,212,191,0.22), transparent 60%)` }}
+        animate={{ x: ["-10%", "10%", "-10%"], y: ["0%", "8%", "0%"] }}
+        transition={{ repeat: Infinity, duration: 10, ease: "easeInOut" }}
+      />
+      <div className="relative flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <div className="text-lg font-semibold">Ready to operationalize compliance?</div>
+          <div className="mt-1 text-sm text-white/70">
+            We’ll walk through TraceR2C with your workflows, suppliers, and compliance needs.
+          </div>
+        </div>
+        <div className="flex flex-wrap gap-3">
+          <MagneticButton href="#" variant="secondary">
+            Contact sales
+          </MagneticButton>
+          <MagneticButton href="#" variant="primary">
+            Request a demo <ArrowRight className="h-4 w-4" />
+          </MagneticButton>
+        </div>
+      </div>
     </div>
   );
 }
 
-function ReasonRow({ title, desc }: { title: string; desc: string }) {
+/* ---------------------------- SURFACES / CARDS ---------------------------- */
+
+function SolidPanel({ children }: { children: React.ReactNode }) {
+  return <div className="rounded-3xl border border-white/10 bg-black/25 p-5">{children}</div>;
+}
+
+function EdgeLitCard({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-      <div className="text-sm font-semibold">{title}</div>
-      <div className="mt-1 text-sm text-white/65">{desc}</div>
-    </div>
+    <motion.div
+      whileHover={{ y: -4 }}
+      transition={{ type: "spring", stiffness: 280, damping: 22 }}
+      className={cn("group relative rounded-3xl border border-white/10 bg-white/5 p-6", className)}
+    >
+      <div
+        className="pointer-events-none absolute inset-0 rounded-3xl opacity-0 transition group-hover:opacity-100"
+        style={{
+          background: `linear-gradient(135deg, rgba(45,212,191,0.14), rgba(96,165,250,0.08), transparent)`,
+        }}
+      />
+      <div className="relative">{children}</div>
+    </motion.div>
   );
 }
 
-function MiniCard({
+function EdgeCard({
   title,
   subtitle,
   children,
+  highlight,
   span2,
 }: {
   title: string;
   subtitle: string;
   children: React.ReactNode;
+  highlight?: boolean;
   span2?: boolean;
 }) {
   return (
-    <div className={["rounded-2xl border border-white/10 bg-white/5 p-4", span2 ? "md:col-span-2" : ""].join(" ")}>
-      <div className="flex items-start justify-between">
-        <div>
-          <div className="text-sm font-semibold">{title}</div>
-          <div className="text-xs text-white/60">{subtitle}</div>
-        </div>
-        <div className="h-8 w-8 rounded-xl border border-white/10 bg-black/20" />
+    <motion.div
+      whileHover={{ y: -3 }}
+      transition={{ type: "spring", stiffness: 300, damping: 22 }}
+      className={cn(
+        "relative rounded-2xl border bg-white/5 p-4",
+        highlight ? "border-white/20" : "border-white/10",
+        span2 ? "md:col-span-2" : "",
+      )}
+    >
+      {highlight && (
+        <motion.div
+          className="pointer-events-none absolute -inset-px rounded-2xl opacity-70 blur-xl"
+          style={{ background: `linear-gradient(135deg, rgba(45,212,191,0.18), rgba(96,165,250,0.08), transparent)` }}
+          animate={{ opacity: [0.45, 0.75, 0.45] }}
+          transition={{ repeat: Infinity, duration: 3.8, ease: "easeInOut" }}
+        />
+      )}
+
+      <div className="relative">
+        <div className="text-sm font-semibold">{title}</div>
+        <div className="text-xs text-white/60">{subtitle}</div>
+        <div className="mt-4">{children}</div>
       </div>
-      <div className="mt-4">{children}</div>
+    </motion.div>
+  );
+}
+
+/* ----------------------------- MICRO UI ---------------------------------- */
+
+function MicroStat({ label, value, tone }: { label: string; value: string; tone?: "green" | "amber" | "red" }) {
+  return (
+    <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+      <div className="text-[11px] text-white/60">{label}</div>
+      <div className="mt-1 flex items-center justify-between gap-2">
+        <div className="text-sm font-semibold">{value}</div>
+        <Sparkline tone={tone} />
+      </div>
     </div>
   );
 }
 
-function Pill({ label, value, tone }: { label: string; value: string; tone?: "green" | "amber" | "red" }) {
-  const toneClass =
-    tone === "green"
-      ? "border-white/10 bg-white/5"
-      : tone === "amber"
-        ? "border-white/15 bg-white/8"
-        : tone === "red"
-          ? "border-white/20 bg-white/10"
-          : "border-white/10 bg-white/5";
-
+function Sparkline({ tone }: { tone?: "green" | "amber" | "red" }) {
+  const stroke =
+    tone === "red" ? "rgba(255,255,255,0.55)" : tone === "amber" ? "rgba(255,255,255,0.60)" : "rgba(255,255,255,0.65)";
   return (
-    <div className={["rounded-xl border p-3", toneClass].join(" ")}>
+    <svg width="54" height="18" viewBox="0 0 54 18" className="opacity-80">
+      <motion.path
+        d="M1 14 C 10 6, 16 16, 24 9 S 38 4, 53 8"
+        fill="none"
+        stroke={stroke}
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 0.7, ease: [0.2, 0.9, 0.2, 1] }}
+      />
+    </svg>
+  );
+}
+
+function MiniPill({ label, value, active }: { label: string; value: string; active?: boolean }) {
+  return (
+    <div
+      className={cn("rounded-xl border p-3", active ? "border-white/20 bg-white/10" : "border-white/10 bg-black/20")}
+    >
       <div className="text-[11px] text-white/60">{label}</div>
       <div className="mt-1 text-sm font-semibold">{value}</div>
+    </div>
+  );
+}
+
+function SignalLine({ label, meta, active }: { label: string; meta: string; active?: boolean }) {
+  return (
+    <div
+      className={cn("rounded-2xl border p-4", active ? "border-white/20 bg-white/10" : "border-white/10 bg-black/20")}
+    >
+      <div className="text-sm font-semibold">{label}</div>
+      <div className="mt-1 text-xs text-white/60">{meta}</div>
     </div>
   );
 }
@@ -1417,17 +1604,37 @@ function RequestTile({ title, sub, status }: { title: string; sub: string; statu
   );
 }
 
-function SignalRow({ label, meta, tone }: { label: string; meta: string; tone: "green" | "amber" | "red" }) {
-  const dot = tone === "green" ? "bg-white/70" : tone === "amber" ? "bg-white/55" : "bg-white/45";
+function RingGauge({ value, size = 80 }: { value: number; size?: number }) {
+  const v = clamp(value, 0, 100);
+  const r = (size - 10) / 2;
+  const c = 2 * Math.PI * r;
+  const offset = c - (v / 100) * c;
+
   return (
-    <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
-      <div className="flex items-start gap-3">
-        <span className={["mt-1.5 h-2 w-2 rounded-full", dot].join(" ")} />
-        <div>
-          <div className="text-sm font-semibold">{label}</div>
-          <div className="mt-1 text-xs text-white/60">{meta}</div>
-        </div>
-      </div>
+    <div className="relative" style={{ width: size, height: size }}>
+      <svg width={size} height={size} className="rotate-[-90deg]">
+        <circle cx={size / 2} cy={size / 2} r={r} stroke="rgba(255,255,255,0.12)" strokeWidth="8" fill="none" />
+        <motion.circle
+          cx={size / 2}
+          cy={size / 2}
+          r={r}
+          stroke="url(#g)"
+          strokeWidth="8"
+          strokeLinecap="round"
+          fill="none"
+          strokeDasharray={c}
+          initial={{ strokeDashoffset: c }}
+          animate={{ strokeDashoffset: offset }}
+          transition={{ duration: 0.7, ease: [0.2, 0.9, 0.2, 1] }}
+        />
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor={BRAND.accent} />
+            <stop offset="100%" stopColor={BRAND.accent2} />
+          </linearGradient>
+        </defs>
+      </svg>
+      <div className="absolute inset-0 grid place-items-center text-xs font-semibold">{v}</div>
     </div>
   );
 }
@@ -1451,10 +1658,10 @@ function Segmented({
           <button
             key={o}
             onClick={() => onChange(o)}
-            className={[
+            className={cn(
               "flex-1 rounded-xl px-3 py-2 text-xs font-semibold transition",
               value === o ? "text-black" : "bg-black/20 text-white/75 hover:bg-white/10",
-            ].join(" ")}
+            )}
             style={{
               background: value === o ? `linear-gradient(90deg, ${BRAND.accent}, ${BRAND.accent2})` : undefined,
             }}
@@ -1467,40 +1674,240 @@ function Segmented({
   );
 }
 
-function HealthMeter({ value = 86 }: { value?: number }) {
-  const v = clamp(value, 0, 100);
-  const barW = `${v}%`;
-
+function SignalRow({ label, meta, tone }: { label: string; meta: string; tone: "green" | "amber" | "red" }) {
+  const dot = tone === "green" ? "bg-white/70" : tone === "amber" ? "bg-white/55" : "bg-white/45";
   return (
-    <div>
-      <div className="flex items-center justify-between text-[11px] text-white/55">
-        <span>At risk</span>
-        <span>Watch</span>
-        <span>Healthy</span>
-      </div>
-      <div className="mt-2 h-3 w-full rounded-full bg-white/10 overflow-hidden">
-        <motion.div
-          className="h-3 rounded-full"
-          style={{ background: `linear-gradient(90deg, ${BRAND.accent}, ${BRAND.accent2})` }}
-          initial={{ width: "0%" }}
-          whileInView={{ width: barW }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9, ease: [0.2, 0.9, 0.2, 1] }}
-        />
-      </div>
-      <div className="mt-2 grid grid-cols-3 gap-2 text-[11px] text-white/55">
-        <span>Missing evidence</span>
-        <span>Expiry soon</span>
-        <span>Verified controls</span>
+    <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+      <div className="flex items-start gap-3">
+        <span className={cn("mt-1.5 h-2 w-2 rounded-full", dot)} />
+        <div>
+          <div className="text-sm font-semibold">{label}</div>
+          <div className="mt-1 text-xs text-white/60">{meta}</div>
+        </div>
       </div>
     </div>
   );
 }
 
-/* ------------------------------ Hooks ------------------------------------ */
+function ReasonRow({ title, desc }: { title: string; desc: string }) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+      <div className="text-sm font-semibold">{title}</div>
+      <div className="mt-1 text-sm text-white/65">{desc}</div>
+    </div>
+  );
+}
+
+function ValueTile({ title, desc }: { title: string; desc: string }) {
+  return (
+    <div className="rounded-2xl border border-white/10 bg-black/20 p-4">
+      <div className="text-sm font-semibold">{title}</div>
+      <div className="mt-2 text-xs text-white/65">{desc}</div>
+    </div>
+  );
+}
+
+/* ----------------------------- BUTTONS ----------------------------------- */
+
+function MagneticButton({
+  href,
+  variant,
+  children,
+}: {
+  href: string;
+  variant: "primary" | "secondary";
+  children: React.ReactNode;
+}) {
+  const ref = useRef<HTMLAnchorElement | null>(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  function onMove(e: React.MouseEvent) {
+    const r = ref.current?.getBoundingClientRect();
+    if (!r) return;
+    const dx = e.clientX - (r.left + r.width / 2);
+    const dy = e.clientY - (r.top + r.height / 2);
+    x.set(dx * 0.08);
+    y.set(dy * 0.08);
+  }
+  function onLeave() {
+    animate(x, 0, { duration: 0.35, ease: "easeOut" });
+    animate(y, 0, { duration: 0.35, ease: "easeOut" });
+  }
+
+  const base =
+    "group relative inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold transition will-change-transform";
+  const styles =
+    variant === "primary" ? "text-black" : "border border-white/15 bg-white/5 text-white/90 hover:bg-white/10";
+
+  return (
+    <motion.a
+      ref={ref}
+      href={href}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      style={{
+        x,
+        y,
+        background: variant === "primary" ? `linear-gradient(90deg, ${BRAND.accent}, ${BRAND.accent2})` : undefined,
+      }}
+      className={cn(base, styles)}
+    >
+      <span className="translate-y-[0.5px]">{children}</span>
+      {variant === "primary" && (
+        <span
+          className="absolute inset-0 -z-10 rounded-2xl opacity-0 blur-xl transition group-hover:opacity-70"
+          style={{ background: `linear-gradient(90deg, ${BRAND.accent}, ${BRAND.accent2})` }}
+        />
+      )}
+    </motion.a>
+  );
+}
+
+/* ------------------------------ LAYOUT ----------------------------------- */
+
+function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.6, delay, ease: [0.2, 0.9, 0.2, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+function SectionDivider() {
+  return (
+    <div className="mx-auto max-w-7xl px-4">
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+    </div>
+  );
+}
+
+/* ----------------------------- ATMOSPHERE -------------------------------- */
+
+function Atmosphere({
+  bgTint,
+  bgYSlow,
+  bgYMed,
+  bgYFast,
+}: {
+  bgTint: MotionValue<string>;
+  bgYSlow: MotionValue<number>;
+  bgYMed: MotionValue<number>;
+  bgYFast: MotionValue<number>;
+}) {
+  return (
+    <div className="pointer-events-none fixed inset-0 z-[0] overflow-hidden">
+      {/* Color temperature shift */}
+      <motion.div className="absolute inset-0" style={{ backgroundImage: bgTint }} />
+
+      {/* Aurora wash */}
+      <motion.div
+        className="absolute -inset-[35%] opacity-55 blur-3xl"
+        style={{
+          background: `radial-gradient(closest-side, rgba(45,212,191,0.18), transparent 70%),
+             radial-gradient(closest-side, rgba(96,165,250,0.14), transparent 70%),
+             radial-gradient(closest-side, rgba(255,255,255,0.06), transparent 70%)`,
+        }}
+        animate={{ rotate: [0, 9, -6, 0], scale: [1, 1.03, 0.98, 1] }}
+        transition={{ repeat: Infinity, duration: 18, ease: "easeInOut" }}
+      />
+
+      {/* Parallax orbs */}
+      <motion.div
+        style={{ y: bgYSlow }}
+        className="absolute left-[-120px] top-[120px] h-[520px] w-[520px] rounded-full blur-3xl"
+      >
+        <div className="h-full w-full rounded-full" style={{ background: "rgba(45,212,191,0.10)" }} />
+      </motion.div>
+      <motion.div
+        style={{ y: bgYMed }}
+        className="absolute right-[-160px] top-[160px] h-[620px] w-[620px] rounded-full blur-3xl"
+      >
+        <div className="h-full w-full rounded-full" style={{ background: "rgba(96,165,250,0.09)" }} />
+      </motion.div>
+      <motion.div
+        style={{ y: bgYFast }}
+        className="absolute left-1/2 top-[760px] h-[560px] w-[560px] -translate-x-1/2 rounded-full blur-3xl"
+      >
+        <div className="h-full w-full rounded-full" style={{ background: "rgba(255,255,255,0.05)" }} />
+      </motion.div>
+
+      {/* Subtle grid */}
+      <motion.div
+        className="absolute inset-0 opacity-[0.14]"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.06) 1px, transparent 1px)",
+          backgroundSize: "56px 56px",
+        }}
+        animate={{ opacity: [0.12, 0.18, 0.12] }}
+        transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
+      />
+
+      {/* Noise */}
+      <div
+        className="absolute inset-0 opacity-[0.06]"
+        style={{
+          backgroundImage:
+            "url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22><filter id=%22n%22 x=%220%22 y=%220%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.9%22 numOctaves=%223%22 stitchTiles=%22stitch%22/></filter><rect width=%22160%22 height=%22160%22 filter=%22url(%23n)%22 opacity=%220.35%22/></svg>')",
+        }}
+      />
+    </div>
+  );
+}
+
+/* ------------------------------ METRICS ---------------------------------- */
+
+function MetricTileAnimated({
+  value,
+  suffix,
+  label,
+  desc,
+}: {
+  value: number;
+  suffix: string;
+  label: string;
+  desc: string;
+}) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const inView = useInView(ref, { margin: "-80px", once: true });
+  const [n, setN] = useState(0);
+
+  useEffect(() => {
+    if (!inView) return;
+    const controls = animate(0, value, {
+      duration: 1.05,
+      ease: [0.2, 0.9, 0.2, 1],
+      onUpdate: (v) => setN(Math.round(v)),
+    });
+    return () => controls.stop();
+  }, [inView, value]);
+
+  return (
+    <div ref={ref} className="rounded-3xl border border-white/10 bg-white/5 p-6">
+      <div className="text-3xl font-semibold tracking-tight">
+        {value === 0 ? "0" : n}
+        {suffix}
+      </div>
+      <div className="mt-2 text-sm font-semibold">{label}</div>
+      <div className="mt-2 text-sm text-white/65">{desc}</div>
+    </div>
+  );
+}
+
+/* ------------------------------ UTILS ------------------------------------ */
 
 function clamp(n: number, min: number, max: number) {
   return Math.max(min, Math.min(max, n));
+}
+
+function cn(...classes: Array<string | false | null | undefined>) {
+  return classes.filter(Boolean).join(" ");
 }
 
 function useActiveSection(ids: string[]) {
@@ -1541,28 +1948,4 @@ function useMousePosition() {
   }, [x, y]);
 
   return { x, y };
-}
-
-function useInViewOnce() {
-  const ref = useRef<HTMLDivElement | null>(null);
-  const [inView, setInView] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        const e = entries[0];
-        if (e?.isIntersecting) {
-          setInView(true);
-          obs.disconnect();
-        }
-      },
-      { threshold: 0.3 },
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-
-  return { ref, inView };
 }
