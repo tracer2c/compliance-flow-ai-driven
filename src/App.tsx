@@ -17,7 +17,6 @@ import Company from "./pages/Company";
 import Contact from "./pages/Contact";
 import KnowMore from "./pages/KnowMore";
 import NotFound from "./pages/NotFound";
-import Demo from "./pages/Demo";
 
 const queryClient = new QueryClient();
 
@@ -28,31 +27,23 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
-        <Routes>
-          {/* Standalone demo page - no layout */}
-          <Route path="/demo" element={<Demo />} />
-          
-          {/* All other routes with Layout */}
-          <Route path="/*" element={
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/solutions" element={<Solutions />} />
-                <Route path="/security" element={<Security />} />
-                <Route path="/integrations" element={<Integrations />} />
-                <Route path="/pricing" element={<Pricing />} />
-                <Route path="/resources" element={<Resources />} />
-                <Route path="/resources/blog/:slug" element={<BlogPost />} />
-                <Route path="/resources/guide/:slug" element={<GuideView />} />
-                <Route path="/company" element={<Company />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="/know-more" element={<KnowMore />} />
-                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Layout>
-          } />
-        </Routes>
+        <Layout>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/solutions" element={<Solutions />} />
+            <Route path="/security" element={<Security />} />
+            <Route path="/integrations" element={<Integrations />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/resources/blog/:slug" element={<BlogPost />} />
+            <Route path="/resources/guide/:slug" element={<GuideView />} />
+            <Route path="/company" element={<Company />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/know-more" element={<KnowMore />} />
+            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Layout>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
