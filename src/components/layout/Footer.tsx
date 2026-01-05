@@ -3,8 +3,6 @@ import {
   FileText, 
   Target, 
   BarChart3, 
-  Shield, 
-  Plug, 
   DollarSign, 
   BookOpen, 
   Building,
@@ -12,7 +10,8 @@ import {
   Mail,
   Phone,
   Linkedin,
-  Twitter
+  Twitter,
+  Shield
 } from "lucide-react";
 
 const Footer = () => {
@@ -41,8 +40,6 @@ const Footer = () => {
     {
       title: "Company",
       links: [
-        { name: "Security", href: "/security", icon: Shield },
-        { name: "Integrations", href: "/integrations", icon: Plug },
         { name: "Pricing", href: "/pricing", icon: DollarSign },
         { name: "Resources", href: "/resources", icon: BookOpen },
         { name: "About Us", href: "/company", icon: Building },
@@ -140,12 +137,8 @@ const Footer = () => {
 
         {/* Trust Badges */}
         <div className="border-t border-navy-800 py-8">
-          <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
+        <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
             <div className="flex flex-wrap items-center gap-6">
-              <div className="flex items-center space-x-2">
-                <Shield className="h-5 w-5 text-teal-400" />
-                <span className="text-gray-300 text-sm">SOC 2 Compliant</span>
-              </div>
               <div className="flex items-center space-x-2">
                 <Shield className="h-5 w-5 text-teal-400" />
                 <span className="text-gray-300 text-sm">SSO/SAML Ready</span>

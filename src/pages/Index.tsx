@@ -12,8 +12,8 @@ const Index = () => {
     <>
       <SEOHead
         title="TraceR2C - Supply Chain Compliance Software | Enterprise Platform"
-        description="Enterprise supply chain compliance platform with AI-powered insights, automated documentation management, and SOC 2 security. Free trial available."
-        keywords="supply chain compliance software, enterprise compliance management, compliance automation platform, supply chain documentation management, SOC 2 compliant software"
+        description="Enterprise supply chain compliance platform with AI-powered insights, automated documentation management, and enterprise-grade security. Free trial available."
+        keywords="supply chain compliance software, enterprise compliance management, compliance automation platform, supply chain documentation management, enterprise security software"
         canonicalUrl="https://tracer2c.com"
         structuredData={combinedSchema}
       />

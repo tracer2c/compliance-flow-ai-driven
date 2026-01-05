@@ -45,7 +45,7 @@ export const softwareApplicationSchema = {
     "AI-Powered Risk Assessment",
     "Document Management & Version Control",
     "Multi-Region Support",
-    "Enterprise Security & SOC 2 Compliance",
+    "Enterprise Security",
     "Real-time Compliance Tracking",
     "Automated Reporting & Analytics"
   ]
@@ -73,14 +73,6 @@ export const faqSchema = {
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "TraceR2C is an enterprise-grade supply chain compliance platform that delivers AI-powered insights, document management, and governed outreach capabilities for complex, multi-region operations."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Is TraceR2C SOC 2 compliant?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes, TraceR2C is SOC 2 Type II compliant with bank-grade security, end-to-end encryption, and comprehensive audit controls designed for regulated industries."
       }
     },
     {

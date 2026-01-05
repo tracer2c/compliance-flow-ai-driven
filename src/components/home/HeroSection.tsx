@@ -17,7 +17,6 @@ import {
 
 const HeroSection = () => {
   const trustBadges = [
-    { icon: Shield, text: "SOC 2" },
     { icon: Shield, text: "SSO/SAML" },
     { icon: Shield, text: "Encryption" },
     { icon: Globe, text: "Data Residency" }
