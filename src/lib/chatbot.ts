@@ -25,7 +25,7 @@ TraceR2C is an enterprise-grade compliance platform that streamlines supply chai
 - **Construction**: Safety regulations, equipment compliance
 
 ## Security & Compliance
-- **SOC 2 Type II Certified**: Enterprise-grade security
+- **Enterprise-Grade Security**: Industry-leading protection
 - **SAML/SSO Integration**: Secure single sign-on
 - **256-bit Encryption**: End-to-end data protection
 - **Data Residency Options**: Choose your data location
@@ -88,7 +88,7 @@ CURRENT PAGE CONTEXT: ${context}
 RESPONSE RULES:
 1. For pricing questions: Mention all 3 plans with key differences
 2. For feature questions: Use bullet points, max 4-5 features
-3. For security questions: Mention SOC 2, SAML/SSO, encryption
+3. For security questions: Mention SAML/SSO, encryption
 4. For integration questions: List key partners (SAP, Oracle, AWS, etc.)
 5. For demo/contact: Always encourage scheduling a demo
 6. Keep responses under 150 words total
@@ -167,7 +167,7 @@ function generateMockResponse(message: string, context: string): ChatResponse {
           title: "Enterprise Security",
           description: "Comprehensive security and compliance features",
           features: [
-            "SOC 2 Type II Certified",
+            "Enterprise-Grade Security",
             "SAML/SSO Integration", 
             "256-bit End-to-End Encryption",
             "Data Residency Options",

@@ -7,8 +7,6 @@ import Layout from "@/components/layout/Layout";
 import ScrollToTop from "@/components/layout/ScrollToTop";
 import Index from "./pages/Index";
 import Solutions from "./pages/Solutions";
-import Security from "./pages/Security";
-import Integrations from "./pages/Integrations";
 import Pricing from "./pages/Pricing";
 import Resources from "./pages/Resources";
 import BlogPost from "./pages/BlogPost";
@@ -31,8 +29,6 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/solutions" element={<Solutions />} />
-            <Route path="/security" element={<Security />} />
-            <Route path="/integrations" element={<Integrations />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/resources/blog/:slug" element={<BlogPost />} />

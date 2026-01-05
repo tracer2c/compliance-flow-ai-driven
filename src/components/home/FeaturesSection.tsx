@@ -32,7 +32,7 @@ const FeaturesSection = () => {
     {
       title: "Enterprise Security",
       subtitle: "Secure", 
-      description: "Bank-grade security with end-to-end encryption, SOC 2 compliance, and zero-trust architecture.",
+      description: "Bank-grade security with end-to-end encryption and zero-trust architecture.",
       icon: Shield,
       color: "bg-teal-100 text-teal-600"
     }

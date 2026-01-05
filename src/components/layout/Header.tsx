@@ -58,8 +58,6 @@ const Header = () => {
 
   const mainNavItems = [
     { name: "Solutions", href: "/solutions" },
-    { name: "Security", href: "/security" },
-    { name: "Integrations", href: "/integrations" },
     { name: "Pricing", href: "/pricing" },
     { name: "Resources", href: "/resources" },
     { name: "Company", href: "/company" },

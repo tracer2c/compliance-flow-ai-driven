@@ -7,10 +7,7 @@ import {
   Award, 
   Target,
   Heart,
-  Globe,
-  Briefcase,
-  Mail,
-  MapPin
+  Globe
 } from "lucide-react";
 
 const Company = () => {
@@ -41,37 +38,9 @@ const Company = () => {
   const milestones = [
     { year: "2019", event: "TraceR2C LLC founded in Auburn, AL" },
     { year: "2020", event: "Launched ComplianceFlow platform" },
-    { year: "2021", event: "Achieved SOC 2 Type II certification" },
     { year: "2022", event: "Expanded to serve pharmaceutical industry" },
     { year: "2023", event: "Launched Clear Insight analytics platform" },
     { year: "2024", event: "500+ enterprise customers milestone" }
-  ];
-
-  const openPositions = [
-    {
-      title: "Senior Software Engineer",
-      department: "Engineering",
-      location: "Auburn, AL / Remote",
-      type: "Full-time"
-    },
-    {
-      title: "Compliance Solutions Architect",
-      department: "Customer Success", 
-      location: "Auburn, AL / Remote",
-      type: "Full-time"
-    },
-    {
-      title: "Product Marketing Manager",
-      department: "Marketing",
-      location: "Remote",
-      type: "Full-time"
-    },
-    {
-      title: "Enterprise Sales Executive",
-      department: "Sales",
-      location: "Remote", 
-      type: "Full-time"
-    }
   ];
 
   return (
@@ -207,60 +176,6 @@ const Company = () => {
         </div>
       </section>
 
-
-      {/* Careers */}
-      <section className="py-20 bg-gray-50">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-4">
-              Join Our Team
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Help us build the future of compliance technology. We're looking for passionate 
-              people who want to make regulated industries more efficient and secure.
-            </p>
-          </div>
-
-          <div className="max-w-4xl mx-auto space-y-6">
-            {openPositions.map((position, index) => (
-              <Card key={index} className="enterprise-card hover:shadow-enterprise-lg transition-all duration-300">
-                <CardContent className="p-6">
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-navy-900 text-lg mb-2">{position.title}</h3>
-                      <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
-                        <div className="flex items-center gap-2">
-                          <Briefcase className="h-4 w-4" />
-                          {position.department}
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <MapPin className="h-4 w-4" />
-                          {position.location}
-                        </div>
-                        <Badge variant="outline" className="text-xs">
-                          {position.type}
-                        </Badge>
-                      </div>
-                    </div>
-                    <Button>
-                      Apply Now
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <p className="text-gray-600 mb-4">Don't see the right role? We're always interested in hearing from talented people.</p>
-            <Button variant="outline">
-              <Mail className="mr-2 h-4 w-4" />
-              Send Us Your Resume
-            </Button>
-          </div>
-        </div>
-      </section>
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-primary">
