@@ -162,21 +162,13 @@ const Header = () => {
             </a>
           </div>
 
-          {/* Mobile Menu Sheet */}
+          {/* Mobile Menu Button */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            {/* Sticky Mobile CTA with Menu Trigger (inside Sheet for context, before content) */}
-            <div className="lg:hidden fixed bottom-4 left-4 right-4 z-40 flex gap-2">
-              <SheetTrigger asChild>
-                <Button variant="outline" className="bg-background shadow-lg">
-                  <Menu className="h-5 w-5" />
-                </Button>
-              </SheetTrigger>
-              <a href="https://compliance.tracer2c.com" target="_self" className="flex-1">
-                <Button className="w-full bg-gradient-accent text-white shadow-lg">
-                  Start Free Trial
-                </Button>
-              </a>
-            </div>
+            <SheetTrigger asChild className="lg:hidden">
+              <Button variant="ghost" size="icon" className="ml-auto">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
             <SheetContent side="right" className="w-80 flex flex-col">
               <SheetHeader className="flex-shrink-0">
                 <SheetTitle className="text-left text-navy-900">Navigation</SheetTitle>
