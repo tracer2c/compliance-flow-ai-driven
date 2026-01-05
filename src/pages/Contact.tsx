@@ -35,24 +35,24 @@ const Contact = () => {
       icon: DollarSign,
       title: "Sales",
       description: "Interested in ComplianceFlow? Let's discuss your compliance needs and find the right solution.",
-      email: "sales@tracer2c.com",
-      phone: "(334) 555-0100",
+      email: "contact@tracer2c.com",
+      phone: "(229) 395-9837",
       hours: "Monday - Friday, 8 AM - 6 PM EST"
     },
     {
       icon: Settings,
       title: "Support",
       description: "Need help with your account or have technical questions? Our support team is here to help.",
-      email: "support@tracer2c.com", 
-      phone: "(334) 555-0200",
+      email: "contact@tracer2c.com", 
+      phone: "(229) 395-9837",
       hours: "24/7 for Enterprise customers"
     },
     {
       icon: Users,
       title: "Partnerships",
       description: "Explore integration opportunities, channel partnerships, or strategic alliances.",
-      email: "partnerships@tracer2c.com",
-      phone: "(334) 555-0300", 
+      email: "contact@tracer2c.com",
+      phone: "(229) 395-9837", 
       hours: "Monday - Friday, 9 AM - 5 PM EST"
     }
   ];
