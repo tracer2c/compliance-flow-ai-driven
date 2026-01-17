@@ -374,6 +374,284 @@ const guidesData = {
       ],
       conclusion: "A well-crafted document retention policy protects organizations from legal risk while managing storage costs and operational efficiency. Regular review and updates ensure continued effectiveness as business and regulatory environments evolve."
     }
+  },
+  "eudr-implementation-roadmap": {
+    title: "EUDR Implementation Roadmap",
+    description: "Step-by-step guide to achieving EU Deforestation Regulation compliance for global supply chains",
+    type: "Step-by-Step Guide",
+    pages: "18 pages",
+    category: "Sustainability",
+    fullContent: {
+      introduction: "The EU Deforestation Regulation (EUDR) represents one of the most significant sustainability regulations affecting global supply chains. Effective December 30, 2024 for large operators and June 30, 2025 for SMEs, this regulation requires companies to ensure that seven key commodities—cattle, cocoa, coffee, palm oil, rubber, soya, and wood—and their derived products are deforestation-free and legally produced. This comprehensive roadmap provides actionable steps to achieve and maintain EUDR compliance.",
+      sections: [
+        {
+          title: "Understanding EUDR Requirements",
+          content: "The EUDR establishes a mandatory due diligence framework that requires operators and traders to collect information, assess risks, and mitigate risks before placing covered products on the EU market or exporting them from the EU.",
+          checklist: [
+            "Identify all products containing covered commodities in your portfolio",
+            "Determine your classification: Operator (first placer) or Trader",
+            "Map your supply chain to the land of production",
+            "Understand the cut-off date: December 31, 2020 for deforestation",
+            "Review legality requirements for countries of production",
+            "Identify applicable penalties and enforcement mechanisms",
+            "Assess whether simplified due diligence applies (low-risk countries)"
+          ]
+        },
+        {
+          title: "Due Diligence System Setup",
+          content: "EUDR requires a robust due diligence system with three pillars: information collection, risk assessment, and risk mitigation. Your system must be documented, regularly reviewed, and subject to annual independent audit.",
+          actionItems: [
+            "Establish governance structure with clear accountability for EUDR compliance",
+            "Create information collection procedures for all suppliers",
+            "Develop standardized supplier questionnaires and data templates",
+            "Implement document management system for due diligence records",
+            "Build risk assessment methodology aligned with EUDR requirements",
+            "Define risk mitigation procedures and escalation protocols",
+            "Schedule annual system review and independent verification"
+          ]
+        },
+        {
+          title: "Geolocation and Traceability Requirements",
+          content: "One of the most challenging aspects of EUDR is the requirement for geolocation data identifying the exact plot of land where commodities were produced. This requires unprecedented supply chain transparency.",
+          checklist: [
+            "Collect GPS coordinates (latitude/longitude) for all plots of production",
+            "For plots over 4 hectares, collect polygon boundary coordinates",
+            "Implement systems to link shipments to specific production plots",
+            "Verify geolocation data accuracy through satellite imagery or field verification",
+            "Maintain chain of custody documentation throughout supply chain",
+            "Establish traceability systems that can segregate compliant products",
+            "Create backup procedures for geolocation data collection failures"
+          ]
+        },
+        {
+          title: "Supplier Verification Process",
+          content: "Verifying that suppliers can provide accurate, complete information is essential for EUDR compliance. This requires both initial verification and ongoing monitoring.",
+          tasks: [
+            "Conduct supplier capability assessments for EUDR compliance",
+            "Verify supplier data collection systems and accuracy",
+            "Request and validate supplier due diligence documentation",
+            "Assess supplier risk based on country and product factors",
+            "Implement supplier scoring and tiering for risk-based monitoring",
+            "Establish corrective action procedures for non-compliant suppliers"
+          ],
+          deliverables: [
+            "Supplier EUDR readiness assessment template",
+            "Supplier verification checklist and scoring matrix",
+            "Non-compliance escalation and remediation procedures",
+            "Supplier contract addendum for EUDR requirements",
+            "Supplier training materials and guidance documents"
+          ]
+        },
+        {
+          title: "Due Diligence Statement Submission",
+          content: "Before placing products on the EU market, operators must submit a due diligence statement through the EU Information System, confirming that due diligence was exercised and no or only negligible risk exists.",
+          actionItems: [
+            "Register with the EU Information System for due diligence statements",
+            "Develop internal approval workflow for statement submission",
+            "Create quality control procedures for statement accuracy",
+            "Establish record-keeping for all submitted statements",
+            "Implement reference number tracking for customs declarations",
+            "Train staff on statement submission procedures and timelines"
+          ]
+        },
+        {
+          title: "Ongoing Monitoring and Compliance",
+          content: "EUDR compliance is not a one-time exercise. Organizations must maintain continuous monitoring, retain records for five years, and adapt to regulatory updates and country risk classifications.",
+          bestPractices: [
+            "Implement continuous satellite monitoring for deforestation alerts",
+            "Subscribe to regulatory updates and country risk classification changes",
+            "Conduct quarterly reviews of supplier compliance status",
+            "Maintain all due diligence records for minimum five years",
+            "Perform annual internal audits of EUDR compliance systems",
+            "Engage with industry initiatives and best practice sharing",
+            "Plan for regulatory evolution and enhanced requirements"
+          ]
+        }
+      ],
+      conclusion: "EUDR compliance requires significant investment in supply chain transparency, traceability systems, and due diligence processes. Organizations that start early, invest in robust systems, and maintain strong supplier relationships will be best positioned to meet these requirements while creating competitive advantages through verified sustainable sourcing."
+    }
+  },
+  "esg-data-collection-framework": {
+    title: "ESG Data Collection Framework",
+    description: "Comprehensive template and toolkit for collecting, validating, and reporting ESG data aligned with CSRD and global standards",
+    type: "Template & Toolkit",
+    pages: "14 pages",
+    category: "ESG Reporting",
+    fullContent: {
+      introduction: "As ESG reporting transitions from voluntary to mandatory under regulations like the EU Corporate Sustainability Reporting Directive (CSRD), organizations need robust data collection frameworks that ensure accuracy, completeness, and audit-readiness. This framework provides templates, methodologies, and best practices for establishing enterprise-grade ESG data collection systems aligned with the European Sustainability Reporting Standards (ESRS) and other global frameworks.",
+      sections: [
+        {
+          title: "ESG Metrics Framework",
+          content: "A comprehensive ESG program requires systematic collection of environmental, social, and governance metrics. This section outlines the key metric categories aligned with ESRS disclosure requirements.",
+          checklist: [
+            "Environmental: GHG emissions (Scope 1, 2, 3), energy consumption, renewable energy percentage",
+            "Environmental: Water withdrawal, consumption, and discharge by source and stress area",
+            "Environmental: Waste generation, recycling rates, hazardous waste management",
+            "Environmental: Biodiversity impacts, land use, and ecosystem restoration",
+            "Social: Workforce composition, diversity metrics, gender pay gap",
+            "Social: Health and safety incidents, training hours, employee turnover",
+            "Social: Human rights due diligence, supply chain labor practices",
+            "Governance: Board composition, independence, sustainability expertise",
+            "Governance: Ethics and anti-corruption policies, whistleblower mechanisms",
+            "Governance: Sustainability governance structure and executive incentives"
+          ]
+        },
+        {
+          title: "Data Collection Infrastructure",
+          content: "Effective ESG data collection requires clear ownership, defined collection frequencies, and systems that ensure data quality from source to report.",
+          actionItems: [
+            "Assign data owners for each ESG metric with clear accountability",
+            "Define data collection frequency (monthly, quarterly, annually)",
+            "Establish data sources and collection methodologies for each metric",
+            "Implement data collection templates with built-in validation",
+            "Create data flow diagrams showing collection to reporting pathways",
+            "Set up automated data extraction where possible (utility bills, HR systems)",
+            "Establish escalation procedures for missing or delayed data"
+          ]
+        },
+        {
+          title: "Data Quality and Validation",
+          content: "ESG data is subject to increasing scrutiny from regulators, auditors, and stakeholders. Robust validation procedures are essential for credibility and assurance readiness.",
+          tasks: [
+            "Develop validation rules for each metric (range checks, trend analysis)",
+            "Implement four-eyes review process for all reported data",
+            "Create documentation requirements for data sources and calculations",
+            "Establish procedures for handling estimated and proxy data",
+            "Define data quality KPIs and monitoring dashboards",
+            "Plan for third-party limited assurance requirements"
+          ],
+          deliverables: [
+            "Data validation checklist by metric category",
+            "Quality assurance review template",
+            "Estimation methodology documentation template",
+            "Data quality dashboard specification",
+            "Assurance readiness assessment framework"
+          ]
+        },
+        {
+          title: "CSRD and ESRS Alignment",
+          content: "The Corporate Sustainability Reporting Directive requires reporting under the European Sustainability Reporting Standards. This section ensures your data collection aligns with these requirements.",
+          checklist: [
+            "Complete double materiality assessment to identify reporting topics",
+            "Map existing data collection to ESRS disclosure requirements",
+            "Identify data gaps for mandatory and material disclosures",
+            "Align metric definitions with ESRS technical criteria",
+            "Establish baseline year data for trend reporting",
+            "Prepare for sector-specific standards when published",
+            "Plan for digital tagging (XBRL) requirements"
+          ]
+        },
+        {
+          title: "Reporting and Disclosure",
+          content: "The ultimate purpose of ESG data collection is accurate, timely disclosure that meets regulatory requirements and stakeholder expectations.",
+          bestPractices: [
+            "Create standardized report templates aligned with ESRS structure",
+            "Implement version control and approval workflows for disclosures",
+            "Establish clear sign-off procedures with management attestation",
+            "Maintain audit trail for all reported figures",
+            "Prepare supporting documentation for external assurance",
+            "Plan communication strategy for stakeholder engagement",
+            "Schedule post-reporting lessons learned and improvement cycles"
+          ]
+        }
+      ],
+      conclusion: "Building a robust ESG data collection framework is a strategic investment that extends beyond compliance. Organizations with mature ESG data systems gain better operational insights, stronger stakeholder relationships, and competitive advantages in an increasingly sustainability-focused market. Start with the most material topics, build systematic processes, and continuously improve data quality and coverage."
+    }
+  },
+  "ai-compliance-automation-playbook": {
+    title: "AI Compliance Automation Playbook",
+    description: "Strategic playbook for leveraging artificial intelligence to automate GRC processes and enhance compliance effectiveness",
+    type: "Strategic Playbook",
+    pages: "20 pages",
+    category: "Technology",
+    fullContent: {
+      introduction: "Artificial intelligence is transforming governance, risk, and compliance (GRC) operations, enabling organizations to move from reactive, manual processes to proactive, intelligent automation. This playbook provides a strategic framework for evaluating, implementing, and scaling AI-powered compliance automation while maintaining appropriate human oversight and regulatory alignment.",
+      sections: [
+        {
+          title: "AI in GRC: The Opportunity",
+          content: "AI technologies offer significant potential to enhance compliance operations through automation, pattern recognition, and predictive analytics. Understanding the landscape of AI use cases helps prioritize investments.",
+          actionItems: [
+            "Assess current compliance pain points suitable for AI automation",
+            "Evaluate organizational AI readiness (data, skills, governance)",
+            "Identify quick-win automation opportunities with clear ROI",
+            "Review vendor landscape for compliance-specific AI solutions",
+            "Establish AI steering committee with compliance, IT, and legal representation",
+            "Define success metrics and expected outcomes for AI initiatives"
+          ]
+        },
+        {
+          title: "Document Intelligence and Processing",
+          content: "AI-powered document processing can dramatically reduce manual effort in reviewing contracts, policies, certificates, and compliance documentation.",
+          checklist: [
+            "Automated extraction of key terms from supplier contracts",
+            "Certificate and license expiry monitoring and alerts",
+            "Policy document classification and version management",
+            "Compliance evidence extraction and organization",
+            "Multi-language document translation and analysis",
+            "Regulatory document parsing and requirement extraction",
+            "Anomaly detection in document submissions"
+          ]
+        },
+        {
+          title: "Risk Assessment Automation",
+          content: "AI can enhance risk assessment through pattern recognition, predictive modeling, and continuous monitoring that would be impossible at scale with manual processes.",
+          actionItems: [
+            "Implement machine learning models for supplier risk scoring",
+            "Deploy anomaly detection for transaction monitoring",
+            "Create predictive models for compliance failure indicators",
+            "Automate news and adverse media monitoring for third parties",
+            "Build risk aggregation dashboards with AI-generated insights",
+            "Establish feedback loops to improve model accuracy over time"
+          ]
+        },
+        {
+          title: "Workflow and Process Automation",
+          content: "AI combined with robotic process automation (RPA) can streamline compliance workflows, reducing cycle times and human error.",
+          tasks: [
+            "Map current compliance workflows to identify automation candidates",
+            "Prioritize processes by volume, complexity, and error frequency",
+            "Design automated workflows with appropriate human checkpoints",
+            "Implement intelligent routing based on risk levels",
+            "Create automated reminder and escalation sequences",
+            "Build self-service compliance portals for routine requests"
+          ],
+          deliverables: [
+            "Process automation opportunity assessment",
+            "Workflow automation design specifications",
+            "Human-in-the-loop checkpoint definitions",
+            "Automation ROI calculation framework",
+            "Change management and training plan"
+          ]
+        },
+        {
+          title: "Implementation Roadmap",
+          content: "Successful AI implementation requires careful planning, pilot programs, and scaled rollout with continuous learning and improvement.",
+          bestPractices: [
+            "Start with pilot projects in contained, measurable domains",
+            "Ensure sufficient training data quality before model deployment",
+            "Implement parallel running during transition from manual processes",
+            "Establish clear escalation paths from AI to human reviewers",
+            "Create feedback mechanisms for continuous model improvement",
+            "Plan for model retraining as regulations and risks evolve",
+            "Document AI decisions for audit and regulatory inquiry"
+          ]
+        },
+        {
+          title: "Governance and Oversight",
+          content: "AI in compliance requires robust governance to ensure accuracy, fairness, transparency, and regulatory acceptance. This section addresses key governance considerations.",
+          actionItems: [
+            "Establish AI governance policy with clear roles and responsibilities",
+            "Implement model validation and testing procedures",
+            "Create explainability requirements for AI-driven decisions",
+            "Define human override procedures and documentation",
+            "Establish bias detection and fairness monitoring",
+            "Plan for regulatory inquiry and explanation requirements",
+            "Maintain comprehensive audit trails for all AI processes"
+          ]
+        }
+      ],
+      conclusion: "AI-powered compliance automation offers transformative potential for organizations willing to invest thoughtfully in technology, governance, and change management. The key to success is balancing automation benefits with appropriate human oversight, maintaining transparency, and building systems that can adapt to evolving regulatory expectations. Start with focused pilots, measure results carefully, and scale successful approaches while learning from challenges."
+    }
   }
 };
 
