@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { 
   NavigationMenu, 
@@ -18,7 +19,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { 
   Menu, 
-  X, 
   FileText, 
   Target, 
   BarChart3
@@ -69,98 +69,125 @@ const Header = () => {
       <div className="container mx-auto px-6">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="h-8 w-8 bg-gradient-accent rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">T</span>
-            </div>
-            <span className="font-display font-bold text-xl text-navy-900">TraceR2C</span>
-          </Link>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
+            <Link to="/" className="flex items-center space-x-2">
+              <div className="h-8 w-8 bg-gradient-accent rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">T</span>
+              </div>
+              <span className="font-display font-bold text-xl text-navy-900">TraceR2C</span>
+            </Link>
+          </motion.div>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
             {/* Products Mega Menu */}
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-navy-700 hover:text-navy-900 font-medium">
-                    Products
-                  </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="w-80 p-4 bg-white border border-gray-200 rounded-lg shadow-lg">
-                      {products.map((product) => {
-                        const content = (
-                          <div className="flex items-center space-x-3">
-                            <div className="h-8 w-8 bg-teal-100 rounded-lg flex items-center justify-center">
-                              <product.icon className="h-4 w-4 text-teal-600" />
-                            </div>
-                            <div className="flex-1">
-                              <div className="flex items-center space-x-2">
-                                <h3 className="font-medium text-navy-900 group-hover:text-teal-600 transition-colors">
-                                  {product.name}
-                                </h3>
-                                {product.badge && (
-                                  <Badge variant="secondary" className="text-xs">
-                                    {product.badge}
-                                  </Badge>
-                                )}
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="text-navy-700 hover:text-navy-900 font-medium">
+                      Products
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <div className="w-80 p-4 bg-white border border-gray-200 rounded-lg shadow-lg">
+                        {products.map((product) => {
+                          const content = (
+                            <div className="flex items-center space-x-3">
+                              <div className="h-8 w-8 bg-teal-100 rounded-lg flex items-center justify-center">
+                                <product.icon className="h-4 w-4 text-teal-600" />
                               </div>
-                              <p className="text-xs text-gray-600 mt-1">
-                                {product.description}
-                              </p>
+                              <div className="flex-1">
+                                <div className="flex items-center space-x-2">
+                                  <h3 className="font-medium text-navy-900 group-hover:text-teal-600 transition-colors">
+                                    {product.name}
+                                  </h3>
+                                  {product.badge && (
+                                    <Badge variant="secondary" className="text-xs">
+                                      {product.badge}
+                                    </Badge>
+                                  )}
+                                </div>
+                                <p className="text-xs text-gray-600 mt-1">
+                                  {product.description}
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                        );
-
-                        if (product.href && product.external) {
-                          return (
-                            <NavigationMenuLink key={product.name} asChild>
-                              <a
-                                href={product.href}
-                                target="_self"
-                                rel="noopener noreferrer"
-                                className="block rounded-lg p-3 hover:bg-gray-50 transition-colors group"
-                              >
-                                {content}
-                              </a>
-                            </NavigationMenuLink>
                           );
-                        }
 
-                        return (
-                          <div
-                            key={product.name}
-                            className="block rounded-lg p-3 group"
-                          >
-                            {content}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
+                          if (product.href && product.external) {
+                            return (
+                              <NavigationMenuLink key={product.name} asChild>
+                                <a
+                                  href={product.href}
+                                  target="_self"
+                                  rel="noopener noreferrer"
+                                  className="block rounded-lg p-3 hover:bg-gray-50 transition-colors group"
+                                >
+                                  {content}
+                                </a>
+                              </NavigationMenuLink>
+                            );
+                          }
+
+                          return (
+                            <div
+                              key={product.name}
+                              className="block rounded-lg p-3 group"
+                            >
+                              {content}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            </motion.div>
 
             {/* Main Navigation Items */}
-            {mainNavItems.map((item) => (
-              <Link
+            {mainNavItems.map((item, index) => (
+              <motion.div
                 key={item.name}
-                to={item.href}
-                className="text-navy-700 hover:text-navy-900 font-medium transition-colors"
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  duration: 0.4, 
+                  delay: 0.15 + index * 0.05,
+                  ease: [0.25, 0.46, 0.45, 0.94]
+                }}
               >
-                {item.name}
-              </Link>
+                <Link
+                  to={item.href}
+                  className="text-navy-700 hover:text-navy-900 font-medium transition-colors"
+                >
+                  {item.name}
+                </Link>
+              </motion.div>
             ))}
           </nav>
 
           {/* Right Section */}
-          <div className="hidden lg:flex items-center space-x-4">
+          <motion.div 
+            className="hidden lg:flex items-center space-x-4"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
             <a href="https://compliance.tracer2c.com" target="_self">
               <Button className="bg-gradient-accent text-white hover:opacity-90 font-medium">
                 Start Free Trial
               </Button>
             </a>
-          </div>
+          </motion.div>
 
           {/* Mobile Menu Button */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
