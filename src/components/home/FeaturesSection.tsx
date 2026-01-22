@@ -1,379 +1,295 @@
-import { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { 
+  Sparkles, 
+  Globe, 
+  Shield, 
+  FileText,
+  Activity,
+  Users,
+  BarChart3,
+  Bell,
+  Search,
+  ArrowRight
+} from "lucide-react";
 
-gsap.registerPlugin(ScrollTrigger);
+const FeaturesSection = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-type Feature = {
-  icon: string;
-  title: string;
-  desc: string;
-  chip: string;
-  parallax: number;
-};
+  const pillars = [
+    {
+      title: "AI-Powered Insights",
+      subtitle: "New",
+      description: "Leverage artificial intelligence for predictive compliance analytics and automated risk assessment.",
+      icon: Sparkles,
+      color: "bg-purple-100 text-purple-600"
+    },
+    {
+      title: "Multi-Region Support", 
+      subtitle: "Global",
+      description: "Built for global operations with localized compliance requirements and data residency.",
+      icon: Globe,
+      color: "bg-blue-100 text-blue-600"
+    },
+    {
+      title: "Enterprise Security",
+      subtitle: "Secure", 
+      description: "Bank-grade security with end-to-end encryption and zero-trust architecture.",
+      icon: Shield,
+      color: "bg-teal-100 text-teal-600"
+    }
+  ];
 
-const FEATURES: Feature[] = [
-  {
-    icon: "⚡",
-    title: "Instant Performance",
-    desc: "Snappy UI interactions that feel native — no jank, no lag.",
-    chip: "Latency-friendly",
-    parallax: 12,
-  },
-  {
-    icon: "🧠",
-    title: "Smart Workflows",
-    desc: "Guide users with helpful automations and clean, predictable flows.",
-    chip: "Fewer clicks",
-    parallax: 18,
-  },
-  {
-    icon: "🔒",
-    title: "Secure by Design",
-    desc: "Modern protection patterns built in — from auth to safe defaults.",
-    chip: "Trust-first",
-    parallax: 10,
-  },
-  {
-    icon: "🎯",
-    title: "Delightful UX",
-    desc: "Micro-interactions that make every step feel intentional and clean.",
-    chip: "Polished",
-    parallax: 16,
-  },
-];
+  const features = [
+    {
+      title: "Document Management",
+      description: "Automated metadata capture, version control, digital signatures, bulk operations",
+      icon: FileText,
+      color: "bg-blue-100 text-blue-600"
+    },
+    {
+      title: "Compliance Tracking",
+      description: "Real-time monitoring, risk assessment, compliance scoring, automated reporting",
+      icon: Activity,
+      color: "bg-green-100 text-green-600"
+    },
+    {
+      title: "Role-Based Access",
+      description: "Buyer/supplier/reviewer dashboards, granular permissions, multi-tenant, SSO, audit logs",
+      icon: Users,
+      color: "bg-purple-100 text-purple-600"
+    },
+    {
+      title: "Analytics & Reporting",
+      description: "Custom dashboards, exportable reports, trend analysis, performance metrics",
+      icon: BarChart3,
+      color: "bg-orange-100 text-orange-600"
+    },
+    {
+      title: "Smart Alerts",
+      description: "Expiry notifications, risk alerts, custom triggers, multi-channel delivery",
+      icon: Bell,
+      color: "bg-red-100 text-red-600"
+    },
+    {
+      title: "Audit Trail",
+      description: "Complete history, immutable records, regulatory compliance, digital evidence",
+      icon: Search,
+      color: "bg-teal-100 text-teal-600"
+    }
+  ];
 
-export default function FeaturesSection() {
-  const root = useRef<HTMLElement | null>(null);
+  const headerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut" as const
+      }
+    }
+  };
 
-  useLayoutEffect(() => {
-    if (!root.current) return;
+  const pillarContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.15,
+        delayChildren: 0.2
+      }
+    }
+  };
 
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const pillarItemVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut" as const
+      }
+    }
+  };
 
-    const ctx = gsap.context(() => {
-      if (reduceMotion) return;
+  const featureContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.1
+      }
+    }
+  };
 
-      // Background drift
-      gsap.to(".fx-bg", {
-        xPercent: 8,
-        yPercent: -6,
-        duration: 8,
-        ease: "sine.inOut",
-        yoyo: true,
-        repeat: -1,
-      });
+  const featureItemVariants = {
+    hidden: { opacity: 0, scale: 0.9 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.4,
+        ease: "easeOut" as const
+      }
+    }
+  };
 
-      // Intro text
-      gsap.from(".fx-kicker, .fx-title, .fx-sub", {
-        opacity: 0,
-        y: 20,
-        duration: 0.85,
-        ease: "power3.out",
-        stagger: 0.08,
-        scrollTrigger: {
-          trigger: "#features",
-          start: "top 75%",
-          once: true,
-        },
-      });
-
-      // Cards entrance
-      gsap.from(".fx-card", {
-        opacity: 0,
-        y: 50,
-        rotateX: 10,
-        transformOrigin: "50% 100%",
-        duration: 0.95,
-        ease: "power3.out",
-        stagger: 0.12,
-        scrollTrigger: {
-          trigger: ".fx-cards",
-          start: "top 80%",
-          once: true,
-        },
-      });
-
-      // Progress meter scrub
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: "#features",
-            start: "top 20%",
-            end: "bottom 30%",
-            scrub: true,
-          },
-        })
-        .to(".fx-meter-line", { width: "100%", ease: "none" }, 0)
-        .to(".fx-meter-dot", { left: "100%", ease: "none" }, 0);
-
-      // Parallax per card
-      gsap.utils.toArray<HTMLElement>(".fx-card").forEach((card) => {
-        const amount = Number(card.dataset.parallax || 12);
-        gsap.to(card, {
-          y: -amount,
-          ease: "none",
-          scrollTrigger: {
-            trigger: card,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-      });
-    }, root);
-
-    // Hover tilt (outside ctx is ok too, but we’ll clean it up)
-    const cards = Array.from(root.current.querySelectorAll<HTMLElement>(".fx-card"));
-    const handlers: Array<{
-      el: HTMLElement;
-      move: (e: MouseEvent) => void;
-      leave: () => void;
-    }> = [];
-
-    cards.forEach((card) => {
-      const move = (e: MouseEvent) => {
-        const r = card.getBoundingClientRect();
-        const mx = ((e.clientX - r.left) / r.width) * 100;
-        const my = ((e.clientY - r.top) / r.height) * 100;
-        card.style.setProperty("--mx", mx + "%");
-        card.style.setProperty("--my", my + "%");
-
-        const dx = (e.clientX - (r.left + r.width / 2)) / r.width;
-        const dy = (e.clientY - (r.top + r.height / 2)) / r.height;
-
-        gsap.to(card, {
-          rotateY: dx * 10,
-          rotateX: -dy * 10,
-          scale: 1.02,
-          duration: 0.25,
-          ease: "power3.out",
-        });
-      };
-
-      const leave = () => {
-        gsap.to(card, { rotateY: 0, rotateX: 0, scale: 1, duration: 0.35, ease: "power3.out" });
-      };
-
-      card.addEventListener("mousemove", move);
-      card.addEventListener("mouseleave", leave);
-      handlers.push({ el: card, move, leave });
-    });
-
-    return () => {
-      handlers.forEach(({ el, move, leave }) => {
-        el.removeEventListener("mousemove", move);
-        el.removeEventListener("mouseleave", leave);
-      });
-      ctx.revert();
-    };
-  }, []);
+  const ctaVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        delay: 0.3,
+        ease: "easeOut" as const
+      }
+    }
+  };
 
   return (
-    <section ref={root} className="fx-wrap" id="features">
-      <div className="fx-bg" />
-
-      <div className="fx-inner">
-        <div className="fx-left">
-          <div className="fx-kicker">Features</div>
-          <h2 className="fx-title">
-            Built to feel <span className="fx-gradient">fast</span>, <span className="fx-gradient">smooth</span>, and{" "}
-            <span className="fx-gradient">alive</span>.
+    <section className="py-20 bg-white" ref={ref}>
+      <div className="container mx-auto px-6">
+        {/* Section Header */}
+        <motion.div 
+          className="text-center mb-16"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={headerVariants}
+        >
+          <Badge variant="secondary" className="mb-4 bg-teal-100 text-teal-700">
+            Next-Generation Compliance Technology
+          </Badge>
+          <h2 className="text-4xl md:text-5xl font-display font-bold text-navy-900 mb-6">
+            Three Pillars of Enterprise Compliance
           </h2>
-          <p className="fx-sub">
-            Scroll to explore. Each feature animates with motion design that makes your product feel premium.
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Transform your supply chain documentation with intelligent automation, 
+            real-time insights, and enterprise-grade security.
           </p>
+        </motion.div>
 
-          <div className="fx-meter" aria-hidden="true">
-            <div className="fx-meter-line" />
-            <div className="fx-meter-dot" />
-          </div>
-        </div>
+        {/* Three Pillars */}
+        <motion.div 
+          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={pillarContainerVariants}
+        >
+          {pillars.map((pillar, index) => (
+            <motion.div 
+              key={index} 
+              className="text-center group"
+              variants={pillarItemVariants}
+            >
+              <motion.div 
+                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover-lift border border-gray-100"
+                whileHover={{ y: -8 }}
+              >
+                <motion.div 
+                  className={`w-16 h-16 ${pillar.color} rounded-2xl flex items-center justify-center mx-auto mb-6`}
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <pillar.icon className="h-8 w-8" />
+                </motion.div>
+                <div className="flex items-center justify-center space-x-2 mb-4">
+                  <h3 className="text-xl font-bold text-navy-900">
+                    {pillar.title}
+                  </h3>
+                  <Badge variant="secondary" className="text-xs bg-green-100 text-green-700">
+                    {pillar.subtitle}
+                  </Badge>
+                </div>
+                <p className="text-gray-600 leading-relaxed">
+                  {pillar.description}
+                </p>
+              </motion.div>
+            </motion.div>
+          ))}
+        </motion.div>
 
-        <div className="fx-right">
-          <div className="fx-cards">
-            {FEATURES.map((f) => (
-              <article key={f.title} className="fx-card" data-parallax={f.parallax}>
-                <div className="fx-icon">{f.icon}</div>
-                <h3>{f.title}</h3>
-                <p>{f.desc}</p>
-                <div className="fx-chip">{f.chip}</div>
-              </article>
+        {/* Feature Grid */}
+        <div className="mb-16">
+          <motion.h3 
+            className="text-3xl font-display font-bold text-navy-900 text-center mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            Comprehensive Feature Set
+          </motion.h3>
+          <motion.div 
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            variants={featureContainerVariants}
+          >
+            {features.map((feature, index) => (
+              <motion.div 
+                key={index} 
+                className="group"
+                variants={featureItemVariants}
+              >
+                <motion.div 
+                  className="bg-gray-50 rounded-xl p-6 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-gray-200"
+                  whileHover={{ y: -4 }}
+                >
+                  <motion.div 
+                    className={`w-12 h-12 ${feature.color} rounded-lg flex items-center justify-center mb-4`}
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <feature.icon className="h-6 w-6" />
+                  </motion.div>
+                  <h4 className="text-lg font-semibold text-navy-900 mb-3">
+                    {feature.title}
+                  </h4>
+                  <p className="text-gray-600 text-sm leading-relaxed">
+                    {feature.description}
+                  </p>
+                </motion.div>
+              </motion.div>
             ))}
-          </div>
-
-          <div className="fx-glow" />
+          </motion.div>
         </div>
+
+        {/* CTA Section */}
+        <motion.div 
+          className="text-center bg-gradient-hero rounded-2xl p-12 text-white"
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+          variants={ctaVariants}
+        >
+          <h3 className="text-3xl font-display font-bold mb-4">
+            Ready to Transform Your Compliance Management?
+          </h3>
+          <p className="text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
+            Join industry leaders who trust TraceR2C for their supply chain compliance needs.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="https://compliance.tracer2c.com" target="_self">
+              <motion.div
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Button size="lg" className="bg-white text-navy-900 hover:bg-gray-100 font-semibold px-8 py-4">
+                  Start Free Trial
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </motion.div>
+            </a>
+          </div>
+        </motion.div>
       </div>
-
-      <style>{`
-        :root{
-          --bg:#070A12;
-          --text:#EAF0FF;
-          --muted:#A9B3D6;
-          --stroke:rgba(255,255,255,.10);
-          --stroke2:rgba(255,255,255,.14);
-          --grad: linear-gradient(90deg, #7C3AED, #22D3EE, #F97316);
-        }
-
-        .fx-wrap{
-          position:relative;
-          padding: min(10vh,120px) 20px;
-          overflow:hidden;
-          color: var(--text);
-          background: transparent;
-        }
-        .fx-bg{
-          position:absolute; inset:-30%;
-          background:
-            radial-gradient(closest-side, rgba(124,58,237,.18), transparent 60%),
-            radial-gradient(closest-side, rgba(34,211,238,.14), transparent 60%),
-            radial-gradient(closest-side, rgba(249,115,22,.10), transparent 60%);
-          filter: blur(10px);
-          transform: translateZ(0);
-          pointer-events:none;
-        }
-
-        .fx-inner{
-          max-width: 1100px;
-          margin: 0 auto;
-          display:grid;
-          grid-template-columns: 1fr 1.2fr;
-          gap: 48px;
-          align-items:start;
-          position:relative;
-          z-index:1;
-        }
-
-        .fx-left{
-          position:sticky;
-          top: 90px;
-          padding: 18px 0;
-        }
-
-        .fx-kicker{
-          display:inline-flex;
-          align-items:center;
-          gap:10px;
-          padding:8px 12px;
-          border:1px solid var(--stroke);
-          border-radius:999px;
-          background: rgba(255,255,255,.03);
-          color: var(--muted);
-          letter-spacing:.08em;
-          text-transform: uppercase;
-          font-size:12px;
-        }
-
-        .fx-title{
-          font-size: clamp(32px, 4vw, 54px);
-          line-height:1.05;
-          margin: 18px 0 14px;
-        }
-        .fx-gradient{
-          background: var(--grad);
-          -webkit-background-clip:text;
-          background-clip:text;
-          color:transparent;
-        }
-        .fx-sub{
-          color: var(--muted);
-          font-size: 16px;
-          line-height:1.6;
-          max-width: 42ch;
-          margin: 0 0 26px;
-        }
-
-        .fx-meter{
-          position:relative;
-          height: 6px;
-          border-radius:999px;
-          background: rgba(255,255,255,.05);
-          border:1px solid var(--stroke);
-          overflow:hidden;
-        }
-        .fx-meter-line{
-          height:100%;
-          width:0%;
-          background: var(--grad);
-        }
-        .fx-meter-dot{
-          position:absolute;
-          top:50%;
-          left:0%;
-          width:16px; height:16px;
-          border-radius:50%;
-          transform: translate(-50%,-50%);
-          background: rgba(255,255,255,.9);
-          box-shadow: 0 0 0 6px rgba(124,58,237,.20), 0 0 40px rgba(34,211,238,.35);
-          mix-blend-mode: screen;
-        }
-
-        .fx-right{ position:relative; }
-        .fx-glow{
-          position:absolute;
-          inset:-40px -40px auto auto;
-          width: 260px; height: 260px;
-          background: var(--grad);
-          border-radius: 999px;
-          filter: blur(55px);
-          opacity: .14;
-          pointer-events:none;
-        }
-
-        .fx-cards{
-          display:grid;
-          gap: 16px;
-        }
-
-        .fx-card{
-          position:relative;
-          padding: 18px 18px 16px;
-          border-radius: 18px;
-          border:1px solid var(--stroke2);
-          background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
-          box-shadow: 0 10px 30px rgba(0,0,0,.35);
-          transform-style: preserve-3d;
-          will-change: transform;
-        }
-        .fx-card::before{
-          content:"";
-          position:absolute; inset:0;
-          border-radius: inherit;
-          background: radial-gradient(120px 120px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.10), transparent 60%);
-          opacity:0;
-          transition: opacity .25s ease;
-          pointer-events:none;
-        }
-        .fx-card:hover::before{ opacity:1; }
-
-        .fx-icon{
-          width: 40px; height: 40px;
-          border-radius: 12px;
-          display:grid; place-items:center;
-          background: rgba(255,255,255,.06);
-          border:1px solid var(--stroke);
-          margin-bottom: 12px;
-          font-size: 20px;
-        }
-        .fx-card h3{ margin: 0 0 6px; font-size: 18px; }
-        .fx-card p{ margin: 0; color: var(--muted); line-height:1.6; }
-        .fx-chip{
-          margin-top: 12px;
-          display:inline-block;
-          font-size: 12px;
-          padding: 6px 10px;
-          border-radius: 999px;
-          border: 1px solid var(--stroke);
-          background: rgba(255,255,255,.03);
-          color: rgba(255,255,255,.86);
-        }
-
-        @media (max-width: 920px){
-          .fx-inner{ grid-template-columns: 1fr; }
-          .fx-left{ position:relative; top:auto; }
-        }
-      `}</style>
     </section>
   );
-}
+};
+
+export default FeaturesSection;

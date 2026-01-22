@@ -1,4 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { 
   NavigationMenu, 
@@ -24,15 +25,9 @@ import {
 } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Link } from "react-router-dom";
-import gsap from "gsap";
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const headerRef = useRef<HTMLElement>(null);
-  const logoIconRef = useRef<HTMLDivElement>(null);
-  const logoTextRef = useRef<HTMLSpanElement>(null);
-  const navRef = useRef<HTMLElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
 
   const products = [
     {
@@ -69,116 +64,32 @@ const Header = () => {
     { name: "Contact", href: "/contact" }
   ];
 
-  useEffect(() => {
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduceMotion) return;
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-      // Logo icon - elastic spin entrance
-      tl.fromTo(
-        logoIconRef.current,
-        { scale: 0, rotation: -180, opacity: 0 },
-        { scale: 1, rotation: 0, opacity: 1, duration: 1, ease: "elastic.out(1, 0.5)" }
-      );
-
-      // Logo text - character reveal
-      if (logoTextRef.current) {
-        const text = logoTextRef.current.textContent || "";
-        logoTextRef.current.innerHTML = text
-          .split("")
-          .map((char) => `<span class="logo-char" style="display:inline-block;opacity:0;transform:translateY(20px)">${char}</span>`)
-          .join("");
-
-        tl.to(
-          ".logo-char",
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.5,
-            stagger: 0.04,
-            ease: "power2.out"
-          },
-          "-=0.6"
-        );
-      }
-
-      // Nav items cascade
-      tl.fromTo(
-        ".nav-item",
-        { opacity: 0, y: -20, filter: "blur(8px)" },
-        {
-          opacity: 1,
-          y: 0,
-          filter: "blur(0px)",
-          duration: 0.5,
-          stagger: 0.08
-        },
-        "-=0.4"
-      );
-
-      // CTA button pop
-      tl.fromTo(
-        ctaRef.current,
-        { scale: 0.8, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.5, ease: "back.out(1.7)" },
-        "-=0.3"
-      );
-    }, headerRef);
-
-    // Logo hover effect
-    const logoIcon = logoIconRef.current;
-    if (logoIcon) {
-      const handleMouseEnter = () => {
-        gsap.to(logoIcon, {
-          scale: 1.1,
-          rotation: 10,
-          duration: 0.3,
-          ease: "power2.out"
-        });
-      };
-      const handleMouseLeave = () => {
-        gsap.to(logoIcon, {
-          scale: 1,
-          rotation: 0,
-          duration: 0.3,
-          ease: "power2.out"
-        });
-      };
-
-      logoIcon.addEventListener("mouseenter", handleMouseEnter);
-      logoIcon.addEventListener("mouseleave", handleMouseLeave);
-
-      return () => {
-        logoIcon.removeEventListener("mouseenter", handleMouseEnter);
-        logoIcon.removeEventListener("mouseleave", handleMouseLeave);
-        ctx.revert();
-      };
-    }
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <header ref={headerRef} className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-6">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div 
-              ref={logoIconRef}
-              className="h-8 w-8 bg-gradient-accent rounded-lg flex items-center justify-center will-change-transform"
-            >
-              <span className="text-white font-bold text-sm">T</span>
-            </div>
-            <span ref={logoTextRef} className="font-display font-bold text-xl text-navy-900">TraceR2C</span>
-          </Link>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
+            <Link to="/" className="flex items-center space-x-2">
+              <div className="h-8 w-8 bg-gradient-accent rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">T</span>
+              </div>
+              <span className="font-display font-bold text-xl text-navy-900">TraceR2C</span>
+            </Link>
+          </motion.div>
 
           {/* Desktop Navigation */}
-          <nav ref={navRef} className="hidden lg:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-8">
             {/* Products Mega Menu */}
-            <div className="nav-item">
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
               <NavigationMenu>
                 <NavigationMenuList>
                   <NavigationMenuItem>
@@ -240,29 +151,43 @@ const Header = () => {
                   </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
-            </div>
+            </motion.div>
 
             {/* Main Navigation Items */}
-            {mainNavItems.map((item) => (
-              <div key={item.name} className="nav-item">
+            {mainNavItems.map((item, index) => (
+              <motion.div
+                key={item.name}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ 
+                  duration: 0.4, 
+                  delay: 0.15 + index * 0.05,
+                  ease: [0.25, 0.46, 0.45, 0.94]
+                }}
+              >
                 <Link
                   to={item.href}
                   className="text-navy-700 hover:text-navy-900 font-medium transition-colors"
                 >
                   {item.name}
                 </Link>
-              </div>
+              </motion.div>
             ))}
           </nav>
 
           {/* Right Section */}
-          <div ref={ctaRef} className="hidden lg:flex items-center space-x-4 will-change-transform">
+          <motion.div 
+            className="hidden lg:flex items-center space-x-4"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.4, delay: 0.4, ease: [0.25, 0.46, 0.45, 0.94] }}
+          >
             <a href="https://compliance.tracer2c.com" target="_self">
               <Button className="bg-gradient-accent text-white hover:opacity-90 font-medium">
                 Start Free Trial
               </Button>
             </a>
-          </div>
+          </motion.div>
 
           {/* Mobile Menu Button */}
           <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
@@ -359,6 +284,7 @@ const Header = () => {
           </Sheet>
         </div>
       </div>
+
     </header>
   );
 };
