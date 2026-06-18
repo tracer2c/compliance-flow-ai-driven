@@ -2,17 +2,19 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { 
-  Sparkles, 
-  Globe, 
-  Shield, 
-  FileText,
-  Activity,
-  Users,
-  BarChart3,
-  Bell,
-  Search,
-  ArrowRight
+import FeatureIcon from "@/components/ui/FeatureIcon";
+import SplitTextReveal from "@/components/animations/SplitTextReveal";
+import {
+  BrainCircuit,
+  Globe2,
+  LockKeyhole,
+  FileCheck2,
+  Radar,
+  KeyRound,
+  ChartNoAxesCombined,
+  BellRing,
+  ScrollText,
+  ArrowRight,
 } from "lucide-react";
 
 const FeaturesSection = () => {
@@ -24,62 +26,62 @@ const FeaturesSection = () => {
       title: "AI-Powered Insights",
       subtitle: "New",
       description: "Leverage artificial intelligence for predictive compliance analytics and automated risk assessment.",
-      icon: Sparkles,
-      color: "bg-purple-100 text-purple-600"
+      icon: BrainCircuit,
+      tone: "violet" as const,
     },
     {
-      title: "Multi-Region Support", 
+      title: "Multi-Region Support",
       subtitle: "Global",
       description: "Built for global operations with localized compliance requirements and data residency.",
-      icon: Globe,
-      color: "bg-blue-100 text-blue-600"
+      icon: Globe2,
+      tone: "teal" as const,
     },
     {
       title: "Enterprise Security",
-      subtitle: "Secure", 
+      subtitle: "Secure",
       description: "Bank-grade security with end-to-end encryption and zero-trust architecture.",
-      icon: Shield,
-      color: "bg-teal-100 text-teal-600"
-    }
+      icon: LockKeyhole,
+      tone: "navy" as const,
+    },
   ];
 
   const features = [
     {
       title: "Document Management",
       description: "Automated metadata capture, version control, digital signatures, bulk operations",
-      icon: FileText,
-      color: "bg-blue-100 text-blue-600"
+      icon: FileCheck2,
+      tone: "teal" as const,
     },
     {
       title: "Compliance Tracking",
       description: "Real-time monitoring, risk assessment, compliance scoring, automated reporting",
-      icon: Activity,
-      color: "bg-green-100 text-green-600"
+      icon: Radar,
+      tone: "green" as const,
     },
     {
       title: "Role-Based Access",
       description: "Buyer/supplier/reviewer dashboards, granular permissions, multi-tenant, SSO, audit logs",
-      icon: Users,
-      color: "bg-purple-100 text-purple-600"
+      icon: KeyRound,
+      tone: "violet" as const,
     },
     {
       title: "Analytics & Reporting",
       description: "Custom dashboards, exportable reports, trend analysis, performance metrics",
-      icon: BarChart3,
-      color: "bg-orange-100 text-orange-600"
+      icon: ChartNoAxesCombined,
+      tone: "amber" as const,
     },
     {
       title: "Smart Alerts",
       description: "Expiry notifications, risk alerts, custom triggers, multi-channel delivery",
-      icon: Bell,
-      color: "bg-red-100 text-red-600"
+      icon: BellRing,
+      tone: "rose" as const,
     },
     {
       title: "Audit Trail",
       description: "Complete history, immutable records, regulatory compliance, digital evidence",
-      icon: Search,
-      color: "bg-teal-100 text-teal-600"
-    }
+      icon: ScrollText,
+      tone: "navy" as const,
+    },
   ];
 
   const headerVariants = {
