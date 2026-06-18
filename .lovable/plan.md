@@ -1,91 +1,76 @@
-## Plan: Practical Upgrades — Modern Icons + GSAP Scroll & Text Effects
+# Hero + Footer Redesign — Blueprint Console
 
-### Goals
-1. Replace flat lucide icons with richer, more "enterprise-feeling" iconography (duotone-style containers + brand-aligned Lucide picks, plus animated icons on hover).
-2. Introduce **GSAP** + **ScrollTrigger** + **SplitText-style** word/char animations to make sections feel alive as the user scrolls — without breaking existing framer-motion work.
-3. Add a couple of practical new feature blocks that improve perceived product depth.
+Implement the selected v3 direction as real React components, using the locked tokens (Deep Ocean Trust palette, Space Grotesk + Inter + JetBrains Mono) and the existing GSAP setup. Keep restraint — no floating card clutter, no flashy effects.
 
----
+## Scope (only these two surfaces)
+- `src/components/home/HeroSection.tsx` — full rebuild
+- `src/components/layout/Footer.tsx` — full rebuild
+- `src/index.css` + `tailwind.config.ts` — add the Deep Ocean Trust tokens + JetBrains Mono font family scoped to these new sections (no global theme overhaul)
+- `src/main.tsx` — add `@fontsource/jetbrains-mono` (Space Grotesk + Inter already used by the project; add only if missing)
 
-### 1. Install & Setup
-- Add `gsap` (free ScrollTrigger included).
-- Create `src/hooks/useGSAP.ts` — a small wrapper using `useLayoutEffect` + `gsap.context()` for safe cleanup in React.
-- Create reusable components in `src/components/animations/`:
-  - `SplitTextReveal.tsx` — splits headline into words/chars, staggers them in on scroll (y + opacity + blur).
-  - `ScrollReveal.tsx` — fade/slide a block when it enters viewport (ScrollTrigger).
-  - `MarqueeStrip.tsx` — GSAP-driven infinite logo/trust marquee.
-  - `CounterUp.tsx` — GSAP number tween triggered on scroll (for stats).
-  - `ParallaxImage.tsx` — subtle y-translate parallax on scroll.
+No other sections, pages, routes, copy intent, or business logic change. Existing CTAs preserved: primary "Start Free Trial" → `https://compliance.tracer2c.com`, secondary "See how it works" stays.
 
-### 2. Icon System Upgrade
-- New `src/components/ui/FeatureIcon.tsx`: a polished icon container with:
-  - Gradient background ring (semantic tokens, not hardcoded colors).
-  - Soft inner shadow + glow on hover.
-  - Icon scales + rotates slightly on hover (GSAP).
-- Swap current Lucide icons for more specific picks:
-  - Document Management → `FileCheck2`
-  - Compliance Tracking → `ShieldCheck` / `Radar`
-  - Role-Based Access → `UsersRound` / `KeyRound`
-  - Analytics → `ChartNoAxesCombined`
-  - Smart Alerts → `BellRing`
-  - Audit Trail → `ScrollText`
-  - AI Insights → `BrainCircuit`
-  - Multi-Region → `Globe2`
-  - Enterprise Security → `LockKeyhole`
+## Hero — what gets built
+Asymmetric `[1.2fr_1fr]` grid, full viewport height.
 
-### 3. Section-by-Section Changes
+**Left column**
+- Mono eyebrow pill: pulsing teal dot + "ENTERPRISE NODE ACTIVE"
+- H1 in Space Grotesk 7xl/8xl, last word "operational." in teal (`#14B8A6`). Word-by-word reveal via the existing `SplitTextReveal` component.
+- Subhead (existing copy, unchanged)
+- CTAs: primary teal "Start Free Trial" with mint slide-up fill on hover; secondary outlined "See how it works"
+- Mono micro-grid under CTAs: `01/ SOC2 TYPE II — Continuous Audit`, `02/ ISO 27001 — Supply Chain Map`
 
-**HeroSection**
-- Wrap headline in `SplitTextReveal` (word-by-word reveal with blur-out → in).
-- Subheadline fades up after headline finishes.
-- Add subtle GSAP parallax to background pattern (mouse-move + scroll).
-- Replace static trust badges with the new `FeatureIcon` mini-chips.
+**Right column — refined product visual (not floating chips)**
+A single composed "Audit Manifest" card, no extra orbiting widgets:
+- Header row: doc id (mono, teal) + title "Compliance Certificate" + status pill
+- Status pill animates Pending → Verified once on mount via GSAP timeline (single check stroke draws, no infinite loop)
+- Body: 4 skeleton ledger rows that stagger-reveal (60ms) with left-edge accent
+- Footer row inside card: signer + timestamp in mono
+- Behind the card: one soft teal radial glow + a thin teal corner bracket (architectural, not decorative)
+- One small offset "Verified" badge (replaces the prototype's separate floating card) anchored to the card's bottom-right corner, not floating in space
 
-**TrustStatsSection**
-- Replace any static numbers with `CounterUp` (e.g., "500+ Enterprises", "99.9% Uptime", "150+ Regulations").
-- Add `MarqueeStrip` of partner/industry/certification logos (SOC 2, ISO 27001, GDPR, EUDR badges as text chips with icons since we don't have logos).
+**Backdrop layers (3 parallax depths)**
+1. SVG grid pattern (80px), opacity 0.06, slowest parallax (y * 0.05)
+2. Supply-chain SVG path drawing left → right on mount (stroke-dashoffset via GSAP, 2.4s, ease-out), opacity 0.25
+3. Hero content (no parallax on headline itself — only the background layers move)
 
-**FeaturesSection**
-- Headline → `SplitTextReveal`.
-- Three pillar cards → use new `FeatureIcon`, animate on `ScrollTrigger` with stagger.
-- Feature grid → wrap each card in `ScrollReveal`, GSAP stagger by row.
-- Add a new sub-section "How it Works" (3 steps: Connect → Monitor → Report) with animated SVG connectors drawn via GSAP `drawSVG`-like stroke-dashoffset trick.
+Scroll indicator "TRACE PATH ↓" centered at the bottom.
 
-**IndustrySection**
-- Industry tiles → upgrade icons (e.g., `Leaf` for Agriculture, `Factory` for Manufacturing, `Pill` for Pharma, `Cpu` for Electronics).
-- Add `ScrollTrigger` pinned horizontal scroll (desktop only) showing each industry as a slide with stat + use case. Falls back to vertical stack on mobile.
+## Footer — what gets built
+Console aesthetic, architectural footprint.
 
-### 4. Performance & Accessibility
-- All GSAP animations gated by `prefers-reduced-motion` (skip transforms, show end state).
-- `gsap.context()` cleanup on unmount.
-- ScrollTrigger `refresh()` on route change.
-- All animations target transform/opacity only (no layout thrash).
+- Tall top padding, oversized translucent `TRACER2C` wordmark behind content (opacity 0.03, parallax-slow on scroll)
+- Top row: brand mark + tagline (left) | three mono link columns Platform / Company / Legal (right)
+- Real contact block under the brand: Auburn AL, phone, email (pulled from current footer)
+- Compliance badge strip (SOC2, ISO 27001, GDPR, EUDR, HIPAA) as mono chips with hairline borders
+- Bottom bar: live "All nodes operational — Latency: 12ms" status pill (animated dot) | copyright in mono
+- A continuation of the hero's supply-chain SVG path enters from the top edge of the footer and terminates at the status pill (drawn on scroll via ScrollTrigger)
 
----
+## Motion rules (carry into both)
+- All animations transform/opacity only
+- Respect `prefers-reduced-motion` (existing `useGSAP` hook already does this)
+- No infinite loops except the 2px status dot pulse
+- Hover states subtle: 200ms color/transform, no scale > 1.02
 
-### Files to Add
-| File | Purpose |
-|---|---|
-| `src/hooks/useGSAP.ts` | Safe GSAP context hook |
-| `src/components/animations/SplitTextReveal.tsx` | Word/char headline reveal |
-| `src/components/animations/ScrollReveal.tsx` | Generic scroll fade/slide |
-| `src/components/animations/MarqueeStrip.tsx` | Infinite logo marquee |
-| `src/components/animations/CounterUp.tsx` | Animated number counter |
-| `src/components/animations/ParallaxImage.tsx` | Scroll parallax |
-| `src/components/ui/FeatureIcon.tsx` | Premium icon container |
-| `src/components/home/HowItWorksSection.tsx` | New 3-step section |
+## Technical details
+- Reuse: `useGSAP`, `SplitTextReveal`, `ScrollReveal` already in repo
+- New small components (kept local to Hero/Footer files, not exported):
+  - `AuditManifestCard` inside HeroSection
+  - `SupplyChainPath` SVG inside HeroSection (and a mirrored bottom variant in Footer)
+- Add CSS tokens in `index.css`:
+  ```
+  --ocean-base: 213 53% 9%;      /* #0A1628 */
+  --ocean-surface: 210 47% 16%;  /* #0F2942 */
+  --teal-primary: 173 80% 40%;   /* #14B8A6 */
+  --mint-highlight: 154 76% 80%; /* #A7F3D0 */
+  ```
+  Map to `--background`, `--card`, `--primary`, `--accent` for these sections; no hex literals in JSX.
+- Add `fontFamily.mono: ['"JetBrains Mono"', ...]` in tailwind config; install `@fontsource/jetbrains-mono` if not present.
 
-### Files to Modify
-| File | Change |
-|---|---|
-| `package.json` | add `gsap` |
-| `src/pages/Index.tsx` | insert `HowItWorksSection` between Features and Industry |
-| `src/components/home/HeroSection.tsx` | SplitText headline + parallax bg |
-| `src/components/home/TrustStatsSection.tsx` | CounterUp + MarqueeStrip |
-| `src/components/home/FeaturesSection.tsx` | New icons + SplitText + ScrollReveal |
-| `src/components/home/IndustrySection.tsx` | New icons + pinned horizontal scroll |
+## Files touched
+- modify: `src/components/home/HeroSection.tsx`
+- modify: `src/components/layout/Footer.tsx`
+- modify: `src/index.css`, `tailwind.config.ts`, `src/main.tsx`, `package.json` (font only)
 
----
-
-### Outcome
-The homepage will feel materially more "alive" and enterprise-grade: headlines unveil word-by-word, stats count up, a new How-It-Works flow draws itself, industries scroll horizontally, and icons look bespoke rather than default-Lucide. All while keeping the existing framer-motion entrance animations intact and respecting reduced-motion preferences.
+## Out of scope
+Header, FeaturesSection, IndustrySection, HowItWorksSection, TrustStatsSection, all other routes, copy rewrites, backend.
