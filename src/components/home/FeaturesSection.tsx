@@ -190,17 +190,13 @@ const FeaturesSection = () => {
               className="text-center group"
               variants={pillarItemVariants}
             >
-              <motion.div 
+              <motion.div
                 className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover-lift border border-gray-100"
                 whileHover={{ y: -8 }}
               >
-                <motion.div 
-                  className={`w-16 h-16 ${pillar.color} rounded-2xl flex items-center justify-center mx-auto mb-6`}
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <pillar.icon className="h-8 w-8" />
-                </motion.div>
+                <div className="flex justify-center mb-6">
+                  <FeatureIcon icon={pillar.icon} tone={pillar.tone} size="lg" />
+                </div>
                 <div className="flex items-center justify-center space-x-2 mb-4">
                   <h3 className="text-xl font-bold text-navy-900">
                     {pillar.title}
@@ -243,13 +239,13 @@ const FeaturesSection = () => {
                   className="bg-gray-50 rounded-xl p-6 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-gray-200"
                   whileHover={{ y: -4 }}
                 >
-                  <motion.div 
-                    className={`w-12 h-12 ${feature.color} rounded-lg flex items-center justify-center mb-4`}
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <feature.icon className="h-6 w-6" />
-                  </motion.div>
+                <motion.div
+                  className="bg-gray-50 rounded-xl p-6 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-gray-200"
+                  whileHover={{ y: -4 }}
+                >
+                  <div className="mb-4">
+                    <FeatureIcon icon={feature.icon} tone={feature.tone} size="md" />
+                  </div>
                   <h4 className="text-lg font-semibold text-navy-900 mb-3">
                     {feature.title}
                   </h4>
