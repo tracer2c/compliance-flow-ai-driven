@@ -1,131 +1,197 @@
 import { Link } from "react-router-dom";
-import { 
-  FileText, 
-  Target, 
-  BarChart3, 
-  DollarSign, 
-  BookOpen, 
-  Building,
-  MapPin,
-  Mail,
-  Phone,
-  Linkedin,
-  Twitter,
-  Shield
-} from "lucide-react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MapPin, Mail, Phone, Linkedin, Twitter } from "lucide-react";
+import { useGSAP, prefersReducedMotion } from "@/hooks/useGSAP";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
-  const footerSections = [
+  const scope = useGSAP((ctx) => {
+    if (prefersReducedMotion()) return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Parallax wordmark (slow drift)
+    ctx.add(() => {
+      gsap.to("[data-footer-wordmark]", {
+        yPercent: -12,
+        ease: "none",
+        scrollTrigger: {
+          trigger: scope.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    });
+
+    // Supply-chain path drawing on scroll
+    ctx.add(() => {
+      const path = scope.current?.querySelector<SVGPathElement>("[data-footer-path]");
+      if (!path) return;
+      const len = path.getTotalLength();
+      gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+      gsap.to(path, {
+        strokeDashoffset: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: scope.current,
+          start: "top 85%",
+          end: "bottom bottom",
+          scrub: 0.6,
+        },
+      });
+    });
+  }, []);
+
+  const columns = [
     {
-      title: "Products",
+      title: "Platform",
       links: [
-        { name: "ComplianceFlow", href: "/products/complianceflow", icon: FileText },
-        { name: "Target Promotion System", href: "/products/promotions", icon: Target },
-        { name: "Clear Insight", href: "/products/analytics", icon: BarChart3 }
-      ]
+        { name: "ComplianceFlow", href: "/products/complianceflow" },
+        { name: "Target Promotion", href: "/products/promotions" },
+        { name: "Clear Insight", href: "/products/analytics" },
+        { name: "API Reference", href: "/resources/api-docs" },
+      ],
     },
     {
       title: "Solutions",
       links: [
-        { name: "Food Service", href: "/solutions/food-service", icon: null },
-        { name: "Pharmaceuticals", href: "/solutions/pharma", icon: null },
-        { name: "Manufacturing", href: "/solutions/manufacturing", icon: null },
-        { name: "Retail", href: "/solutions/retail", icon: null },
-        { name: "Logistics", href: "/solutions/logistics", icon: null },
-        { name: "Construction", href: "/solutions/construction", icon: null }
-      ]
+        { name: "Food Service", href: "/solutions/food-service" },
+        { name: "Pharmaceuticals", href: "/solutions/pharma" },
+        { name: "Manufacturing", href: "/solutions/manufacturing" },
+        { name: "Logistics", href: "/solutions/logistics" },
+      ],
     },
     {
       title: "Company",
       links: [
-        { name: "Pricing", href: "/pricing", icon: DollarSign },
-        { name: "Resources", href: "/resources", icon: BookOpen },
-        { name: "About Us", href: "/company", icon: Building },
-        { name: "Contact", href: "/contact", icon: null }
-      ]
+        { name: "Pricing", href: "/pricing" },
+        { name: "Resources", href: "/resources" },
+        { name: "About", href: "/company" },
+        { name: "Contact", href: "/contact" },
+      ],
     },
     {
-      title: "Resources",
+      title: "Legal",
       links: [
-        { name: "Blog", href: "/resources/blog", icon: null },
-        { name: "Guides", href: "/resources/guides", icon: null },
-        { name: "Checklists", href: "/resources/checklists", icon: null },
-        { name: "Case Studies", href: "/resources/case-studies", icon: null },
-        { name: "API Documentation", href: "/resources/api-docs", icon: null },
-        { name: "Support", href: "/support", icon: null }
-      ]
-    }
+        { name: "Privacy", href: "/privacy" },
+        { name: "Terms", href: "/terms" },
+        { name: "Cookies", href: "/cookies" },
+        { name: "Support", href: "/support" },
+      ],
+    },
   ];
 
+  const badges = ["SOC 2 Type II", "ISO 27001", "GDPR", "EUDR", "HIPAA-Ready"];
+
   return (
-    <footer className="bg-navy-950 text-white">
-      <div className="container mx-auto px-6">
-        {/* Main Footer Content */}
-        <div className="py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
-            {/* Company Info */}
-            <div className="lg:col-span-2 space-y-6">
-              <div className="flex items-center space-x-2">
-                <div className="h-8 w-8 bg-gradient-accent rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">T</span>
-                </div>
-                <span className="font-display font-bold text-xl">TraceR2C</span>
-              </div>
-              
-              <p className="text-gray-300 text-lg leading-relaxed">
-                Make compliance operational, measurable, and proactive across your entire supply chain.
-              </p>
+    <footer
+      ref={scope as React.RefObject<HTMLElement>}
+      className="relative bg-ocean-base text-ocean-fg pt-32 pb-10 overflow-hidden"
+    >
+      {/* Continuation supply-chain path */}
+      <svg
+        className="absolute inset-x-0 top-0 w-full h-40 pointer-events-none"
+        viewBox="0 0 1600 160"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <path
+          data-footer-path
+          d="M-50,10 C300,140 700,-40 1000,80 S1500,140 1700,40"
+          fill="none"
+          stroke="hsl(var(--ocean-primary))"
+          strokeWidth="1"
+          strokeDasharray="6 8"
+          opacity="0.35"
+        />
+      </svg>
 
-              <div className="space-y-3">
-                <div className="flex items-center space-x-3 text-gray-300">
-                  <MapPin className="h-4 w-4 text-teal-400" />
-                  <span>Auburn, Alabama, United States</span>
-                </div>
-                <div className="flex items-center space-x-3 text-gray-300">
-                  <Mail className="h-4 w-4 text-teal-400" />
-                  <span>contact@tracer2c.com</span>
-                </div>
-                <div className="flex items-center space-x-3 text-gray-300">
-                  <Phone className="h-4 w-4 text-teal-400" />
-                  <span>(229) 395-9837</span>
-                </div>
-              </div>
+      {/* Massive translucent wordmark */}
+      <div
+        data-footer-wordmark
+        className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
+      >
+        <h2 className="text-[22vw] lg:text-[18vw] font-display font-bold leading-none tracking-tighter text-ocean-fg/[0.025] whitespace-nowrap">
+          TRACER2C
+        </h2>
+      </div>
 
-              <div className="flex space-x-4">
-                <a 
-                  href="https://linkedin.com/company/tracer2c" 
-                  className="p-2 bg-navy-800 rounded-lg hover:bg-navy-700 transition-colors"
-                  aria-label="LinkedIn"
-                >
-                  <Linkedin className="h-5 w-5 text-gray-300" />
-                </a>
-                <a 
-                  href="https://twitter.com/tracer2c" 
-                  className="p-2 bg-navy-800 rounded-lg hover:bg-navy-700 transition-colors"
-                  aria-label="Twitter"
-                >
-                  <Twitter className="h-5 w-5 text-gray-300" />
-                </a>
+      {/* Subtle grid */}
+      <div className="absolute inset-0 opacity-[0.04] pointer-events-none">
+        <svg width="100%" height="100%" aria-hidden="true">
+          <defs>
+            <pattern id="footer-grid" width="80" height="80" patternUnits="userSpaceOnUse">
+              <path d="M 80 0 L 0 0 0 80" fill="none" stroke="hsl(var(--ocean-primary))" strokeWidth="0.5" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#footer-grid)" />
+        </svg>
+      </div>
+
+      <div className="container mx-auto px-6 lg:px-12 relative z-10">
+        {/* Top: brand + columns */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_2fr] gap-16 mb-20">
+          <div className="space-y-6 max-w-md">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 bg-ocean-primary flex items-center justify-center font-display font-bold text-ocean-base text-lg rounded-sm">
+                T
+              </div>
+              <span className="font-display font-bold text-2xl tracking-tight">TraceR2C</span>
+            </div>
+            <p className="text-ocean-fg/55 text-sm leading-relaxed">
+              Architected for complex regulatory environments and multi-tier supply chain visibility.
+              Built to the standards your auditors expect.
+            </p>
+
+            <div className="space-y-3 pt-2">
+              <div className="flex items-center gap-3 text-ocean-fg/65 text-sm">
+                <MapPin className="h-4 w-4 text-ocean-primary" />
+                Auburn, Alabama · United States
+              </div>
+              <div className="flex items-center gap-3 text-ocean-fg/65 text-sm">
+                <Mail className="h-4 w-4 text-ocean-primary" />
+                contact@tracer2c.com
+              </div>
+              <div className="flex items-center gap-3 text-ocean-fg/65 text-sm">
+                <Phone className="h-4 w-4 text-ocean-primary" />
+                (229) 395-9837
               </div>
             </div>
 
-            {/* Footer Links */}
-            {footerSections.map((section) => (
-              <div key={section.title} className="space-y-4">
-                <h3 className="font-display font-semibold text-lg text-white">
-                  {section.title}
-                </h3>
+            <div className="flex gap-3 pt-2">
+              <a
+                href="https://linkedin.com/company/tracer2c"
+                aria-label="LinkedIn"
+                className="w-9 h-9 border border-ocean-line flex items-center justify-center text-ocean-fg/70 hover:bg-ocean-primary hover:text-ocean-base hover:border-ocean-primary transition-colors rounded-sm"
+              >
+                <Linkedin className="h-4 w-4" />
+              </a>
+              <a
+                href="https://twitter.com/tracer2c"
+                aria-label="Twitter"
+                className="w-9 h-9 border border-ocean-line flex items-center justify-center text-ocean-fg/70 hover:bg-ocean-primary hover:text-ocean-base hover:border-ocean-primary transition-colors rounded-sm"
+              >
+                <Twitter className="h-4 w-4" />
+              </a>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-10">
+            {columns.map((col) => (
+              <div key={col.title} className="space-y-5">
+                <h4 className="font-mono text-[10px] uppercase tracking-[0.22em] text-ocean-primary">
+                  {col.title}
+                </h4>
                 <ul className="space-y-3">
-                  {section.links.map((link) => (
+                  {col.links.map((link) => (
                     <li key={link.name}>
-                      <Link 
+                      <Link
                         to={link.href}
-                        className="text-gray-300 hover:text-teal-400 transition-colors flex items-center space-x-2"
+                        className="text-sm text-ocean-fg/65 hover:text-ocean-mint transition-colors"
                       >
-                        {link.icon && <link.icon className="h-4 w-4" />}
-                        <span>{link.name}</span>
+                        {link.name}
                       </Link>
                     </li>
                   ))}
@@ -135,44 +201,36 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Trust Badges */}
-        <div className="border-t border-navy-800 py-8">
-        <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-            <div className="flex flex-wrap items-center gap-6">
-              <div className="flex items-center space-x-2">
-                <Shield className="h-5 w-5 text-teal-400" />
-                <span className="text-gray-300 text-sm">SSO/SAML Ready</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Shield className="h-5 w-5 text-teal-400" />
-                <span className="text-gray-300 text-sm">End-to-End Encryption</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Shield className="h-5 w-5 text-teal-400" />
-                <span className="text-gray-300 text-sm">Data Residency Controls</span>
-              </div>
-            </div>
-          </div>
+        {/* Compliance badges strip */}
+        <div className="flex flex-wrap items-center gap-3 mb-10 py-6 border-y border-ocean-line/60">
+          <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ocean-fg/40 mr-2">
+            Compliance ·
+          </span>
+          {badges.map((b) => (
+            <span
+              key={b}
+              className="px-3 py-1.5 border border-ocean-line text-ocean-fg/70 font-mono text-[10px] uppercase tracking-wider rounded-sm hover:border-ocean-primary/60 hover:text-ocean-mint transition-colors"
+            >
+              {b}
+            </span>
+          ))}
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-navy-800 py-6">
-          <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
-            <div className="text-gray-400 text-sm">
-              © {currentYear} ComplianceFlow by TraceR2C LLC. All rights reserved.
-            </div>
-            <div className="flex space-x-6 text-sm">
-              <Link to="/privacy" className="text-gray-400 hover:text-teal-400 transition-colors">
-                Privacy Policy
-              </Link>
-              <Link to="/terms" className="text-gray-400 hover:text-teal-400 transition-colors">
-                Terms of Service
-              </Link>
-              <Link to="/cookies" className="text-gray-400 hover:text-teal-400 transition-colors">
-                Cookie Policy
-              </Link>
-            </div>
+        {/* Bottom bar */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div className="inline-flex items-center gap-3 px-4 py-2 bg-ocean-surface/70 border border-ocean-primary/25 rounded-full">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-ocean-primary opacity-60 animate-ping" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-ocean-primary shadow-[0_0_8px_hsl(var(--ocean-primary))]" />
+            </span>
+            <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ocean-fg/80">
+              All nodes operational · Latency 12ms
+            </span>
           </div>
+
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ocean-fg/35">
+            © {currentYear} ComplianceFlow by TraceR2C LLC. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
