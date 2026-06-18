@@ -2,22 +2,23 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Shield, 
-  ArrowRight, 
+import SplitTextReveal from "@/components/animations/SplitTextReveal";
+import {
+  ShieldCheck,
+  ArrowRight,
   Play,
-  Lock,
-  Users,
-  FileText,
-  ChevronDown
+  LockKeyhole,
+  UsersRound,
+  ScrollText,
+  ChevronDown,
 } from "lucide-react";
 
 const HeroSection = () => {
   const trustBadges = [
-    { icon: Lock, text: "SSO/SAML" },
-    { icon: Users, text: "RBAC" },
-    { icon: FileText, text: "Audit Logs" },
-    { icon: Shield, text: "Encryption" }
+    { icon: LockKeyhole, text: "SSO/SAML" },
+    { icon: UsersRound, text: "RBAC" },
+    { icon: ScrollText, text: "Audit Logs" },
+    { icon: ShieldCheck, text: "Encryption" }
   ];
 
   // Animation variants
@@ -105,19 +106,26 @@ const HeroSection = () => {
             </motion.div>
 
             {/* Main Headline */}
-            <motion.h1 
+            <motion.h1
               className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-8 leading-tight"
               variants={itemVariants}
             >
-              Make compliance operational,
-              <motion.span 
+              <SplitTextReveal
+                as="span"
+                text="Make compliance operational,"
+                className="block"
+                immediate
+                delay={0.3}
+                stagger={0.05}
+              />
+              <SplitTextReveal
+                as="span"
+                text="measurable, and proactive."
                 className="block bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text text-transparent"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.6, duration: 0.6, ease: "easeOut" }}
-              >
-                measurable, and proactive.
-              </motion.span>
+                immediate
+                delay={0.7}
+                stagger={0.05}
+              />
             </motion.h1>
 
             {/* Subheadline */}

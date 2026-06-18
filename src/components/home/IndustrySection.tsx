@@ -1,28 +1,39 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import {
+  UtensilsCrossed,
+  Pill,
+  Factory,
+  ShoppingBag,
+  Truck,
+  HardHat,
+  Leaf,
+  Cpu,
+} from "lucide-react";
+import FeatureIcon from "@/components/ui/FeatureIcon";
+import SplitTextReveal from "@/components/animations/SplitTextReveal";
 
 const IndustrySection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const industries = [
-    { emoji: "🍽️", name: "Food Service", href: "/solutions/food-service" },
-    { emoji: "💊", name: "Pharma", href: "/solutions/pharma" },
-    { emoji: "🏭", name: "Manufacturing", href: "/solutions/manufacturing" },
-    { emoji: "🛍️", name: "Retail", href: "/solutions/retail" },
-    { emoji: "🚛", name: "Logistics", href: "/solutions/logistics" },
-    { emoji: "🏗️", name: "Construction", href: "/solutions/construction" }
+    { icon: UtensilsCrossed, tone: "amber" as const, name: "Food Service", href: "/solutions/food-service" },
+    { icon: Pill, tone: "rose" as const, name: "Pharma", href: "/solutions/pharma" },
+    { icon: Factory, tone: "navy" as const, name: "Manufacturing", href: "/solutions/manufacturing" },
+    { icon: ShoppingBag, tone: "violet" as const, name: "Retail", href: "/solutions/retail" },
+    { icon: Truck, tone: "teal" as const, name: "Logistics", href: "/solutions/logistics" },
+    { icon: HardHat, tone: "amber" as const, name: "Construction", href: "/solutions/construction" },
+    { icon: Leaf, tone: "green" as const, name: "Agriculture", href: "/solutions/agriculture" },
+    { icon: Cpu, tone: "navy" as const, name: "Electronics", href: "/solutions/electronics" },
   ];
 
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
+      transition: { staggerChildren: 0.08, delayChildren: 0.2 },
+    },
   };
 
   const itemVariants = {
@@ -31,45 +42,27 @@ const IndustrySection = () => {
       opacity: 1,
       y: 0,
       scale: 1,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut" as const
-      }
-    }
-  };
-
-  const titleVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut" as const
-      }
-    }
+      transition: { duration: 0.5, ease: "easeOut" as const },
+    },
   };
 
   return (
-    <section className="py-16 bg-navy-50" ref={ref}>
+    <section className="py-20 bg-navy-50" ref={ref}>
       <div className="container mx-auto px-6">
-        <motion.div 
-          className="text-center mb-12"
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          variants={titleVariants}
-        >
-          <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-4">
-            Serving Regulated Industries Worldwide
-          </h2>
+        <div className="text-center mb-14">
+          <SplitTextReveal
+            as="h2"
+            text="Serving Regulated Industries Worldwide"
+            className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-4 block"
+          />
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            TraceR2C's compliance platform is trusted across diverse industries 
+            TraceR2C's compliance platform is trusted across diverse industries
             with complex regulatory requirements and multi-tier supply chains.
           </p>
-        </motion.div>
+        </div>
 
-        <motion.div 
-          className="flex flex-wrap items-center justify-center gap-8 mb-8"
+        <motion.div
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6"
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
           variants={containerVariants}
@@ -78,35 +71,24 @@ const IndustrySection = () => {
             <motion.a
               key={index}
               href={industry.href}
-              className="group flex flex-col items-center space-y-3 p-6 rounded-xl hover:bg-white hover:shadow-lg transition-all duration-300"
+              className="group flex flex-col items-center text-center space-y-4 p-6 rounded-2xl bg-white border border-gray-100 hover:border-teal-200 hover:shadow-xl transition-all duration-300"
               variants={itemVariants}
-              whileHover={{ scale: 1.05, y: -5 }}
+              whileHover={{ y: -6 }}
               whileTap={{ scale: 0.98 }}
             >
-              <motion.div 
-                className="text-4xl"
-                whileHover={{ scale: 1.2, rotate: [0, -10, 10, 0] }}
-                transition={{ duration: 0.4 }}
-              >
-                {industry.emoji}
-              </motion.div>
-              <span className="text-navy-700 font-medium group-hover:text-teal-600 transition-colors">
+              <FeatureIcon icon={industry.icon} tone={industry.tone} size="lg" />
+              <span className="text-navy-700 font-semibold group-hover:text-teal-600 transition-colors">
                 {industry.name}
               </span>
             </motion.a>
           ))}
         </motion.div>
 
-        <motion.div 
-          className="text-center"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ delay: 0.8, duration: 0.5 }}
-        >
+        <div className="text-center mt-10">
           <p className="text-gray-500 text-sm">
             And many more industries requiring robust compliance management
           </p>
-        </motion.div>
+        </div>
       </div>
     </section>
   );

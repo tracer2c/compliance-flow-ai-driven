@@ -2,6 +2,7 @@ import SEOHead from "@/components/seo/SEOHead";
 import HeroSection from "@/components/home/HeroSection";
 import TrustStatsSection from "@/components/home/TrustStatsSection";
 import FeaturesSection from "@/components/home/FeaturesSection";
+import HowItWorksSection from "@/components/home/HowItWorksSection";
 import IndustrySection from "@/components/home/IndustrySection";
 import { organizationSchema, softwareApplicationSchema, websiteSchema } from "@/lib/structuredData";
 
@@ -20,6 +21,7 @@ const Index = () => {
       <HeroSection />
       <TrustStatsSection />
       <FeaturesSection />
+      <HowItWorksSection />
       <IndustrySection />
     </>
   );

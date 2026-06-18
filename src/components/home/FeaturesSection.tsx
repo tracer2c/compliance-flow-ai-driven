@@ -2,17 +2,19 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { 
-  Sparkles, 
-  Globe, 
-  Shield, 
-  FileText,
-  Activity,
-  Users,
-  BarChart3,
-  Bell,
-  Search,
-  ArrowRight
+import FeatureIcon from "@/components/ui/FeatureIcon";
+import SplitTextReveal from "@/components/animations/SplitTextReveal";
+import {
+  BrainCircuit,
+  Globe2,
+  LockKeyhole,
+  FileCheck2,
+  Radar,
+  KeyRound,
+  ChartNoAxesCombined,
+  BellRing,
+  ScrollText,
+  ArrowRight,
 } from "lucide-react";
 
 const FeaturesSection = () => {
@@ -24,62 +26,62 @@ const FeaturesSection = () => {
       title: "AI-Powered Insights",
       subtitle: "New",
       description: "Leverage artificial intelligence for predictive compliance analytics and automated risk assessment.",
-      icon: Sparkles,
-      color: "bg-purple-100 text-purple-600"
+      icon: BrainCircuit,
+      tone: "violet" as const,
     },
     {
-      title: "Multi-Region Support", 
+      title: "Multi-Region Support",
       subtitle: "Global",
       description: "Built for global operations with localized compliance requirements and data residency.",
-      icon: Globe,
-      color: "bg-blue-100 text-blue-600"
+      icon: Globe2,
+      tone: "teal" as const,
     },
     {
       title: "Enterprise Security",
-      subtitle: "Secure", 
+      subtitle: "Secure",
       description: "Bank-grade security with end-to-end encryption and zero-trust architecture.",
-      icon: Shield,
-      color: "bg-teal-100 text-teal-600"
-    }
+      icon: LockKeyhole,
+      tone: "navy" as const,
+    },
   ];
 
   const features = [
     {
       title: "Document Management",
       description: "Automated metadata capture, version control, digital signatures, bulk operations",
-      icon: FileText,
-      color: "bg-blue-100 text-blue-600"
+      icon: FileCheck2,
+      tone: "teal" as const,
     },
     {
       title: "Compliance Tracking",
       description: "Real-time monitoring, risk assessment, compliance scoring, automated reporting",
-      icon: Activity,
-      color: "bg-green-100 text-green-600"
+      icon: Radar,
+      tone: "green" as const,
     },
     {
       title: "Role-Based Access",
       description: "Buyer/supplier/reviewer dashboards, granular permissions, multi-tenant, SSO, audit logs",
-      icon: Users,
-      color: "bg-purple-100 text-purple-600"
+      icon: KeyRound,
+      tone: "violet" as const,
     },
     {
       title: "Analytics & Reporting",
       description: "Custom dashboards, exportable reports, trend analysis, performance metrics",
-      icon: BarChart3,
-      color: "bg-orange-100 text-orange-600"
+      icon: ChartNoAxesCombined,
+      tone: "amber" as const,
     },
     {
       title: "Smart Alerts",
       description: "Expiry notifications, risk alerts, custom triggers, multi-channel delivery",
-      icon: Bell,
-      color: "bg-red-100 text-red-600"
+      icon: BellRing,
+      tone: "rose" as const,
     },
     {
       title: "Audit Trail",
       description: "Complete history, immutable records, regulatory compliance, digital evidence",
-      icon: Search,
-      color: "bg-teal-100 text-teal-600"
-    }
+      icon: ScrollText,
+      tone: "navy" as const,
+    },
   ];
 
   const headerVariants = {
@@ -166,9 +168,11 @@ const FeaturesSection = () => {
           <Badge variant="secondary" className="mb-4 bg-teal-100 text-teal-700">
             Next-Generation Compliance Technology
           </Badge>
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-navy-900 mb-6">
-            Three Pillars of Enterprise Compliance
-          </h2>
+          <SplitTextReveal
+            as="h2"
+            text="Three Pillars of Enterprise Compliance"
+            className="text-4xl md:text-5xl font-display font-bold text-navy-900 mb-6 block"
+          />
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Transform your supply chain documentation with intelligent automation, 
             real-time insights, and enterprise-grade security.
@@ -188,17 +192,13 @@ const FeaturesSection = () => {
               className="text-center group"
               variants={pillarItemVariants}
             >
-              <motion.div 
+              <motion.div
                 className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover-lift border border-gray-100"
                 whileHover={{ y: -8 }}
               >
-                <motion.div 
-                  className={`w-16 h-16 ${pillar.color} rounded-2xl flex items-center justify-center mx-auto mb-6`}
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <pillar.icon className="h-8 w-8" />
-                </motion.div>
+                <div className="flex justify-center mb-6">
+                  <FeatureIcon icon={pillar.icon} tone={pillar.tone} size="lg" />
+                </div>
                 <div className="flex items-center justify-center space-x-2 mb-4">
                   <h3 className="text-xl font-bold text-navy-900">
                     {pillar.title}
@@ -237,17 +237,13 @@ const FeaturesSection = () => {
                 className="group"
                 variants={featureItemVariants}
               >
-                <motion.div 
+                <motion.div
                   className="bg-gray-50 rounded-xl p-6 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-gray-200"
                   whileHover={{ y: -4 }}
                 >
-                  <motion.div 
-                    className={`w-12 h-12 ${feature.color} rounded-lg flex items-center justify-center mb-4`}
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <feature.icon className="h-6 w-6" />
-                  </motion.div>
+                  <div className="mb-4">
+                    <FeatureIcon icon={feature.icon} tone={feature.tone} size="md" />
+                  </div>
                   <h4 className="text-lg font-semibold text-navy-900 mb-3">
                     {feature.title}
                   </h4>

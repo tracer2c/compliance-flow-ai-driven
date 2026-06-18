@@ -1,7 +1,9 @@
 import { Badge } from "@/components/ui/badge";
-import { TrendingDown, Clock, AlertCircle, Database } from "lucide-react";
+import { TrendingDown, Clock, AlertCircle, Database, ShieldCheck, Lock, BadgeCheck, Globe2, FileBadge2 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import MarqueeStrip from "@/components/animations/MarqueeStrip";
+import SplitTextReveal from "@/components/animations/SplitTextReveal";
 
 interface AnimatedNumberProps {
   value: number;
@@ -114,9 +116,11 @@ const TrustStatsSection = () => {
           >
             Designed for enterprise credibility
           </Badge>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-navy-900 mb-6">
-            Outcomes that leadership understands.
-          </h2>
+          <SplitTextReveal
+            as="h2"
+            text="Outcomes that leadership understands."
+            className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-navy-900 mb-6 block"
+          />
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Reduce operational drag, prevent compliance incidents, and walk into audits with calm confidence.
           </p>
@@ -157,6 +161,36 @@ const TrustStatsSection = () => {
             </motion.div>
           ))}
         </motion.div>
+
+        {/* Certifications / Standards marquee */}
+        <div className="mt-20">
+          <p className="text-center text-xs font-semibold tracking-widest text-gray-500 uppercase mb-6">
+            Built to the standards your auditors expect
+          </p>
+          <MarqueeStrip
+            speed={50}
+            items={[
+              { icon: ShieldCheck, label: "SOC 2 Type II" },
+              { icon: Lock, label: "ISO 27001" },
+              { icon: BadgeCheck, label: "GDPR Ready" },
+              { icon: Globe2, label: "EUDR Aligned" },
+              { icon: FileBadge2, label: "HIPAA Compatible" },
+              { icon: ShieldCheck, label: "CCPA" },
+              { icon: BadgeCheck, label: "PCI DSS" },
+              { icon: Lock, label: "Zero-Trust" },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-3 px-6 py-3 rounded-full bg-white border border-gray-200 shadow-sm"
+              >
+                <item.icon className="h-5 w-5 text-teal-600" />
+                <span className="text-sm font-semibold text-navy-800 whitespace-nowrap">
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          />
+        </div>
       </div>
     </section>
   );
