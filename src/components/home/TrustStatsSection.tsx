@@ -161,6 +161,36 @@ const TrustStatsSection = () => {
             </motion.div>
           ))}
         </motion.div>
+
+        {/* Certifications / Standards marquee */}
+        <div className="mt-20">
+          <p className="text-center text-xs font-semibold tracking-widest text-gray-500 uppercase mb-6">
+            Built to the standards your auditors expect
+          </p>
+          <MarqueeStrip
+            speed={50}
+            items={[
+              { icon: ShieldCheck, label: "SOC 2 Type II" },
+              { icon: Lock, label: "ISO 27001" },
+              { icon: BadgeCheck, label: "GDPR Ready" },
+              { icon: Globe2, label: "EUDR Aligned" },
+              { icon: FileBadge2, label: "HIPAA Compatible" },
+              { icon: ShieldCheck, label: "CCPA" },
+              { icon: BadgeCheck, label: "PCI DSS" },
+              { icon: Lock, label: "Zero-Trust" },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-3 px-6 py-3 rounded-full bg-white border border-gray-200 shadow-sm"
+              >
+                <item.icon className="h-5 w-5 text-teal-600" />
+                <span className="text-sm font-semibold text-navy-800 whitespace-nowrap">
+                  {item.label}
+                </span>
+              </div>
+            ))}
+          />
+        </div>
       </div>
     </section>
   );
