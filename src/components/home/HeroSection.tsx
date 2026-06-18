@@ -1,216 +1,263 @@
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { gsap } from "gsap";
 import SplitTextReveal from "@/components/animations/SplitTextReveal";
-import {
-  ShieldCheck,
-  ArrowRight,
-  Play,
-  LockKeyhole,
-  UsersRound,
-  ScrollText,
-  ChevronDown,
-} from "lucide-react";
+import { useGSAP, prefersReducedMotion } from "@/hooks/useGSAP";
+import { ArrowRight, Play, Check } from "lucide-react";
 
 const HeroSection = () => {
-  const trustBadges = [
-    { icon: LockKeyhole, text: "SSO/SAML" },
-    { icon: UsersRound, text: "RBAC" },
-    { icon: ScrollText, text: "Audit Logs" },
-    { icon: ShieldCheck, text: "Encryption" }
-  ];
+  const scope = useGSAP((ctx) => {
+    if (prefersReducedMotion()) return;
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2
-      }
-    }
-  };
+    // Parallax grid
+    ctx.add(() => {
+      gsap.to("[data-parallax='grid']", {
+        yPercent: -8,
+        ease: "none",
+        scrollTrigger: {
+          trigger: scope.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    });
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut" as const
-      }
-    }
-  };
+    // Supply-chain path draws in
+    ctx.add(() => {
+      const path = scope.current?.querySelector<SVGPathElement>("[data-supply-path]");
+      if (!path) return;
+      const len = path.getTotalLength();
+      gsap.set(path, { strokeDasharray: len, strokeDashoffset: len, opacity: 0.3 });
+      gsap.to(path, {
+        strokeDashoffset: 0,
+        duration: 2.6,
+        ease: "power2.out",
+        delay: 0.4,
+      });
+    });
 
-  const badgeContainerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 1.0
-      }
-    }
-  };
+    // Manifest card reveal
+    ctx.add(() => {
+      const tl = gsap.timeline({ delay: 0.55 });
+      tl.from("[data-manifest]", {
+        y: 28,
+        opacity: 0,
+        duration: 0.9,
+        ease: "power3.out",
+      })
+        .from(
+          "[data-row]",
+          { y: 12, opacity: 0, duration: 0.5, stagger: 0.07, ease: "power2.out" },
+          "-=0.45"
+        )
+        .from("[data-bracket]", { opacity: 0, duration: 0.6 }, "-=0.5");
+    });
 
-  const badgeItemVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.4,
-        ease: "easeOut" as const
-      }
-    }
-  };
+    // Status: Pending -> Verified
+    ctx.add(() => {
+      const tl = gsap.timeline({ delay: 1.7 });
+      tl.to("[data-status-pending]", { autoAlpha: 0, y: -6, duration: 0.35, ease: "power2.in" })
+        .set("[data-status-pending]", { display: "none" })
+        .set("[data-status-verified]", { display: "inline-flex" })
+        .from("[data-status-verified]", { autoAlpha: 0, y: 6, duration: 0.35, ease: "power2.out" })
+        .from(
+          "[data-check]",
+          { strokeDasharray: 24, strokeDashoffset: 24, duration: 0.45, ease: "power2.out" },
+          "-=0.1"
+        );
+    });
+  }, []);
 
   return (
-    <section className="relative overflow-hidden bg-gradient-hero min-h-screen flex flex-col">
-      {/* Background Pattern */}
-      <motion.div 
-        className="absolute inset-0 opacity-10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.1 }}
-        transition={{ duration: 2, ease: "easeOut" }}
+    <section
+      ref={scope as React.RefObject<HTMLElement>}
+      className="relative overflow-hidden bg-ocean-base text-ocean-fg min-h-screen flex flex-col border-b border-ocean-line/40"
+    >
+      {/* Layer 1 — Parallax grid */}
+      <div data-parallax="grid" className="absolute inset-0 pointer-events-none opacity-[0.06]">
+        <svg width="100%" height="100%" aria-hidden="true">
+          <defs>
+            <pattern id="hero-grid" width="80" height="80" patternUnits="userSpaceOnUse">
+              <path d="M 80 0 L 0 0 0 80" fill="none" stroke="hsl(var(--ocean-primary))" strokeWidth="0.5" />
+            </pattern>
+            <radialGradient id="hero-grid-mask" cx="50%" cy="30%" r="60%">
+              <stop offset="0%" stopColor="white" stopOpacity="1" />
+              <stop offset="100%" stopColor="white" stopOpacity="0" />
+            </radialGradient>
+            <mask id="hero-grid-fade">
+              <rect width="100%" height="100%" fill="url(#hero-grid-mask)" />
+            </mask>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#hero-grid)" mask="url(#hero-grid-fade)" />
+        </svg>
+      </div>
+
+      {/* Layer 2 — Supply chain path */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        preserveAspectRatio="none"
+        viewBox="0 0 1600 900"
+        aria-hidden="true"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent"></div>
-      </motion.div>
+        <path
+          data-supply-path
+          d="M-50,240 C220,140 420,640 820,420 S1240,140 1700,360"
+          fill="none"
+          stroke="hsl(var(--ocean-primary))"
+          strokeWidth="1.2"
+          strokeDasharray="6 8"
+        />
+      </svg>
 
-      <div className="container mx-auto px-6 relative flex-1 flex items-center">
-        <div className="py-20 lg:py-32 w-full">
-          <motion.div 
-            className="max-w-5xl mx-auto text-center text-white"
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-          >
-            {/* Badge */}
-            <motion.div variants={itemVariants}>
-              <Badge 
-                variant="secondary" 
-                className="mb-6 bg-white/10 text-white border-white/20 hover:bg-white/20"
-              >
-                <motion.span 
-                  className="inline-block w-2 h-2 bg-green-400 rounded-full mr-2"
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  transition={{ delay: 0.8, duration: 0.3 }}
-                  style={{ animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}
-                />
-                Enterprise-Grade Compliance Platform
-              </Badge>
-            </motion.div>
+      {/* Soft radial highlight behind product card */}
+      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[640px] h-[640px] bg-ocean-primary/10 blur-[120px] rounded-full pointer-events-none" />
 
-            {/* Main Headline */}
-            <motion.h1
-              className="text-4xl md:text-5xl lg:text-6xl font-display font-bold mb-8 leading-tight"
-              variants={itemVariants}
-            >
+      <div className="container mx-auto px-6 lg:px-12 relative flex-1 flex items-center py-24 lg:py-28">
+        <div className="grid lg:grid-cols-[1.15fr_1fr] gap-16 items-center w-full">
+          {/* Left column */}
+          <div className="space-y-10">
+            <div className="inline-flex items-center gap-3 px-3 py-1 bg-ocean-surface/70 border border-ocean-primary/25 rounded-full backdrop-blur-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full rounded-full bg-ocean-primary opacity-75 animate-ping" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-ocean-primary" />
+              </span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ocean-mint">
+                Enterprise Node · Active
+              </span>
+            </div>
+
+            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.95] tracking-tight">
+              <SplitTextReveal as="span" text="Make compliance" className="block" immediate delay={0.25} stagger={0.06} />
               <SplitTextReveal
                 as="span"
-                text="Make compliance operational,"
-                className="block"
+                text="operational."
+                className="block text-ocean-primary"
                 immediate
-                delay={0.3}
-                stagger={0.05}
+                delay={0.6}
+                stagger={0.06}
               />
-              <SplitTextReveal
-                as="span"
-                text="measurable, and proactive."
-                className="block bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text text-transparent"
-                immediate
-                delay={0.7}
-                stagger={0.05}
-              />
-            </motion.h1>
+            </h1>
 
-            {/* Subheadline */}
-            <motion.p 
-              className="text-lg lg:text-xl text-gray-300 mb-10 leading-relaxed max-w-4xl mx-auto"
-              variants={itemVariants}
-            >
-              TraceR2C transforms compliance from reactive documentation to proactive risk management—giving regulated industries real-time visibility, predictive insights, and audit-ready controls across every supplier, document, and workflow.
-            </motion.p>
+            <p className="max-w-md text-base lg:text-lg text-ocean-fg/65 leading-relaxed">
+              TraceR2C transforms reactive documentation into proactive risk management — real-time
+              visibility across every supplier, control, and audit event.
+            </p>
 
-            {/* CTA Buttons */}
-            <motion.div 
-              className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
-              variants={itemVariants}
-            >
-              <Link to="/contact">
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Button 
-                    size="lg" 
-                    className="bg-white text-navy-900 hover:bg-gray-100 font-semibold px-8 py-4 text-lg shadow-xl hover:shadow-2xl transition-all duration-300 group"
-                  >
-                    Request a demo
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </motion.div>
-              </Link>
+            <div className="flex flex-wrap gap-4">
+              <a href="https://compliance.tracer2c.com" target="_blank" rel="noopener noreferrer">
+                <button className="group relative overflow-hidden px-7 py-4 bg-ocean-primary text-ocean-base font-semibold rounded-sm transition-transform duration-200 hover:-translate-y-0.5">
+                  <span className="relative z-10 inline-flex items-center gap-2">
+                    Start Free Trial
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </span>
+                  <span className="absolute inset-0 bg-ocean-mint translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+                </button>
+              </a>
               <Link to="/know-more">
-                <motion.div
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Button 
-                    size="lg" 
-                    variant="outline" 
-                    className="bg-white/20 border-white/40 text-white hover:bg-white/30 hover:text-white font-semibold px-8 py-4 text-lg backdrop-blur-sm"
-                  >
-                    <Play className="mr-2 h-5 w-5" />
-                    See how it works
-                  </Button>
-                </motion.div>
+                <button className="px-7 py-4 border border-ocean-fg/20 hover:border-ocean-primary/60 hover:bg-ocean-surface/60 text-ocean-fg font-semibold rounded-sm transition-colors inline-flex items-center gap-2">
+                  <Play className="h-4 w-4 text-ocean-primary" />
+                  See how it works
+                </button>
               </Link>
-            </motion.div>
+            </div>
 
-            {/* Trust Badges */}
-            <motion.div 
-              className="flex flex-wrap items-center justify-center gap-6"
-              variants={badgeContainerVariants}
-              initial="hidden"
-              animate="visible"
+            <div className="grid grid-cols-2 gap-8 pt-8 border-t border-ocean-line/60 max-w-md font-mono text-[11px] uppercase tracking-[0.18em] text-ocean-fg/45">
+              <div className="flex flex-col gap-1">
+                <span className="text-ocean-primary">01 / SOC 2 Type II</span>
+                <span>Continuous audit</span>
+              </div>
+              <div className="flex flex-col gap-1">
+                <span className="text-ocean-primary">02 / ISO 27001</span>
+                <span>Supply chain map</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right column — Audit Manifest */}
+          <div className="relative">
+            {/* corner brackets */}
+            <span data-bracket className="absolute -top-3 -left-3 w-8 h-8 border-t-2 border-l-2 border-ocean-primary/60" />
+            <span data-bracket className="absolute -bottom-3 -right-3 w-8 h-8 border-b-2 border-r-2 border-ocean-primary/60" />
+
+            <div
+              data-manifest
+              className="relative bg-ocean-surface/85 backdrop-blur-xl border border-ocean-line rounded-md p-7 shadow-2xl"
             >
-              {trustBadges.map((badge, index) => (
-                <motion.div 
-                  key={index} 
-                  className="flex items-center space-x-2 text-gray-300"
-                  variants={badgeItemVariants}
-                >
-                  <badge.icon className="h-5 w-5 text-teal-300" />
-                  <span className="text-sm font-medium">{badge.text}</span>
-                </motion.div>
-              ))}
-            </motion.div>
-          </motion.div>
+              <div className="flex justify-between items-start pb-5 border-b border-ocean-line">
+                <div className="space-y-1">
+                  <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-ocean-primary">
+                    Document · TR-9942
+                  </div>
+                  <div className="font-display font-semibold text-lg">Compliance Manifest</div>
+                  <div className="font-mono text-[10px] text-ocean-fg/40">Tier 2 supplier · Auburn AL</div>
+                </div>
+
+                <div className="relative h-7">
+                  <span
+                    data-status-pending
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-ocean-mint/10 text-ocean-mint font-mono text-[10px] uppercase tracking-wider"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full bg-ocean-mint animate-pulse" />
+                    Pending
+                  </span>
+                  <span
+                    data-status-verified
+                    style={{ display: "none" }}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-ocean-primary/15 text-ocean-primary font-mono text-[10px] uppercase tracking-wider border border-ocean-primary/30"
+                  >
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                      <path data-check d="M5 12l5 5L20 7" />
+                    </svg>
+                    Verified
+                  </span>
+                </div>
+              </div>
+
+              <div className="py-5 space-y-3">
+                {[
+                  { label: "Section 4.2", value: "Material origin" },
+                  { label: "Section 6.1", value: "Lab certificate hash" },
+                  { label: "Section 7.3", value: "Chain-of-custody" },
+                  { label: "Section 9.0", value: "Auditor signature" },
+                ].map((row, i) => (
+                  <div
+                    key={i}
+                    data-row
+                    className="flex items-center gap-4 pl-3 border-l-2 border-ocean-primary/40 py-1"
+                  >
+                    <span className="font-mono text-[10px] text-ocean-fg/40 w-20">{row.label}</span>
+                    <div className="flex-1 h-2 bg-ocean-base rounded-full overflow-hidden">
+                      <div className="h-full bg-gradient-to-r from-ocean-primary/40 to-ocean-primary/10" style={{ width: `${60 + i * 8}%` }} />
+                    </div>
+                    <span className="font-mono text-[10px] text-ocean-fg/50 hidden sm:inline">{row.value}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="pt-5 mt-1 border-t border-ocean-line flex items-center justify-between font-mono text-[10px] text-ocean-fg/45">
+                <span>Signed · J. Patel</span>
+                <span>2026-06-18 · 14:42 UTC</span>
+              </div>
+            </div>
+
+            {/* Verified ribbon, anchored to card */}
+            <div className="absolute -bottom-4 right-6 px-3 py-2 bg-ocean-base border border-ocean-primary/40 rounded-sm font-mono text-[10px] uppercase tracking-[0.18em] text-ocean-mint shadow-xl flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-ocean-primary shadow-[0_0_8px_hsl(var(--ocean-primary))]" />
+              Audit-ready
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Scroll to explore */}
-      <motion.div 
-        className="pb-8 text-center"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 0.5 }}
-      >
-        <div className="flex flex-col items-center text-gray-400">
-          <span className="text-sm mb-2">Scroll to explore</span>
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <ChevronDown className="h-5 w-5" />
-          </motion.div>
+      {/* Scroll indicator */}
+      <div className="relative pb-8 flex justify-center">
+        <div className="flex flex-col items-center gap-2 opacity-50">
+          <span className="font-mono text-[9px] uppercase tracking-[0.32em] text-ocean-fg/60">
+            Trace path
+          </span>
+          <div className="w-px h-10 bg-gradient-to-b from-ocean-primary to-transparent" />
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 };
