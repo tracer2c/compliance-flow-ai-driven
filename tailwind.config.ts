@@ -106,6 +106,15 @@ export default {
 				},
 				charcoal: 'hsl(var(--charcoal))',
 				'soft-gray': 'hsl(var(--soft-gray))',
+				// Deep Ocean Trust — Hero + Footer console palette
+				ocean: {
+					base: 'hsl(var(--ocean-base))',
+					surface: 'hsl(var(--ocean-surface))',
+					primary: 'hsl(var(--ocean-primary))',
+					mint: 'hsl(var(--ocean-mint))',
+					fg: 'hsl(var(--ocean-fg))',
+					line: 'hsl(var(--ocean-line))',
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -119,7 +128,8 @@ export default {
 			},
 			fontFamily: {
 				'sans': ['Inter', 'system-ui', 'sans-serif'],
-				'display': ['Poppins', 'system-ui', 'sans-serif'],
+				'display': ['"Space Grotesk"', 'Poppins', 'system-ui', 'sans-serif'],
+				'mono': ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
 			},
 			backgroundImage: {
 				'gradient-primary': 'var(--gradient-primary)',
