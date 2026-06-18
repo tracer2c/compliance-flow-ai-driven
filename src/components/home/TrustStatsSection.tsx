@@ -116,9 +116,11 @@ const TrustStatsSection = () => {
           >
             Designed for enterprise credibility
           </Badge>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-navy-900 mb-6">
-            Outcomes that leadership understands.
-          </h2>
+          <SplitTextReveal
+            as="h2"
+            text="Outcomes that leadership understands."
+            className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-navy-900 mb-6 block"
+          />
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Reduce operational drag, prevent compliance incidents, and walk into audits with calm confidence.
           </p>
