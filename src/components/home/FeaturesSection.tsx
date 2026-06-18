@@ -168,9 +168,11 @@ const FeaturesSection = () => {
           <Badge variant="secondary" className="mb-4 bg-teal-100 text-teal-700">
             Next-Generation Compliance Technology
           </Badge>
-          <h2 className="text-4xl md:text-5xl font-display font-bold text-navy-900 mb-6">
-            Three Pillars of Enterprise Compliance
-          </h2>
+          <SplitTextReveal
+            as="h2"
+            text="Three Pillars of Enterprise Compliance"
+            className="text-4xl md:text-5xl font-display font-bold text-navy-900 mb-6 block"
+          />
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Transform your supply chain documentation with intelligent automation, 
             real-time insights, and enterprise-grade security.

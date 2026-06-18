@@ -1,7 +1,9 @@
 import { Badge } from "@/components/ui/badge";
-import { TrendingDown, Clock, AlertCircle, Database } from "lucide-react";
+import { TrendingDown, Clock, AlertCircle, Database, ShieldCheck, Lock, BadgeCheck, Globe2, FileBadge2 } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import MarqueeStrip from "@/components/animations/MarqueeStrip";
+import SplitTextReveal from "@/components/animations/SplitTextReveal";
 
 interface AnimatedNumberProps {
   value: number;
