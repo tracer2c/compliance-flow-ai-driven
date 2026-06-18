@@ -235,10 +235,6 @@ const FeaturesSection = () => {
                 className="group"
                 variants={featureItemVariants}
               >
-                <motion.div 
-                  className="bg-gray-50 rounded-xl p-6 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-gray-200"
-                  whileHover={{ y: -4 }}
-                >
                 <motion.div
                   className="bg-gray-50 rounded-xl p-6 hover:bg-white hover:shadow-lg transition-all duration-300 border border-transparent hover:border-gray-200"
                   whileHover={{ y: -4 }}
