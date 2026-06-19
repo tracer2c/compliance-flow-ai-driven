@@ -1,21 +1,28 @@
 import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { 
-  ArrowRight, 
-  Mail, 
-  Phone, 
-  Clock, 
-  Users, 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Mail,
+  Phone,
+  Clock,
+  Users,
   DollarSign,
   Settings,
-  MessageSquare
+  Send,
 } from "lucide-react";
+import PageHero from "@/components/shared/PageHero";
+import SectionLabel from "@/components/shared/SectionLabel";
+import BracketCard from "@/components/shared/BracketCard";
+import ClassyIcon from "@/components/shared/ClassyIcon";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -25,265 +32,268 @@ const Contact = () => {
     email: "",
     phone: "",
     role: "",
-    department: "",
+    inquiryType: "",
     message: "",
-    inquiryType: ""
   });
 
-  const contactOptions = [
+  const channels = [
     {
       icon: DollarSign,
+      tone: "teal" as const,
       title: "Sales",
-      description: "Interested in ComplianceFlow? Let's discuss your compliance needs and find the right solution.",
+      description:
+        "Interested in ComplianceFlow? Let's discuss your compliance needs and find the right fit.",
       email: "contact@tracer2c.com",
       phone: "(229) 395-9837",
-      hours: "Monday - Friday, 8 AM - 6 PM EST"
+      hours: "Mon — Fri · 8 AM – 6 PM EST",
     },
     {
       icon: Settings,
+      tone: "violet" as const,
       title: "Support",
-      description: "Need help with your account or have technical questions? Our support team is here to help.",
-      email: "contact@tracer2c.com", 
+      description:
+        "Need help with your account or have technical questions? Our team is here for you.",
+      email: "contact@tracer2c.com",
       phone: "(229) 395-9837",
-      hours: "24/7 for Enterprise customers"
+      hours: "24 / 7 for Enterprise customers",
     },
     {
       icon: Users,
+      tone: "amber" as const,
       title: "Partnerships",
-      description: "Explore integration opportunities, channel partnerships, or strategic alliances.",
+      description:
+        "Explore integration opportunities, channel partnerships, or strategic alliances.",
       email: "contact@tracer2c.com",
-      phone: "(229) 395-9837", 
-      hours: "Monday - Friday, 9 AM - 5 PM EST"
-    }
+      phone: "(229) 395-9837",
+      hours: "Mon — Fri · 9 AM – 5 PM EST",
+    },
   ];
 
-
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
     console.log("Form submitted:", formData);
   };
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-gradient-hero py-20">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            <Badge className="mb-6 bg-white/10 text-white border-white/20">
-              Contact Us
-            </Badge>
-            <h1 className="text-4xl md:text-6xl font-display font-bold mb-6">
-              Let's Talk About Your
-              <span className="block bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text text-transparent">
-                Compliance Needs
-              </span>
-            </h1>
-            <p className="text-xl text-gray-200 mb-8 max-w-3xl mx-auto">
-              Ready to streamline your compliance operations? Our team is here to help you 
-              transform your documentation workflows and achieve audit readiness.
-            </p>
-          </div>
-        </div>
-      </section>
+    <div className="min-h-screen bg-white">
+      <PageHero
+        eyebrow="Contact · 03"
+        meta="RESPONSE < 24H"
+        title="Let's talk about your"
+        accent="compliance operations"
+        subtitle="Ready to streamline how your team manages regulations, documents, and audits? Reach the right team directly."
+      />
 
-      {/* Contact Options */}
-      <section className="py-20 bg-background">
+      {/* Channels */}
+      <section className="py-24 bg-white">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-4">
-              How Can We Help You?
+          <div className="mb-14 max-w-2xl">
+            <SectionLabel index="01">Direct channels</SectionLabel>
+            <h2 className="mt-4 font-display text-3xl md:text-4xl font-bold text-navy-900 tracking-tight">
+              Reach the team that handles your request.
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Choose the best way to reach us based on your specific needs
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            {contactOptions.map((option, index) => (
-              <Card key={index} className="enterprise-card hover:shadow-enterprise-lg transition-all duration-300 text-center group">
-                <CardHeader>
-                  <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                    <option.icon className="h-6 w-6 text-white" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {channels.map((c, i) => (
+              <BracketCard key={c.title} className="p-7 flex flex-col">
+                <div className="flex items-center justify-between mb-5">
+                  <ClassyIcon icon={c.icon} tone={c.tone} size="md" />
+                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-gray-400">
+                    Channel 0{i + 1}
+                  </span>
+                </div>
+                <h3 className="font-display text-xl font-semibold text-navy-900 mb-2">
+                  {c.title}
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed mb-6 flex-1">
+                  {c.description}
+                </p>
+                <div className="space-y-2.5 pt-5 border-t border-dashed border-gray-200">
+                  <a
+                    href={`mailto:${c.email}`}
+                    className="flex items-center gap-2 text-sm text-navy-800 hover:text-teal-700 transition-colors"
+                  >
+                    <Mail className="h-4 w-4 text-teal-600" strokeWidth={1.75} />
+                    {c.email}
+                  </a>
+                  <a
+                    href={`tel:${c.phone}`}
+                    className="flex items-center gap-2 text-sm text-navy-800 hover:text-teal-700 transition-colors"
+                  >
+                    <Phone className="h-4 w-4 text-teal-600" strokeWidth={1.75} />
+                    {c.phone}
+                  </a>
+                  <div className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.18em] text-gray-500">
+                    <Clock className="h-3.5 w-3.5" strokeWidth={1.75} />
+                    {c.hours}
                   </div>
-                  <CardTitle className="text-xl text-navy-900">{option.title}</CardTitle>
-                  <CardDescription className="text-gray-600">
-                    {option.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-center gap-2 text-sm text-gray-700">
-                      <Mail className="h-4 w-4 text-teal-600" />
-                      <a href={`mailto:${option.email}`} className="hover:text-teal-600 transition-colors">
-                        {option.email}
-                      </a>
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-sm text-gray-700">
-                      <Phone className="h-4 w-4 text-teal-600" />
-                      <a href={`tel:${option.phone}`} className="hover:text-teal-600 transition-colors">
-                        {option.phone}
-                      </a>
-                    </div>
-                    <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
-                      <Clock className="h-4 w-4 text-teal-600" />
-                      {option.hours}
-                    </div>
-                  </div>
-                  <Button className="w-full">
-                    Contact {option.title}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </CardContent>
-              </Card>
+                </div>
+              </BracketCard>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Contact Form */}
-      <section className="py-20 bg-gray-50">
+      {/* Form */}
+      <section className="py-24 bg-gray-50/60 border-y border-gray-200/60">
         <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-4">
-                Send Us a Message
+          <div className="mx-auto max-w-3xl">
+            <div className="mb-10 text-center">
+              <SectionLabel index="02" className="justify-center">
+                Send a message
+              </SectionLabel>
+              <h2 className="mt-4 font-display text-3xl md:text-4xl font-bold text-navy-900 tracking-tight">
+                Tell us what you're working on.
               </h2>
-              <p className="text-xl text-gray-600">
-                Fill out the form below and we'll get back to you within 24 hours
+              <p className="mt-4 text-gray-600">
+                We respond within one business day — usually the same day.
               </p>
             </div>
 
-            <Card className="enterprise-card">
-              <CardContent className="p-8">
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  {/* Name Fields */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="firstName">First Name *</Label>
-                      <Input 
-                        id="firstName"
-                        value={formData.firstName}
-                        onChange={(e) => handleInputChange("firstName", e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="lastName">Last Name *</Label>
-                      <Input 
-                        id="lastName"
-                        value={formData.lastName}
-                        onChange={(e) => handleInputChange("lastName", e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  {/* Company & Contact */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="company">Company *</Label>
-                      <Input 
-                        id="company"
-                        value={formData.company}
-                        onChange={(e) => handleInputChange("company", e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Work Email *</Label>
-                      <Input 
-                        id="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={(e) => handleInputChange("email", e.target.value)}
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  {/* Phone & Role */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Phone Number</Label>
-                      <Input 
-                        id="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={(e) => handleInputChange("phone", e.target.value)}
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="role">Role</Label>
-                      <Select value={formData.role} onValueChange={(value) => handleInputChange("role", value)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select your role" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="compliance-manager">Compliance Manager</SelectItem>
-                          <SelectItem value="operations-director">Operations Director</SelectItem>
-                          <SelectItem value="quality-assurance">Quality Assurance</SelectItem>
-                          <SelectItem value="it-director">IT Director</SelectItem>
-                          <SelectItem value="procurement">Procurement</SelectItem>
-                          <SelectItem value="other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-
-                  {/* Inquiry Type */}
+            <BracketCard className="p-8 md:p-10">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="inquiryType">What can we help you with? *</Label>
-                    <Select 
-                      value={formData.inquiryType} 
-                      onValueChange={(value) => handleInputChange("inquiryType", value)}
+                    <Label htmlFor="firstName" className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-500">
+                      First name *
+                    </Label>
+                    <Input
+                      id="firstName"
+                      value={formData.firstName}
+                      onChange={(e) => handleInputChange("firstName", e.target.value)}
                       required
-                    >
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="lastName" className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-500">
+                      Last name *
+                    </Label>
+                    <Input
+                      id="lastName"
+                      value={formData.lastName}
+                      onChange={(e) => handleInputChange("lastName", e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="company" className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-500">
+                      Company *
+                    </Label>
+                    <Input
+                      id="company"
+                      value={formData.company}
+                      onChange={(e) => handleInputChange("company", e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-500">
+                      Work email *
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange("email", e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-500">
+                      Phone
+                    </Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e) => handleInputChange("phone", e.target.value)}
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="role" className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-500">
+                      Role
+                    </Label>
+                    <Select value={formData.role} onValueChange={(v) => handleInputChange("role", v)}>
                       <SelectTrigger>
-                        <SelectValue placeholder="Select inquiry type" />
+                        <SelectValue placeholder="Select your role" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="sales">Schedule a Demo</SelectItem>
-                        <SelectItem value="pricing">Pricing Information</SelectItem>
-                        <SelectItem value="integration">Integration Questions</SelectItem>
-                        <SelectItem value="support">Technical Support</SelectItem>
-                        <SelectItem value="partnership">Partnership Opportunities</SelectItem>
+                        <SelectItem value="compliance-manager">Compliance Manager</SelectItem>
+                        <SelectItem value="operations-director">Operations Director</SelectItem>
+                        <SelectItem value="quality-assurance">Quality Assurance</SelectItem>
+                        <SelectItem value="it-director">IT Director</SelectItem>
+                        <SelectItem value="procurement">Procurement</SelectItem>
                         <SelectItem value="other">Other</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
+                </div>
 
-                  {/* Message */}
-                  <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea 
-                      id="message"
-                      value={formData.message}
-                      onChange={(e) => handleInputChange("message", e.target.value)}
-                      rows={4}
-                      placeholder="Tell us more about your compliance needs and how we can help..."
-                    />
-                  </div>
+                <div className="space-y-2">
+                  <Label htmlFor="inquiryType" className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-500">
+                    What can we help with? *
+                  </Label>
+                  <Select
+                    value={formData.inquiryType}
+                    onValueChange={(v) => handleInputChange("inquiryType", v)}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select inquiry type" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="sales">Talk to sales</SelectItem>
+                      <SelectItem value="pricing">Pricing information</SelectItem>
+                      <SelectItem value="integration">Integration questions</SelectItem>
+                      <SelectItem value="support">Technical support</SelectItem>
+                      <SelectItem value="partnership">Partnership opportunities</SelectItem>
+                      <SelectItem value="other">Something else</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-                  {/* Submit Button */}
-                  <div className="flex justify-center">
-                    <Button type="submit" size="lg" className="px-12">
-                      <MessageSquare className="mr-2 h-5 w-5" />
-                      Send Message
-                    </Button>
-                  </div>
-                </form>
-              </CardContent>
-            </Card>
+                <div className="space-y-2">
+                  <Label htmlFor="message" className="font-mono text-[10px] uppercase tracking-[0.2em] text-gray-500">
+                    Message
+                  </Label>
+                  <Textarea
+                    id="message"
+                    rows={5}
+                    value={formData.message}
+                    onChange={(e) => handleInputChange("message", e.target.value)}
+                    placeholder="Tell us about your compliance setup and what you'd like to improve…"
+                  />
+                </div>
+
+                <div className="pt-2 flex justify-end">
+                  <Button
+                    type="submit"
+                    size="lg"
+                    className="bg-navy-900 text-white hover:bg-navy-800 font-semibold px-8"
+                  >
+                    <Send className="mr-2 h-4 w-4" />
+                    Send message
+                  </Button>
+                </div>
+              </form>
+            </BracketCard>
+
+            <p className="mt-6 text-center font-mono text-[10px] uppercase tracking-[0.22em] text-gray-400">
+              Encrypted in transit · we never share your details
+            </p>
           </div>
         </div>
       </section>
-
-
     </div>
   );
 };
