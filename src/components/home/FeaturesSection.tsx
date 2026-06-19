@@ -5,9 +5,6 @@ import { Button } from "@/components/ui/button";
 import FeatureIcon from "@/components/ui/FeatureIcon";
 import SplitTextReveal from "@/components/animations/SplitTextReveal";
 import {
-  BrainCircuit,
-  Globe2,
-  LockKeyhole,
   FileCheck2,
   Radar,
   KeyRound,
@@ -21,31 +18,6 @@ const FeaturesSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const pillars = [
-    {
-      title: "AI-Powered Insights",
-      subtitle: "New",
-      description: "Leverage artificial intelligence for predictive compliance analytics and automated risk assessment.",
-      icon: BrainCircuit,
-      tone: "violet" as const,
-    },
-    {
-      title: "Multi-Region Support",
-      subtitle: "Global",
-      description: "Built for global operations with localized compliance requirements and data residency.",
-      icon: Globe2,
-      tone: "teal" as const,
-    },
-    {
-      title: "Enterprise Security",
-      subtitle: "Secure",
-      description: "Bank-grade security with end-to-end encryption and zero-trust architecture.",
-      icon: LockKeyhole,
-      tone: "navy" as const,
-    },
-  ];
-
-  const features = [
     {
       title: "Document Management",
       description: "Automated metadata capture, version control, digital signatures, bulk operations",
@@ -96,30 +68,6 @@ const FeaturesSection = () => {
     }
   };
 
-  const pillarContainerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.2
-      }
-    }
-  };
-
-  const pillarItemVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: "easeOut" as const
-      }
-    }
-  };
-
-  const featureContainerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -158,66 +106,9 @@ const FeaturesSection = () => {
   return (
     <section className="py-20 bg-white" ref={ref}>
       <div className="container mx-auto px-6">
-        {/* Section Header */}
-        <motion.div 
-          className="text-center mb-16"
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          variants={headerVariants}
-        >
-          <Badge variant="secondary" className="mb-4 bg-teal-100 text-teal-700">
-            Next-Generation Compliance Technology
-          </Badge>
-          <SplitTextReveal
-            as="h2"
-            text="Three Pillars of Enterprise Compliance"
-            className="text-4xl md:text-5xl font-display font-bold text-navy-900 mb-6 block"
-          />
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Transform your supply chain documentation with intelligent automation, 
-            real-time insights, and enterprise-grade security.
-          </p>
-        </motion.div>
-
-        {/* Three Pillars */}
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          variants={pillarContainerVariants}
-        >
-          {pillars.map((pillar, index) => (
-            <motion.div 
-              key={index} 
-              className="text-center group"
-              variants={pillarItemVariants}
-            >
-              <motion.div
-                className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover-lift border border-gray-100"
-                whileHover={{ y: -8 }}
-              >
-                <div className="flex justify-center mb-6">
-                  <FeatureIcon icon={pillar.icon} tone={pillar.tone} size="lg" />
-                </div>
-                <div className="flex items-center justify-center space-x-2 mb-4">
-                  <h3 className="text-xl font-bold text-navy-900">
-                    {pillar.title}
-                  </h3>
-                  <Badge variant="secondary" className="text-xs bg-green-100 text-green-700">
-                    {pillar.subtitle}
-                  </Badge>
-                </div>
-                <p className="text-gray-600 leading-relaxed">
-                  {pillar.description}
-                </p>
-              </motion.div>
-            </motion.div>
-          ))}
-        </motion.div>
-
         {/* Feature Grid */}
         <div className="mb-16">
-          <motion.h3 
+          <motion.h3
             className="text-3xl font-display font-bold text-navy-900 text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
