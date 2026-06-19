@@ -12,6 +12,14 @@ const Footer = () => {
 
     const scene = scope.current;
     if (!scene) return;
+
+    // Resolve CSS vars to literal hsla() colors. GSAP cannot tween color
+    // strings that contain var(--token); doing so throws inside splitColor.
+    const cs = getComputedStyle(document.documentElement);
+    const oceanPrimary = cs.getPropertyValue("--ocean-primary").trim() || "190 90% 55%";
+    const tealShadow = `hsla(${oceanPrimary.replace(/\s+/g, ", ")}, 0.18)`;
+    const tealRing = `hsla(${oceanPrimary.replace(/\s+/g, ", ")}, 0.5)`;
+    const tealGlow = `hsla(${oceanPrimary.replace(/\s+/g, ", ")}, 0.25)`;
     const pin = scene.querySelector<HTMLElement>("[data-footer-pin]");
     const wordmark = scene.querySelector<HTMLElement>("[data-footer-wordmark]");
     const ui = scene.querySelector<HTMLElement>("[data-footer-ui]");
