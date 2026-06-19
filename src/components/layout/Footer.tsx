@@ -12,6 +12,14 @@ const Footer = () => {
 
     const scene = scope.current;
     if (!scene) return;
+
+    // Resolve CSS vars to literal hsla() colors. GSAP cannot tween color
+    // strings that contain var(--token); doing so throws inside splitColor.
+    const cs = getComputedStyle(document.documentElement);
+    const oceanPrimary = cs.getPropertyValue("--ocean-primary").trim() || "190 90% 55%";
+    const tealShadow = `hsla(${oceanPrimary.replace(/\s+/g, ", ")}, 0.18)`;
+    const tealRing = `hsla(${oceanPrimary.replace(/\s+/g, ", ")}, 0.5)`;
+    const tealGlow = `hsla(${oceanPrimary.replace(/\s+/g, ", ")}, 0.25)`;
     const pin = scene.querySelector<HTMLElement>("[data-footer-pin]");
     const wordmark = scene.querySelector<HTMLElement>("[data-footer-wordmark]");
     const ui = scene.querySelector<HTMLElement>("[data-footer-ui]");
@@ -150,7 +158,7 @@ const Footer = () => {
             filter: "blur(0px)",
             scale: 1.04,
             y: 0,
-            textShadow: "0 0 24px hsl(var(--ocean-primary) / 0.18)",
+            textShadow: `0 0 24px ${tealShadow}`,
             duration: 0.35,
           },
           0.55
@@ -175,10 +183,12 @@ const Footer = () => {
 
       // Phase 4 (0.90 - 1.00): settle, status pill glow
       if (statusPill) {
+        // Set base shadow first so GSAP has a parseable starting color.
+        gsap.set(statusPill, { boxShadow: `0 0 0 1px ${tealRing.replace("0.5", "0")}, 0 0 0 ${tealGlow.replace("0.25", "0")}` });
         tl.to(
           statusPill,
           {
-            boxShadow: "0 0 0 1px hsl(var(--ocean-primary) / 0.5), 0 0 24px hsl(var(--ocean-primary) / 0.25)",
+            boxShadow: `0 0 0 1px ${tealRing}, 0 0 24px ${tealGlow}`,
             duration: 0.1,
           },
           0.9
