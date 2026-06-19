@@ -319,7 +319,7 @@ const Footer = () => {
             <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_2fr] gap-16 mb-20">
               <div className="space-y-6 max-w-md">
                 <div className="flex items-center gap-3">
-                  <img src={tracer2cLogo.url} alt="TraceR2C" className="w-9 h-9 object-contain" />
+                  <img src={tracer2cLogo.url} alt="TraceR2C" className="w-12 h-12 object-contain invert hue-rotate-180" />
                   <span className="font-display font-bold text-2xl tracking-tight">TraceR2C</span>
                 </div>
                 <p className="text-ocean-fg/55 text-sm leading-relaxed">
