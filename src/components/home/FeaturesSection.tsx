@@ -18,7 +18,7 @@ const FeaturesSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-    {
+  const features = [
       title: "Document Management",
       description: "Automated metadata capture, version control, digital signatures, bulk operations",
       icon: FileCheck2,
