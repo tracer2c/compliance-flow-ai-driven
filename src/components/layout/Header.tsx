@@ -75,9 +75,7 @@ const Header = () => {
             transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <Link to="/" className="flex items-center space-x-2">
-              <div className="h-8 w-8 bg-gradient-accent rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">T</span>
-              </div>
+              <img src={tracer2cLogo.url} alt="TraceR2C" className="h-8 w-8 object-contain" />
               <span className="font-display font-bold text-xl text-navy-900">TraceR2C</span>
             </Link>
           </motion.div>
