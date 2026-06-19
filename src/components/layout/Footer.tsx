@@ -158,7 +158,7 @@ const Footer = () => {
             filter: "blur(0px)",
             scale: 1.04,
             y: 0,
-            textShadow: "0 0 24px hsl(var(--ocean-primary) / 0.18)",
+            textShadow: `0 0 24px ${tealShadow}`,
             duration: 0.35,
           },
           0.55
