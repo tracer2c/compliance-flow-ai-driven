@@ -363,7 +363,7 @@ const HeroSection = () => {
               </div>
 
               <div className="pt-5 mt-1 border-t border-ocean-line flex items-center justify-between font-mono text-[10px] text-ocean-fg/45">
-                <span>Signed · J. Patel</span>
+                <span>Signed · Jhon Patel</span>
                 <span>2026-06-18 · 14:42 UTC</span>
               </div>
             </div>
