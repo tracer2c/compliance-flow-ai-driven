@@ -1,204 +1,207 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { 
-  ArrowRight, 
-  Users, 
-  Award, 
-  Target,
-  Heart,
-  Globe
-} from "lucide-react";
+import { Link } from "react-router-dom";
+import { Target, Heart, Globe, Award, MapPin, Mail, Phone } from "lucide-react";
+import PageHero from "@/components/shared/PageHero";
+import SectionLabel from "@/components/shared/SectionLabel";
+import BracketCard from "@/components/shared/BracketCard";
+import ClassyIcon from "@/components/shared/ClassyIcon";
+import CTABanner from "@/components/shared/CTABanner";
 
 const Company = () => {
-
   const values = [
     {
       icon: Target,
+      tone: "teal" as const,
       title: "Compliance-First Thinking",
-      description: "Every feature, every decision, every process is designed with compliance at its core."
+      description:
+        "Every feature and decision is designed with compliance at its core — not bolted on.",
     },
     {
       icon: Heart,
-      title: "Customer Obsession", 
-      description: "We succeed when our customers achieve their compliance goals efficiently and confidently."
+      tone: "rose" as const,
+      title: "Customer Obsession",
+      description:
+        "We succeed when our customers achieve their compliance goals with calm confidence.",
     },
     {
       icon: Globe,
+      tone: "violet" as const,
       title: "Global Perspective",
-      description: "We build for a world where compliance requirements vary by region, industry, and regulation."
+      description:
+        "We build for a world where regulations vary by region, industry, and jurisdiction.",
     },
     {
       icon: Award,
+      tone: "amber" as const,
       title: "Operational Excellence",
-      description: "We hold ourselves to the same high standards we help our customers achieve."
-    }
+      description:
+        "We hold ourselves to the same high standards we help our customers achieve.",
+    },
   ];
 
   const milestones = [
-    { year: "2019", event: "TraceR2C LLC founded in Auburn, AL" },
-    { year: "2020", event: "Launched ComplianceFlow platform" },
-    { year: "2022", event: "Expanded to serve pharmaceutical industry" },
+    { year: "2019", event: "TraceR2C LLC founded in Auburn, Alabama" },
+    { year: "2020", event: "Launched the ComplianceFlow platform" },
+    { year: "2022", event: "Expanded coverage to the pharmaceutical industry" },
     { year: "2023", event: "Launched Clear Insight analytics platform" },
-    { year: "2024", event: "500+ enterprise customers milestone" }
+    { year: "2024", event: "500+ enterprise customers milestone" },
   ];
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-gradient-hero py-20">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            <Badge className="mb-6 bg-white/10 text-white border-white/20">
-              About TraceR2C LLC
-            </Badge>
-            <h1 className="text-4xl md:text-6xl font-display font-bold mb-6">
-              Making Compliance
-              <span className="block bg-gradient-to-r from-teal-300 to-green-300 bg-clip-text text-transparent">
-                Operational & Measurable
-              </span>
-            </h1>
-            <p className="text-xl text-gray-200 mb-8 max-w-3xl mx-auto">
-              Founded in Auburn, Alabama, TraceR2C LLC transforms how regulated industries 
-              manage compliance through intelligent automation and proactive insights.
-            </p>
-          </div>
-        </div>
-      </section>
+    <div className="min-h-screen bg-white">
+      <PageHero
+        eyebrow="Company · 02"
+        meta="EST. 2019 · AUBURN, AL"
+        title="Making compliance"
+        accent="operational & measurable"
+        subtitle="Founded in Auburn, Alabama. We transform how regulated industries manage compliance — through intelligent automation and proactive insight, not paperwork theatre."
+      />
 
       {/* Mission & Vision */}
-      <section className="py-20 bg-background">
+      <section className="py-24 bg-white">
         <div className="container mx-auto px-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <div>
-                <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-6">
-                  Our Mission
-                </h2>
-                <p className="text-xl text-gray-600 mb-6 leading-relaxed">
-                  <strong className="text-navy-900">"Make compliance operational, measurable, and proactive."</strong>
+          <div className="mx-auto max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            <div className="lg:col-span-7">
+              <SectionLabel index="01">Our mission</SectionLabel>
+              <h2 className="mt-4 font-display text-3xl md:text-4xl font-bold text-navy-900 tracking-tight leading-[1.15]">
+                Make compliance operational,
+                <br />
+                measurable, and proactive.
+              </h2>
+              <div className="mt-8 space-y-5 text-gray-600 leading-relaxed text-lg">
+                <p>
+                  Compliance shouldn't be a burden or an afterthought. It should be seamlessly
+                  integrated into operations — providing real-time visibility and predictive
+                  insight that helps organizations stay ahead of regulatory change.
                 </p>
-                <p className="text-gray-600 mb-6">
-                  We believe compliance shouldn't be a burden or an afterthought. It should be 
-                  seamlessly integrated into business operations, providing real-time visibility 
-                  and predictive insights that help organizations stay ahead of regulatory requirements.
+                <p>
+                  Our platform transforms compliance from reactive documentation into proactive
+                  risk management, so regulated industries can operate with confidence and
+                  efficiency.
                 </p>
-                <p className="text-gray-600">
-                  Our platform transforms compliance from reactive documentation to proactive 
-                  risk management, helping regulated industries operate with confidence and efficiency.
-                </p>
-              </div>
-              <div className="bg-gradient-to-br from-teal-50 to-green-50 rounded-2xl p-8">
-                <h3 className="text-2xl font-display font-bold text-navy-900 mb-6">Why We Exist</h3>
-                <ul className="space-y-4">
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-teal-500 rounded-full mt-2"></div>
-                    <span className="text-gray-700">Regulatory complexity is increasing across all industries</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-teal-500 rounded-full mt-2"></div>
-                    <span className="text-gray-700">Manual compliance processes create risk and inefficiency</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-teal-500 rounded-full mt-2"></div>
-                    <span className="text-gray-700">Organizations need real-time visibility into compliance health</span>
-                  </li>
-                  <li className="flex items-start gap-3">
-                    <div className="w-2 h-2 bg-teal-500 rounded-full mt-2"></div>
-                    <span className="text-gray-700">Technology should make compliance easier, not harder</span>
-                  </li>
-                </ul>
               </div>
             </div>
+
+            <BracketCard className="lg:col-span-5 p-8 bg-gradient-to-br from-teal-50/60 to-emerald-50/40">
+              <SectionLabel index="02">Why we exist</SectionLabel>
+              <ul className="mt-6 space-y-5">
+                {[
+                  "Regulatory complexity is increasing across every industry",
+                  "Manual compliance processes create risk and inefficiency",
+                  "Organizations need real-time visibility into compliance health",
+                  "Technology should make compliance easier, not heavier",
+                ].map((line, i) => (
+                  <li key={i} className="flex items-start gap-4">
+                    <span className="mt-2 h-px w-6 flex-shrink-0 bg-teal-500" />
+                    <span className="text-gray-700 leading-relaxed">{line}</span>
+                  </li>
+                ))}
+              </ul>
+            </BracketCard>
           </div>
         </div>
       </section>
 
-      {/* Company Values */}
-      <section className="py-20 bg-gray-50">
+      {/* Values */}
+      <section className="py-24 bg-gray-50/60 border-y border-gray-200/60">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-4">
-              Our Values
+          <div className="mb-16 max-w-2xl">
+            <SectionLabel index="03">Our values</SectionLabel>
+            <h2 className="mt-4 font-display text-3xl md:text-4xl font-bold text-navy-900 tracking-tight">
+              Principles that hold under load.
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              The principles that guide how we build products, serve customers, and work together
+            <p className="mt-4 text-lg text-gray-600">
+              How we build products, serve customers, and work together.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
-              <Card key={index} className="enterprise-card hover:shadow-enterprise-lg transition-all duration-300 text-center group">
-                <CardHeader>
-                  <div className="w-12 h-12 bg-gradient-primary rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                    <value.icon className="h-6 w-6 text-white" />
-                  </div>
-                  <CardTitle className="text-lg text-navy-900">{value.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600 text-sm">{value.description}</p>
-                </CardContent>
-              </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {values.map((v, i) => (
+              <BracketCard key={v.title} className="p-7">
+                <div className="flex items-center justify-between mb-6">
+                  <ClassyIcon icon={v.icon} tone={v.tone} size="md" />
+                  <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-gray-400">
+                    0{i + 1}
+                  </span>
+                </div>
+                <h3 className="font-display text-lg font-semibold text-navy-900 mb-2">
+                  {v.title}
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{v.description}</p>
+              </BracketCard>
             ))}
           </div>
         </div>
       </section>
 
-
-      {/* Company Timeline */}
-      <section className="py-20 bg-gray-50">
+      {/* Timeline */}
+      <section className="py-24 bg-white">
         <div className="container mx-auto px-6">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-navy-900 mb-4">
-              Our Journey
+          <div className="mb-16 max-w-2xl">
+            <SectionLabel index="04">Our journey</SectionLabel>
+            <h2 className="mt-4 font-display text-3xl md:text-4xl font-bold text-navy-900 tracking-tight">
+              Five years, one direction.
             </h2>
-            <p className="text-xl text-gray-600">
-              Key milestones in building the leading compliance automation platform
-            </p>
           </div>
 
-          <div className="max-w-4xl mx-auto">
-            <div className="space-y-8">
-              {milestones.map((milestone, index) => (
-                <div key={index} className="flex items-center gap-6">
-                  <div className="flex-shrink-0 w-20 h-20 bg-gradient-primary rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold">{milestone.year}</span>
+          <div className="mx-auto max-w-4xl">
+            <ol className="relative border-l border-dashed border-teal-300/60 ml-3">
+              {milestones.map((m, i) => (
+                <li key={m.year} className="ml-8 pb-10 last:pb-0">
+                  <span className="absolute -left-[7px] flex h-3.5 w-3.5 items-center justify-center">
+                    <span className="h-3.5 w-3.5 rounded-full border-2 border-teal-500 bg-white" />
+                  </span>
+                  <div className="flex items-baseline gap-4">
+                    <div className="font-mono text-xs uppercase tracking-[0.22em] text-teal-700">
+                      {m.year}
+                    </div>
+                    <div className="font-mono text-[10px] text-gray-400">
+                      / {String(i + 1).padStart(2, "0")}
+                    </div>
                   </div>
-                  <Card className="flex-1 enterprise-card">
-                    <CardContent className="p-4">
-                      <p className="text-gray-700 font-medium">{milestone.event}</p>
-                    </CardContent>
-                  </Card>
-                </div>
+                  <p className="mt-2 text-lg text-navy-900 font-medium leading-snug">
+                    {m.event}
+                  </p>
+                </li>
               ))}
-            </div>
+            </ol>
           </div>
         </div>
       </section>
 
-
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-primary">
-        <div className="container mx-auto px-6 text-center">
-          <div className="max-w-3xl mx-auto text-white">
-            <h2 className="text-3xl md:text-4xl font-display font-bold mb-6">
-              Ready to Transform Your Compliance Operations?
-            </h2>
-            <p className="text-xl mb-8 opacity-90">
-              Join hundreds of companies already using TraceR2C to make compliance 
-              operational, measurable, and proactive.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <a href="https://compliance.tracer2c.com" target="_self">
-                <Button size="lg" className="bg-white text-navy-900 hover:bg-gray-100 font-semibold px-8 py-4">
-                  Start Free Trial
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </a>
+      {/* Location strip */}
+      <section className="py-16 bg-gray-50/60 border-t border-gray-200/60">
+        <div className="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl">
+          {[
+            { icon: MapPin, label: "Headquarters", value: "Auburn, Alabama · United States" },
+            { icon: Mail, label: "General inquiries", value: "contact@tracer2c.com" },
+            { icon: Phone, label: "Sales line", value: "(229) 395-9837" },
+          ].map((c) => (
+            <div key={c.label} className="flex items-start gap-4">
+              <ClassyIcon icon={c.icon} tone="teal" size="md" />
+              <div>
+                <div className="font-mono text-[10px] uppercase tracking-[0.22em] text-gray-500">
+                  {c.label}
+                </div>
+                <div className="mt-1 text-navy-900 font-medium">{c.value}</div>
+              </div>
             </div>
-          </div>
+          ))}
+        </div>
+        <div className="text-center mt-10">
+          <Link
+            to="/contact"
+            className="font-mono text-[11px] uppercase tracking-[0.22em] text-teal-700 hover:text-teal-900"
+          >
+            → talk to the team
+          </Link>
         </div>
       </section>
+
+      <CTABanner
+        eyebrow="Build with us"
+        title="Make compliance a system, not a scramble."
+        subtitle="Join the regulated industries running their programs on TraceR2C."
+      />
     </div>
   );
 };
