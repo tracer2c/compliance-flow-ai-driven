@@ -1,9 +1,7 @@
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import FeatureIcon from "@/components/ui/FeatureIcon";
-import SplitTextReveal from "@/components/animations/SplitTextReveal";
 import {
   FileCheck2,
   Radar,
@@ -19,6 +17,7 @@ const FeaturesSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const features = [
+    {
       title: "Document Management",
       description: "Automated metadata capture, version control, digital signatures, bulk operations",
       icon: FileCheck2,
@@ -68,6 +67,7 @@ const FeaturesSection = () => {
     }
   };
 
+  const featureContainerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -108,7 +108,7 @@ const FeaturesSection = () => {
       <div className="container mx-auto px-6">
         {/* Feature Grid */}
         <div className="mb-16">
-          <motion.h3
+          <motion.h3 
             className="text-3xl font-display font-bold text-navy-900 text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
