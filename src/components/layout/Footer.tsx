@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import tracer2cLogo from "@/assets/tracer2c-logo.png.asset.json";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MapPin, Mail, Phone, Linkedin, Twitter } from "lucide-react";

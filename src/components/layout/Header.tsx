@@ -1,4 +1,5 @@
 import { useState } from "react";
+import tracer2cLogo from "@/assets/tracer2c-logo.png.asset.json";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { 
