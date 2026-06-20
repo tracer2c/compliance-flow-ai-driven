@@ -244,16 +244,6 @@ const HeroSection = () => {
         <div className="grid lg:grid-cols-[1.15fr_1fr] gap-16 items-center w-full">
           {/* Left column */}
           <div className="space-y-10">
-            <div data-eyebrow className="inline-flex items-center gap-3 px-3 py-1 bg-ocean-surface/70 border border-ocean-primary/25 rounded-full backdrop-blur-sm">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full rounded-full bg-ocean-primary opacity-75 animate-ping" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-ocean-primary" />
-              </span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ocean-mint">
-                Enterprise Node · Active
-              </span>
-            </div>
-
             <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.95] tracking-tight">
               <SplitTextReveal as="span" text="Make compliance" className="block" immediate delay={0.25} stagger={0.06} />
               <SplitTextReveal
@@ -307,7 +297,7 @@ const HeroSection = () => {
           </div>
 
           {/* Right column — Audit Manifest */}
-          <div className="relative">
+          <div className="relative lg:-mt-8">
             {/* corner brackets */}
             <span data-bracket className="absolute -top-3 -left-3 w-8 h-8 border-t-2 border-l-2 border-ocean-primary/60" />
             <span data-bracket className="absolute -bottom-3 -right-3 w-8 h-8 border-b-2 border-r-2 border-ocean-primary/60" />

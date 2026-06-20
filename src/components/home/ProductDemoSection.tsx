@@ -99,17 +99,6 @@ const ProductDemoSection = () => {
             <span className="absolute -bottom-3 -right-3 w-8 h-8 border-b-2 border-r-2 border-ocean-primary/60 pointer-events-none" />
 
             <div className="relative bg-ocean-surface/80 backdrop-blur-xl border border-ocean-line rounded-md p-2 shadow-2xl">
-              {/* Window chrome */}
-              <div className="flex items-center justify-between px-3 py-2">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-ocean-fg/15" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-ocean-fg/15" />
-                  <span className="w-2.5 h-2.5 rounded-full bg-ocean-primary/60" />
-                </div>
-                <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ocean-fg/40">
-                  tracer2c · demo.mp4
-                </span>
-              </div>
 
               <div className="relative aspect-video w-full overflow-hidden rounded-sm bg-ocean-base">
                 <iframe
@@ -121,11 +110,6 @@ const ProductDemoSection = () => {
                   className="absolute inset-0 w-full h-full border-0"
                 />
               </div>
-            </div>
-
-            <div className="absolute -bottom-4 left-6 px-3 py-2 bg-ocean-base border border-ocean-primary/40 rounded-sm font-mono text-[10px] uppercase tracking-[0.18em] text-ocean-mint shadow-xl flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-ocean-primary shadow-[0_0_8px_hsl(var(--ocean-primary))]" />
-              Recorded live
             </div>
           </motion.div>
         </div>
