@@ -18,23 +18,15 @@ const AnimatedNumber = ({ value, suffix = "", duration = 2000 }: AnimatedNumberP
 
   useEffect(() => {
     if (!isInView) return;
-
     let startTime: number;
     let animationFrame: number;
-
     const animate = (timestamp: number) => {
       if (!startTime) startTime = timestamp;
       const progress = Math.min((timestamp - startTime) / duration, 1);
-      
-      // Easing function for smooth animation
       const easeOutQuart = 1 - Math.pow(1 - progress, 4);
       setCount(Math.floor(easeOutQuart * value));
-
-      if (progress < 1) {
-        animationFrame = requestAnimationFrame(animate);
-      }
+      if (progress < 1) animationFrame = requestAnimationFrame(animate);
     };
-
     animationFrame = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(animationFrame);
   }, [isInView, value, duration]);
@@ -47,122 +39,162 @@ const AnimatedNumber = ({ value, suffix = "", duration = 2000 }: AnimatedNumberP
 };
 
 const TrustStatsSection = () => {
-  const stats = [
-    {
-      value: 60,
-      suffix: "%",
-      label: "Less compliance chasing",
-      icon: TrendingDown,
-      description: "Automated requests + reminders reduce manual follow-ups."
-    },
+  const hero = {
+    value: 60,
+    suffix: "%",
+    label: "Less compliance chasing",
+    icon: TrendingDown,
+    description:
+      "Automated requests, reminders, and escalation paths replace the inbox triage that used to swallow your team's week.",
+    quote: "“Our team got their Mondays back.” — VP Compliance, Tier-1 manufacturer",
+  };
+
+  const small = [
     {
       value: 40,
       suffix: "%",
       label: "Faster audit prep",
       icon: Clock,
-      description: "Centralized evidence, approvals, and logs—always ready."
+      description: "Centralized evidence, approvals, and logs — always ready.",
     },
     {
       value: 0,
       suffix: "",
       label: "Expired doc surprises",
       icon: AlertCircle,
-      description: "Expiry forecasting and alerts before risk becomes incident."
+      description: "Expiry forecasting and alerts before risk becomes incident.",
     },
     {
       value: 1,
       suffix: "",
       label: "Single source of truth",
       icon: Database,
-      description: "Suppliers, documents, risk—permissioned and measurable."
-    }
+      description: "Suppliers, documents, risk — permissioned and measurable.",
+    },
   ];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15
-      }
-    }
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut" as const
-      }
-    }
-  };
-
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-20 lg:py-28 bg-gray-50">
       <div className="container mx-auto px-6">
-        <motion.div 
-          className="text-center mb-16"
+        {/* Editorial header: left-weighted, not centered */}
+        <motion.div
+          className="grid lg:grid-cols-[1fr_1.2fr] gap-10 lg:gap-16 items-end mb-14"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
         >
-          <Badge 
-            variant="secondary" 
-            className="mb-6 bg-teal-100 text-teal-700 border-teal-200 hover:bg-teal-200 transition-colors"
-          >
-            Designed for enterprise credibility
-          </Badge>
-          <SplitTextReveal
-            as="h2"
-            text="Outcomes that leadership understands."
-            className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-navy-900 mb-6 block"
-          />
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Reduce operational drag, prevent compliance incidents, and walk into audits with calm confidence.
+          <div>
+            <Badge
+              variant="secondary"
+              className="mb-5 bg-teal-100 text-teal-700 border-teal-200 hover:bg-teal-200 transition-colors"
+            >
+              Designed for enterprise credibility
+            </Badge>
+            <SplitTextReveal
+              as="h2"
+              text="Outcomes that leadership understands."
+              className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-navy-900 block leading-[1.05]"
+            />
+          </div>
+          <p className="text-lg text-gray-600 leading-relaxed lg:pl-8 lg:border-l-2 lg:border-teal-200">
+            Reduce operational drag, prevent compliance incidents, and walk into
+            audits with calm confidence. Four numbers your CFO already cares about.
           </p>
         </motion.div>
 
-        {/* Stats Grid */}
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-        >
-          {stats.map((stat, index) => (
-            <motion.div 
-              key={index} 
-              className="text-center group"
-              variants={cardVariants}
-            >
-              <div className="bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-teal-200 hover:-translate-y-1">
-                <motion.div 
-                  className="w-14 h-14 bg-teal-100 rounded-xl flex items-center justify-center mx-auto mb-6 group-hover:bg-teal-200 transition-colors"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                >
-                  <stat.icon className="h-7 w-7 text-teal-600" />
-                </motion.div>
-                <div className="text-4xl md:text-5xl font-bold text-navy-900 mb-2">
-                  <AnimatedNumber value={stat.value} suffix={stat.suffix} />
+        {/* Asymmetric bento */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Feature tile — spans 2 cols */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="lg:col-span-2 relative bg-white rounded-2xl p-10 border border-gray-100 shadow-lg overflow-hidden"
+          >
+            <div className="absolute left-0 top-8 bottom-8 w-1 bg-gradient-to-b from-teal-500 to-teal-200 rounded-full" />
+            <div className="grid md:grid-cols-[auto_1fr] gap-8 items-center pl-4">
+              <div>
+                <div className="w-14 h-14 bg-teal-100 rounded-xl flex items-center justify-center mb-5">
+                  <hero.icon className="h-7 w-7 text-teal-600" />
                 </div>
-                <h3 className="text-lg font-semibold text-teal-600 mb-3">
-                  {stat.label}
+                <div className="text-6xl md:text-7xl font-display font-bold text-navy-900 leading-none">
+                  <AnimatedNumber value={hero.value} suffix={hero.suffix} />
+                </div>
+                <h3 className="text-lg font-semibold text-teal-600 mt-3">
+                  {hero.label}
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
-                  {stat.description}
+              </div>
+              <div className="space-y-5 md:border-l md:border-gray-100 md:pl-8">
+                <p className="text-gray-700 leading-relaxed text-base">
+                  {hero.description}
                 </p>
+                {/* Faint bar accent */}
+                <div className="flex gap-1.5">
+                  {[70, 55, 40, 30, 22, 18, 15, 12].map((h, i) => (
+                    <span
+                      key={i}
+                      className="w-2 rounded-sm bg-gradient-to-t from-teal-200 to-teal-500"
+                      style={{ height: `${h}px` }}
+                    />
+                  ))}
+                </div>
+                <p className="font-mono text-xs text-gray-500 italic border-l-2 border-teal-300 pl-3">
+                  {hero.quote}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Small tiles — 3-up stack on the right column, then row of 2 below */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+            className="bg-navy-900 text-white rounded-2xl p-8 shadow-lg flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
+          >
+            <div>
+              <div className="w-12 h-12 bg-teal-500/15 rounded-xl flex items-center justify-center mb-5">
+                <small[0].icon className="h-6 w-6 text-teal-300" />
+              </div>
+              <div className="text-5xl font-display font-bold leading-none">
+                <AnimatedNumber value={small[0].value} suffix={small[0].suffix} />
+              </div>
+              <h3 className="text-base font-semibold text-teal-300 mt-3">{small[0].label}</h3>
+            </div>
+            <p className="text-white/60 text-sm leading-relaxed mt-5">{small[0].description}</p>
+          </motion.div>
+
+          {small.slice(1).map((stat, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.15 + i * 0.1 }}
+              className={`bg-white rounded-2xl p-8 border border-gray-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ${
+                i === 0 ? "lg:col-span-2" : ""
+              }`}
+            >
+              <div className="flex items-start gap-5">
+                <div className="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center shrink-0">
+                  <stat.icon className="h-6 w-6 text-teal-600" />
+                </div>
+                <div className="flex-1">
+                  <div className="text-4xl font-display font-bold text-navy-900 leading-none">
+                    <AnimatedNumber value={stat.value} suffix={stat.suffix} />
+                  </div>
+                  <h3 className="text-base font-semibold text-teal-600 mt-2">{stat.label}</h3>
+                  <p className="text-gray-600 text-sm leading-relaxed mt-2">{stat.description}</p>
+                </div>
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
 
-        {/* Certifications / Standards marquee */}
+        {/* Certifications marquee */}
         <div className="mt-20">
           <p className="text-center text-xs font-semibold tracking-widest text-gray-500 uppercase mb-6">
             Built to the standards your auditors expect
