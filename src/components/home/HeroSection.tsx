@@ -3,7 +3,20 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import SplitTextReveal from "@/components/animations/SplitTextReveal";
 import { useGSAP, prefersReducedMotion } from "@/hooks/useGSAP";
-import { ArrowRight, Play } from "lucide-react";
+import {
+  ArrowRight,
+  Play,
+  Check,
+  AlertCircle,
+  FileText,
+  ShieldCheck,
+  Clock,
+  Eye,
+  ClipboardCheck,
+  Copy,
+  Sparkles,
+  MoreVertical,
+} from "lucide-react";
 
 const HeroSection = () => {
   const cursorLayerRef = useRef<HTMLDivElement | null>(null);
@@ -41,7 +54,6 @@ const HeroSection = () => {
       }
       if (trail) {
         const len = trail.getTotalLength();
-        // short bright dash that travels along the path once
         gsap.set(trail, {
           strokeDasharray: `${len * 0.08} ${len}`,
           strokeDashoffset: len * 0.08,
@@ -59,7 +71,7 @@ const HeroSection = () => {
       }
     });
 
-    // Eyebrow pill
+    // Eyebrow
     ctx.add(() => {
       gsap.from("[data-eyebrow]", {
         y: 8, opacity: 0, duration: 0.6, ease: "power2.out", delay: 0.1,
@@ -73,17 +85,17 @@ const HeroSection = () => {
       });
     });
 
-    // Subhead
+    // Subhead lines
     ctx.add(() => {
       gsap.from("[data-subhead]", {
-        y: 10, opacity: 0, duration: 0.6, ease: "power2.out", delay: 0.8,
+        y: 10, opacity: 0, duration: 0.6, stagger: 0.1, ease: "power2.out", delay: 0.75,
       });
     });
 
-    // Trust micro-grid
+    // Trust feature pills
     ctx.add(() => {
       gsap.from("[data-trust]", {
-        y: 10, opacity: 0, duration: 0.55, stagger: 0.1, ease: "power2.out", delay: 1.15,
+        y: 10, opacity: 0, duration: 0.55, stagger: 0.08, ease: "power2.out", delay: 1.15,
       });
     });
 
@@ -99,15 +111,39 @@ const HeroSection = () => {
         y: 28, opacity: 0, duration: 0.9, ease: "power3.out",
       })
         .from(
+          "[data-stat]",
+          { y: 10, opacity: 0, duration: 0.45, stagger: 0.06, ease: "power2.out" },
+          "-=0.55"
+        )
+        .from(
           "[data-row]",
           { y: 12, opacity: 0, duration: 0.5, stagger: 0.07, ease: "power2.out" },
-          "-=0.45"
+          "-=0.35"
+        )
+        .from(
+          "[data-bar]",
+          { scaleX: 0, transformOrigin: "left center", duration: 0.7, stagger: 0.07, ease: "power2.out" },
+          "-=0.7"
         )
         .from(
           "[data-bracket]",
           { opacity: 0, scale: 0.6, duration: 0.55, stagger: 0.08, ease: "back.out(2)", transformOrigin: "center" },
           "-=0.55"
         );
+    });
+
+    // AI risk review floating card
+    ctx.add(() => {
+      gsap.from("[data-ai-card]", {
+        x: 24, y: 16, opacity: 0, duration: 0.7, ease: "power3.out", delay: 1.8,
+      });
+    });
+
+    // Audit-ready pill
+    ctx.add(() => {
+      gsap.from("[data-ribbon]", {
+        y: 12, opacity: 0, duration: 0.6, ease: "power2.out", delay: 1.55,
+      });
     });
 
     // Trace path indicator (bottom)
@@ -118,7 +154,7 @@ const HeroSection = () => {
       gsap.from("[data-trace-label]", { opacity: 0, duration: 0.5, delay: 1.6 });
     });
 
-    // Status: Pending -> Verified, then ribbon slides in
+    // Status: Pending -> Verified (header badge)
     ctx.add(() => {
       const tl = gsap.timeline({ delay: 1.7 });
       tl.to("[data-status-pending]", { autoAlpha: 0, y: -6, duration: 0.35, ease: "power2.in" })
@@ -129,10 +165,7 @@ const HeroSection = () => {
           "[data-check]",
           { strokeDasharray: 24, strokeDashoffset: 24, duration: 0.45, ease: "power2.out" },
           "-=0.1"
-        )
-        .from("[data-ribbon]", {
-          x: 24, opacity: 0, duration: 0.5, ease: "power2.out",
-        }, "-=0.1");
+        );
     });
   }, []);
 
@@ -174,6 +207,21 @@ const HeroSection = () => {
       if (raf) cancelAnimationFrame(raf);
     };
   }, [scope]);
+
+  const docRows = [
+    { id: "4.2", label: "Material origin", pct: 100, status: "valid" as const },
+    { id: "6.1", label: "Lab certificate hash", pct: 98, status: "valid" as const },
+    { id: "7.3", label: "Chain-of-custody", pct: 100, status: "valid" as const },
+    { id: "9.0", label: "Auditor signature", pct: 95, status: "expiring" as const },
+    { id: "12.1", label: "Data privacy attestation", pct: 100, status: "valid" as const },
+  ];
+
+  const trustItems = [
+    { icon: Clock, label: "24/7 document", sub: "monitoring" },
+    { icon: ShieldCheck, label: "Real-time expiry", sub: "tracking" },
+    { icon: Eye, label: "Supplier risk", sub: "visibility" },
+    { icon: ClipboardCheck, label: "Audit-ready", sub: "trails" },
+  ];
 
   return (
     <section
@@ -226,7 +274,6 @@ const HeroSection = () => {
           strokeWidth="1.2"
           strokeDasharray="6 8"
         />
-        {/* Traveling highlight on the same path */}
         <path
           data-supply-trail
           d="M-50,240 C220,140 420,640 820,420 S1240,140 1700,360"
@@ -241,9 +288,13 @@ const HeroSection = () => {
       <div data-glow className="absolute right-0 top-1/2 -translate-y-1/2 w-[640px] h-[640px] bg-ocean-primary/10 blur-[120px] rounded-full pointer-events-none" />
 
       <div className="container mx-auto px-6 lg:px-12 relative flex-1 flex items-center py-24 lg:py-28">
-        <div className="grid lg:grid-cols-[1.15fr_1fr] gap-16 items-center w-full">
+        <div className="grid lg:grid-cols-[1fr_1.15fr] gap-12 lg:gap-16 items-center w-full">
           {/* Left column */}
-          <div className="space-y-10">
+          <div className="space-y-8">
+            <div data-eyebrow className="font-mono text-[11px] uppercase tracking-[0.28em] text-ocean-primary">
+              Supplier Compliance Intelligence
+            </div>
+
             <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold leading-[0.95] tracking-tight">
               <SplitTextReveal as="span" text="Make compliance" className="block" immediate delay={0.25} stagger={0.06} />
               <SplitTextReveal
@@ -256,9 +307,12 @@ const HeroSection = () => {
               />
             </h1>
 
-            <p data-subhead className="max-w-md text-base lg:text-lg text-ocean-fg/65 leading-relaxed">
-              TraceR2C transforms reactive documentation into proactive risk management — real-time
-              visibility across every supplier, control, and audit event.
+            <p data-subhead className="max-w-md text-lg lg:text-xl text-ocean-fg/80 leading-snug">
+              Across every supplier, document, and audit event.
+            </p>
+
+            <p data-subhead className="max-w-md text-base text-ocean-fg/60 leading-relaxed">
+              TraceR2C helps teams collect supplier documents, track expirations, surface risk, and prove audit readiness in real time.
             </p>
 
             <div className="flex flex-wrap gap-4">
@@ -280,93 +334,196 @@ const HeroSection = () => {
                 className="px-7 py-4 border border-ocean-fg/20 hover:border-ocean-primary/60 hover:bg-ocean-surface/60 text-ocean-fg font-semibold rounded-sm transition-colors inline-flex items-center gap-2"
               >
                 <Play className="h-4 w-4 text-ocean-primary" />
-                See how it works
+                See TraceR2C in action
               </button>
             </div>
 
-            <div className="grid grid-cols-2 gap-8 pt-8 border-t border-ocean-line/60 max-w-md font-mono text-[11px] uppercase tracking-[0.18em] text-ocean-fg/45">
-              <div data-trust className="flex flex-col gap-1">
-                <span className="text-ocean-primary">01 / SOC 2 Type II</span>
-                <span>Continuous audit</span>
-              </div>
-              <div data-trust className="flex flex-col gap-1">
-                <span className="text-ocean-primary">02 / ISO 27001</span>
-                <span>Supply chain map</span>
-              </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 max-w-xl">
+              {trustItems.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={item.label}
+                    data-trust
+                    className="flex items-center gap-2.5 px-3 py-2.5 border border-ocean-line/60 rounded-sm bg-ocean-surface/30"
+                  >
+                    <span className="flex items-center justify-center w-7 h-7 rounded-full border border-ocean-primary/40 text-ocean-primary shrink-0">
+                      <Icon className="h-3.5 w-3.5" />
+                    </span>
+                    <span className="text-[11px] leading-tight text-ocean-fg/80">
+                      {item.label}<br /><span className="text-ocean-fg/55">{item.sub}</span>
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
           {/* Right column — Audit Manifest */}
-          <div className="relative lg:-mt-8">
+          <div className="relative lg:-mt-4">
             {/* corner brackets */}
             <span data-bracket className="absolute -top-3 -left-3 w-8 h-8 border-t-2 border-l-2 border-ocean-primary/60" />
             <span data-bracket className="absolute -bottom-3 -right-3 w-8 h-8 border-b-2 border-r-2 border-ocean-primary/60" />
 
             <div
               data-manifest
-              className="relative bg-ocean-surface/85 backdrop-blur-xl border border-ocean-line rounded-md p-7 shadow-2xl"
+              className="relative bg-ocean-surface/85 backdrop-blur-xl border border-ocean-line rounded-lg p-6 lg:p-7 shadow-2xl"
             >
+              {/* Header */}
               <div className="flex justify-between items-start pb-5 border-b border-ocean-line">
                 <div className="space-y-1">
-                  <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-ocean-primary">
-                    Document · TR-9942
+                  <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-ocean-fg/50">
+                    Supplier Overview
                   </div>
-                  <div className="font-display font-semibold text-lg">Compliance Manifest</div>
-                  <div className="font-mono text-[10px] text-ocean-fg/40">Tier 2 supplier · Auburn AL</div>
+                  <div className="font-display font-semibold text-xl lg:text-2xl">Compliance Manifest</div>
+                  <div className="font-mono text-[10px] text-ocean-fg/45">Tier 2 Supplier · Auburn, AL</div>
                 </div>
 
-                <div className="relative h-7">
-                  <span
-                    data-status-pending
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-ocean-mint/10 text-ocean-mint font-mono text-[10px] uppercase tracking-wider"
-                  >
-                    <span className="w-1.5 h-1.5 rounded-full bg-ocean-mint animate-pulse" />
-                    Pending
-                  </span>
-                  <span
-                    data-status-verified
-                    style={{ display: "none" }}
-                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-ocean-primary/15 text-ocean-primary font-mono text-[10px] uppercase tracking-wider border border-ocean-primary/30"
-                  >
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                      <path data-check d="M5 12l5 5L20 7" />
-                    </svg>
-                    Verified
-                  </span>
+                <div className="flex items-center gap-2">
+                  <div className="relative h-7">
+                    <span
+                      data-status-pending
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-ocean-mint/10 text-ocean-mint font-mono text-[10px] uppercase tracking-wider"
+                    >
+                      <span className="w-1.5 h-1.5 rounded-full bg-ocean-mint animate-pulse" />
+                      Pending
+                    </span>
+                    <span
+                      data-status-verified
+                      style={{ display: "none" }}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-ocean-primary/15 text-ocean-primary font-mono text-[10px] uppercase tracking-wider border border-ocean-primary/30"
+                    >
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <path data-check d="M5 12l5 5L20 7" />
+                      </svg>
+                      Verified
+                    </span>
+                  </div>
+                  <button className="text-ocean-fg/40 hover:text-ocean-fg/70 transition-colors" aria-label="More">
+                    <MoreVertical className="h-4 w-4" />
+                  </button>
                 </div>
               </div>
 
-              <div className="py-5 space-y-3">
-                {[
-                  { label: "Section 4.2", value: "Material origin" },
-                  { label: "Section 6.1", value: "Lab certificate hash" },
-                  { label: "Section 7.3", value: "Chain-of-custody" },
-                  { label: "Section 9.0", value: "Auditor signature" },
-                ].map((row, i) => (
-                  <div
-                    key={i}
-                    data-row
-                    className="flex items-center gap-4 pl-3 border-l-2 border-ocean-primary/40 py-1"
-                  >
-                    <span className="font-mono text-[10px] text-ocean-fg/40 w-20">{row.label}</span>
-                    <div className="flex-1 h-2 bg-ocean-base rounded-full overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-ocean-primary/40 to-ocean-primary/10" style={{ width: `${60 + i * 8}%` }} />
+              {/* Stats grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 py-5 border-b border-ocean-line">
+                <div data-stat className="space-y-1">
+                  <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-ocean-fg/45">Documents</div>
+                  <div className="font-display text-2xl font-semibold">24</div>
+                  <div className="font-mono text-[9px] text-ocean-fg/40">Total</div>
+                </div>
+                <div data-stat className="space-y-1">
+                  <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-ocean-fg/45">Verified</div>
+                  <div className="font-display text-2xl font-semibold text-ocean-primary">22</div>
+                  <div className="font-mono text-[9px] text-ocean-mint">92%</div>
+                </div>
+                <div data-stat className="space-y-1">
+                  <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-ocean-fg/45">Expiring Soon</div>
+                  <div className="font-display text-2xl font-semibold">3</div>
+                  <div className="font-mono text-[9px] text-ocean-fg/40">This month</div>
+                </div>
+                <div data-stat className="space-y-1">
+                  <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-ocean-fg/45">Overdue</div>
+                  <div className="font-display text-2xl font-semibold text-amber-400">1</div>
+                  <div className="font-mono text-[9px] text-ocean-fg/40">Action required</div>
+                </div>
+                <div data-stat className="space-y-1 col-span-2 sm:col-span-1">
+                  <div className="font-mono text-[9px] uppercase tracking-[0.18em] text-ocean-fg/45">Risk Score</div>
+                  <div className="font-display text-2xl font-semibold inline-flex items-center gap-1.5">
+                    Low
+                    <span className="w-1.5 h-1.5 rounded-full bg-ocean-mint shadow-[0_0_8px_hsl(var(--ocean-mint))]" />
+                  </div>
+                  <div className="font-mono text-[9px] text-ocean-fg/40">Updated 2h ago</div>
+                </div>
+              </div>
+
+              {/* Document sections */}
+              <div className="py-5">
+                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-ocean-fg/50 mb-4">
+                  Document Sections
+                </div>
+                <div className="space-y-3">
+                  {docRows.map((row) => (
+                    <div
+                      key={row.id}
+                      data-row
+                      className="flex items-center gap-3"
+                    >
+                      <FileText className="h-3.5 w-3.5 text-ocean-fg/35 shrink-0" />
+                      <span className="font-mono text-[10px] text-ocean-fg/55 w-10 shrink-0">{row.id}</span>
+                      <span className="text-[12px] text-ocean-fg/85 flex-1 min-w-0 truncate">{row.label}</span>
+                      <div className="hidden sm:block flex-1 h-1.5 bg-ocean-base rounded-full overflow-hidden max-w-[140px]">
+                        <div
+                          data-bar
+                          className={`h-full ${row.status === "expiring" ? "bg-amber-400/80" : "bg-ocean-primary"}`}
+                          style={{ width: `${row.pct}%` }}
+                        />
+                      </div>
+                      <span className="font-mono text-[10px] text-ocean-fg/55 w-10 text-right shrink-0">{row.pct}%</span>
+                      {row.status === "valid" ? (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-sm bg-ocean-primary/10 text-ocean-primary font-mono text-[9px] uppercase tracking-wider shrink-0">
+                          <Check className="h-2.5 w-2.5" /> Valid
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-sm bg-amber-400/10 text-amber-400 font-mono text-[9px] uppercase tracking-wider shrink-0">
+                          <AlertCircle className="h-2.5 w-2.5" /> Expiring
+                        </span>
+                      )}
                     </div>
-                    <span className="font-mono text-[10px] text-ocean-fg/50 hidden sm:inline">{row.value}</span>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
 
-              <div className="pt-5 mt-1 border-t border-ocean-line flex items-center justify-between font-mono text-[10px] text-ocean-fg/45">
-                <span>Signed · Jhon Patel</span>
-                <span>2026-06-18 · 14:42 UTC</span>
+              {/* Footer */}
+              <div className="pt-5 border-t border-ocean-line grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono text-[10px] text-ocean-fg/55">
+                <div>
+                  <div className="text-ocean-fg/40 mb-1">Chain-of-custody</div>
+                  <div className="inline-flex items-center gap-1.5 text-ocean-mint">
+                    <span className="w-1.5 h-1.5 rounded-full bg-ocean-mint" />
+                    Complete
+                  </div>
+                </div>
+                <div>
+                  <div className="text-ocean-fg/40 mb-1">Document hash</div>
+                  <div className="inline-flex items-center gap-1.5">
+                    a1b2c3d4e5f6...9a0b
+                    <Copy className="h-3 w-3 text-ocean-fg/40" />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-ocean-fg/40 mb-1">Last updated</div>
+                  <div>May 18, 2026 · 14:42 UTC</div>
+                </div>
               </div>
             </div>
 
-            {/* Verified ribbon, anchored to card */}
-            <div data-ribbon className="absolute -bottom-4 right-6 px-3 py-2 bg-ocean-base border border-ocean-primary/40 rounded-sm font-mono text-[10px] uppercase tracking-[0.18em] text-ocean-mint shadow-xl flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-ocean-primary shadow-[0_0_8px_hsl(var(--ocean-primary))]" />
+            {/* Audit-ready pill */}
+            <div
+              data-ribbon
+              className="absolute left-1/2 -translate-x-1/2 -bottom-5 px-4 py-2 bg-ocean-base border border-ocean-primary/40 rounded-full font-mono text-[10px] uppercase tracking-[0.22em] text-ocean-mint shadow-xl flex items-center gap-2"
+            >
+              <ShieldCheck className="h-3 w-3" />
+              <span className="w-1.5 h-1.5 rounded-full bg-ocean-mint shadow-[0_0_8px_hsl(var(--ocean-mint))]" />
               Audit-ready
+            </div>
+
+            {/* AI Risk Review floating card */}
+            <div
+              data-ai-card
+              className="absolute -bottom-10 -right-2 sm:-right-6 w-[280px] bg-ocean-surface/95 backdrop-blur-xl border border-ocean-line rounded-md p-4 shadow-2xl hidden md:block"
+            >
+              <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-ocean-primary mb-3">
+                <Sparkles className="h-3.5 w-3.5" />
+                AI Risk Review
+              </div>
+              <div className="space-y-1.5 text-[12px] text-ocean-fg/85">
+                <div><span className="text-ocean-primary font-semibold">3 renewals due</span> <span className="text-ocean-fg/60">this week</span></div>
+                <div><span className="text-amber-400 font-semibold">2 supplier docs</span> <span className="text-ocean-fg/60">overdue</span></div>
+              </div>
+              <button className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-sm border border-ocean-primary/40 text-ocean-primary font-mono text-[10px] uppercase tracking-wider hover:bg-ocean-primary/10 transition-colors">
+                Review now
+                <ArrowRight className="h-3 w-3" />
+              </button>
             </div>
           </div>
         </div>
