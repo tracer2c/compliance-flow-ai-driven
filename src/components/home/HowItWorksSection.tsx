@@ -84,7 +84,7 @@ const HowItWorksSection = () => {
         scrollTrigger: {
           trigger: scene,
           start: "top top",
-          end: "+=140%",
+          end: "+=80%",
           scrub: 0.6,
           pin: stage,
           pinSpacing: true,
