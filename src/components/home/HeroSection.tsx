@@ -281,12 +281,17 @@ const HeroSection = () => {
                   <span className="absolute inset-0 bg-ocean-mint translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
                 </button>
               </a>
-              <Link data-cta to="/know-more">
-                <button className="px-7 py-4 border border-ocean-fg/20 hover:border-ocean-primary/60 hover:bg-ocean-surface/60 text-ocean-fg font-semibold rounded-sm transition-colors inline-flex items-center gap-2">
-                  <Play className="h-4 w-4 text-ocean-primary" />
-                  See how it works
-                </button>
-              </Link>
+              <button
+                data-cta
+                onClick={() => {
+                  const el = document.getElementById("watch-demo");
+                  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+                className="px-7 py-4 border border-ocean-fg/20 hover:border-ocean-primary/60 hover:bg-ocean-surface/60 text-ocean-fg font-semibold rounded-sm transition-colors inline-flex items-center gap-2"
+              >
+                <Play className="h-4 w-4 text-ocean-primary" />
+                See how it works
+              </button>
             </div>
 
             <div className="grid grid-cols-2 gap-8 pt-8 border-t border-ocean-line/60 max-w-md font-mono text-[11px] uppercase tracking-[0.18em] text-ocean-fg/45">

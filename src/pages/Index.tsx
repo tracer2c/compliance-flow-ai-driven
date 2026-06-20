@@ -3,8 +3,8 @@ import HeroSection from "@/components/home/HeroSection";
 import TrustStatsSection from "@/components/home/TrustStatsSection";
 import FeaturesSection from "@/components/home/FeaturesSection";
 import HowItWorksSection from "@/components/home/HowItWorksSection";
+import ProductDemoSection from "@/components/home/ProductDemoSection";
 import IndustrySection from "@/components/home/IndustrySection";
-import SectionPin from "@/components/animations/SectionPin";
 import { organizationSchema, softwareApplicationSchema, websiteSchema } from "@/lib/structuredData";
 
 const Index = () => {
@@ -20,17 +20,11 @@ const Index = () => {
         structuredData={combinedSchema}
       />
       <HeroSection />
-      <SectionPin holdVh={50}>
-        <TrustStatsSection />
-      </SectionPin>
-      <SectionPin holdVh={70}>
-        <FeaturesSection />
-      </SectionPin>
-      {/* HowItWorks manages its own pinned scene */}
+      <TrustStatsSection />
+      <FeaturesSection />
       <HowItWorksSection />
-      <SectionPin holdVh={50}>
-        <IndustrySection />
-      </SectionPin>
+      <ProductDemoSection />
+      <IndustrySection />
     </>
   );
 };
