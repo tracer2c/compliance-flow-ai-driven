@@ -156,9 +156,14 @@ const TrustStatsSection = () => {
             className="bg-navy-900 text-white rounded-2xl p-8 shadow-lg flex flex-col justify-between hover:-translate-y-1 transition-transform duration-300"
           >
             <div>
-              <div className="w-12 h-12 bg-teal-500/15 rounded-xl flex items-center justify-center mb-5">
-                <small[0].icon className="h-6 w-6 text-teal-300" />
-              </div>
+              {(() => {
+                const Icon = small[0].icon;
+                return (
+                  <div className="w-12 h-12 bg-teal-500/15 rounded-xl flex items-center justify-center mb-5">
+                    <Icon className="h-6 w-6 text-teal-300" />
+                  </div>
+                );
+              })()}
               <div className="text-5xl font-display font-bold leading-none">
                 <AnimatedNumber value={small[0].value} suffix={small[0].suffix} />
               </div>
