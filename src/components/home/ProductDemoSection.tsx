@@ -65,14 +65,24 @@ const ProductDemoSection = () => {
               </a>
             </div>
 
-            <div className="grid grid-cols-2 gap-8 pt-6 border-t border-ocean-line/60 max-w-md font-mono text-[11px] uppercase tracking-[0.18em] text-ocean-fg/45">
-              <div className="flex flex-col gap-1">
-                <span className="text-ocean-primary">A / Intake</span>
-                <span>Auto-classified docs</span>
-              </div>
-              <div className="flex flex-col gap-1">
-                <span className="text-ocean-primary">B / Evidence</span>
-                <span>One-click export</span>
+            <div className="pt-6 border-t border-ocean-line/60 max-w-md font-mono text-[11px] uppercase tracking-[0.18em] text-ocean-fg/55">
+              <div className="grid grid-cols-2 sm:flex sm:flex-wrap sm:items-center gap-x-2 gap-y-3">
+                {[
+                  { n: "1", label: "Intake" },
+                  { n: "2", label: "AI Check" },
+                  { n: "3", label: "Expiry Guardrails" },
+                  { n: "4", label: "Audit Export" },
+                ].map((step, i, arr) => (
+                  <div key={step.n} className="flex items-center gap-2">
+                    <span className="inline-flex items-center gap-1.5">
+                      <span className="text-ocean-primary">{step.n}.</span>
+                      <span className="text-ocean-fg/75">{step.label}</span>
+                    </span>
+                    {i < arr.length - 1 && (
+                      <span aria-hidden="true" className="hidden sm:inline text-ocean-primary/50">→</span>
+                    )}
+                  </div>
+                ))}
               </div>
             </div>
           </motion.div>
@@ -103,7 +113,7 @@ const ProductDemoSection = () => {
 
               <div className="relative aspect-video w-full overflow-hidden rounded-sm bg-ocean-base">
                 <iframe
-                  src="https://app.heygen.com/embeds/78772a68ae134379b9dd4eb64640ddf7"
+                  src="https://app.heygen.com/embeds/44d6260515d548d3bbf555f76834d2ad"
                   title="TraceR2C product demo"
                   loading="lazy"
                   allow="encrypted-media; fullscreen;"
