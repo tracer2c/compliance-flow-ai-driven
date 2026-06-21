@@ -248,7 +248,7 @@ const Footer = () => {
       data-footer-scene
       className="relative bg-ocean-base text-ocean-fg"
     >
-      <div data-footer-pin className="relative min-h-screen overflow-hidden flex flex-col justify-end pt-24 pb-10">
+      <div data-footer-pin className="relative overflow-hidden flex flex-col justify-end pt-24 pb-10 lg:min-h-screen">
         {/* Continuation supply-chain path */}
         <div data-footer-pathwrap className="absolute inset-x-0 top-0 h-40 pointer-events-none">
           <svg
