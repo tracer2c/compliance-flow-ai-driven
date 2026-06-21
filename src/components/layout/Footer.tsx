@@ -88,7 +88,7 @@ const Footer = () => {
 
 
     // Mobile: no pin, simple reveal
-    if (!isDesktop) {
+    if (!isDesktop || !isHome) {
       ctx.add(() => {
         const tl = gsap.timeline({
           scrollTrigger: { trigger: scene, start: "top 70%", once: true },
