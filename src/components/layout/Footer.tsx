@@ -384,8 +384,8 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Compliance badges strip */}
-          <div className="flex flex-wrap items-center gap-3 mb-10 py-6 border-y border-ocean-line/60 relative z-10">
+          {/* Compliance badges + copyright strip */}
+          <div className="flex flex-wrap items-center gap-3 py-6 border-y border-ocean-line/60 relative z-10">
             <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ocean-fg/40 mr-2">
               Compliance ·
             </span>
@@ -398,23 +398,7 @@ const Footer = () => {
                 {b}
               </span>
             ))}
-          </div>
-
-          {/* Bottom bar */}
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
-            <div
-              data-footer-status
-              className="inline-flex items-center gap-3 px-4 py-2 bg-ocean-surface/70 border border-ocean-primary/25 rounded-full"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-ocean-primary shadow-[0_0_8px_hsl(var(--ocean-primary))]" />
-              </span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-ocean-fg/80">
-                All nodes operational · Latency 12ms
-              </span>
-            </div>
-
-            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ocean-fg/35">
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-ocean-fg/35 ml-auto">
               © {currentYear} ComplianceFlow by TraceR2C LLC. All rights reserved.
             </p>
           </div>
