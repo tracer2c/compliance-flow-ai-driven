@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import tracer2cLogo from "@/assets/tracer2c-logo.png.asset.json";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -6,6 +6,8 @@ import { MapPin, Mail, Phone, Linkedin, Twitter } from "lucide-react";
 import { useGSAP, prefersReducedMotion } from "@/hooks/useGSAP";
 
 const Footer = () => {
+  const { pathname } = useLocation();
+  const isHome = pathname === "/";
   const currentYear = new Date().getFullYear();
 
   const scope = useGSAP((ctx) => {
@@ -84,7 +86,6 @@ const Footer = () => {
     }
 
     const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
-    const isHome = typeof window !== "undefined" && window.location.pathname === "/";
 
 
     // Mobile: no pin, simple reveal
@@ -250,7 +251,7 @@ const Footer = () => {
       data-footer-scene
       className="relative bg-ocean-base text-ocean-fg"
     >
-      <div data-footer-pin className="relative overflow-hidden flex flex-col justify-end pt-24 pb-10 lg:min-h-screen">
+      <div data-footer-pin className={`relative overflow-hidden flex flex-col justify-end pt-24 pb-10 ${isHome ? "lg:min-h-screen" : ""}`}>
         {/* Continuation supply-chain path */}
         <div data-footer-pathwrap className="absolute inset-x-0 top-0 h-40 pointer-events-none">
           <svg
