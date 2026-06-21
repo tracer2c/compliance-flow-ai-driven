@@ -330,7 +330,7 @@ const HeroSection = () => {
                 to="/contact#contact-form"
                 className="px-7 py-4 border border-ocean-fg/20 hover:border-ocean-primary/60 hover:bg-ocean-surface/60 text-ocean-fg font-semibold rounded-sm transition-colors inline-flex items-center gap-2"
               >
-                Book a Demo
+                See How It Works
               </Link>
             </div>
 
