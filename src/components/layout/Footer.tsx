@@ -84,6 +84,8 @@ const Footer = () => {
     }
 
     const isDesktop = window.matchMedia("(min-width: 1024px)").matches;
+    const isHome = typeof window !== "undefined" && window.location.pathname === "/";
+
 
     // Mobile: no pin, simple reveal
     if (!isDesktop) {
