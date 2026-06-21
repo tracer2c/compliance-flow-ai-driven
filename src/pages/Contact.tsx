@@ -140,7 +140,7 @@ const Contact = () => {
       </section>
 
       {/* Form */}
-      <section className="py-24 bg-gray-50/60 border-y border-gray-200/60">
+      <section id="contact-form" className="py-24 bg-gray-50/60 border-y border-gray-200/60">
         <div className="container mx-auto px-6">
           <div className="mx-auto max-w-3xl">
             <div className="mb-10 text-center">
