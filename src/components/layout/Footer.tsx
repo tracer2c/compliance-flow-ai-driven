@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import tracer2cLogo from "@/assets/tracer2c-logo.png.asset.json";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -6,6 +6,8 @@ import { MapPin, Mail, Phone, Linkedin, Twitter } from "lucide-react";
 import { useGSAP, prefersReducedMotion } from "@/hooks/useGSAP";
 
 const Footer = () => {
+  const { pathname } = useLocation();
+  const isHome = pathname === "/";
   const currentYear = new Date().getFullYear();
 
   const scope = useGSAP((ctx) => {
