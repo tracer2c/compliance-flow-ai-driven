@@ -327,7 +327,7 @@ const HeroSection = () => {
               </Link>
               <Link
                 data-cta
-                to="/contact#contact-form"
+                to="/#watch-demo"
                 className="px-7 py-4 border border-ocean-fg/20 hover:border-ocean-primary/60 hover:bg-ocean-surface/60 text-ocean-fg font-semibold rounded-sm transition-colors inline-flex items-center gap-2"
               >
                 See How It Works
