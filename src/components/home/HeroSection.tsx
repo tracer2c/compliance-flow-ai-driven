@@ -316,26 +316,22 @@ const HeroSection = () => {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <a data-cta href="https://compliance.tracer2c.com" target="_blank" rel="noopener noreferrer">
+              <Link data-cta to="/contact#contact-form">
                 <button className="group relative overflow-hidden px-7 py-4 bg-ocean-primary text-ocean-base font-semibold rounded-sm transition-transform duration-200 hover:-translate-y-0.5">
                   <span className="relative z-10 inline-flex items-center gap-2">
-                    Start Free Trial
+                    Book a Demo
                     <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </span>
                   <span className="absolute inset-0 bg-ocean-mint translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
                 </button>
-              </a>
-              <button
+              </Link>
+              <Link
                 data-cta
-                onClick={() => {
-                  const el = document.getElementById("watch-demo");
-                  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
-                }}
+                to="/contact#contact-form"
                 className="px-7 py-4 border border-ocean-fg/20 hover:border-ocean-primary/60 hover:bg-ocean-surface/60 text-ocean-fg font-semibold rounded-sm transition-colors inline-flex items-center gap-2"
               >
-                <Play className="h-4 w-4 text-ocean-primary" />
-                See TraceR2C in action
-              </button>
+                Book a Demo
+              </Link>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 max-w-xl">
